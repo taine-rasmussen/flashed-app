@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# 🚫 Block pushes to main or production
+branch="$(git symbolic-ref --short HEAD)"
+if [ "$branch" = "main" ] || [ "$branch" = "production" ]; then
+  echo "❌ Direct pushes to $branch are not allowed. Please use a pull request."
+  exit 1
+fi
+
+# 🔍 Type checking
+npm run type-check || exit 1
+
+# 🎯 Lint + format staged files
+npx lint-staged || exit 1

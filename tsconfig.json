@@ -1,5 +1,6 @@
 {
   "extends": "expo/tsconfig.base",
+  "include": ["src", "app", "theme"],
   "compilerOptions": {
     "strict": true,
     "noUnusedLocals": true,

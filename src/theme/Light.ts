@@ -6,8 +6,8 @@ import { spacing, typography } from './Util';
 export const lightTheme = {
   ...DefaultLightTheme,
   custom: {
-    spacing: spacing,
-    typography: typography,
+    spacing,
+    typography,
   },
   colors: {
     ...DefaultLightTheme.colors,

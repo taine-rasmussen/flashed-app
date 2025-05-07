@@ -6,8 +6,8 @@ import { spacing, typography } from './Util';
 export const darkTheme = {
   ...DefaultDarkTheme,
   custom: {
-    spacing: spacing,
-    typography: typography,
+    spacing,
+    typography,
   },
   colors: {
     ...DefaultDarkTheme.colors,

@@ -5,9 +5,9 @@ import { lightTheme } from './Light';
 import { darkTheme } from './Dark';
 
 const ThemeContext = createContext({
-  isDark: false,
+  isDark: true,
   toggleTheme: () => {},
-  theme: lightTheme,
+  theme: darkTheme,
 });
 
 export const useThemeContext = () => useContext(ThemeContext);

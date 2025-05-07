@@ -8,6 +8,9 @@ import prettier from 'eslint-config-prettier';
 
 /** @type {import("eslint").Linter.FlatConfig[]} */
 export default [
+  {
+    ignores: ['node_modules', 'dist', 'build', 'babel.config.js', 'metro.config.js'],
+  },
   js.configs.recommended,
   {
     files: ['**/*.ts', '**/*.tsx'],

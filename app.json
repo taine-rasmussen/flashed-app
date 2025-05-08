@@ -10,13 +10,14 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
       "supportsTablet": true,
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "bundleIdentifier": "com.flashedapp.flashed"
     },
     "android": {
       "adaptiveIcon": {
@@ -34,9 +35,7 @@
         "projectId": "8157fb2b-3c48-471e-a7b9-7f8f3e0c3881"
       }
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "runtimeVersion": "1.0.0",
     "updates": {
       "url": "https://u.expo.dev/8157fb2b-3c48-471e-a7b9-7f8f3e0c3881"
     },

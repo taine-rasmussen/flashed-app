@@ -15,6 +15,10 @@ export default [
   {
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
+      globals: {
+        console: 'readonly',
+        __DEV__: 'readonly', 
+      },
       parser: tsParser,
       parserOptions: {
         ecmaVersion: 2021,

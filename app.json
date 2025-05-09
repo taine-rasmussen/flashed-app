@@ -39,6 +39,6 @@
     "updates": {
       "url": "https://u.expo.dev/8157fb2b-3c48-471e-a7b9-7f8f3e0c3881"
     },
-    "plugins": ["expo-router"]
+    "plugins": ["expo-router", "expo-secure-store"]
   }
 }

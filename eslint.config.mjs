@@ -17,6 +17,7 @@ export default [
     languageOptions: {
       globals: {
         console: 'readonly',
+        __DEV__: 'readonly', 
       },
       parser: tsParser,
       parserOptions: {

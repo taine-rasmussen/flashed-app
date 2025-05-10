@@ -1,7 +1,7 @@
 import { useRouter, usePathname } from 'expo-router';
 import { View, Button } from 'react-native';
 
-const steps = ['/signup', '/signup/step2', '/signup/step3'];
+const steps = ['/signup', '/signup/StepTwo', '/signup/StepThree'];
 
 const SignupFooter = () => {
   const router = useRouter();
@@ -23,7 +23,7 @@ const SignupFooter = () => {
   };
 
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 20 }}>
       {currentIndex > 0 && <Button title="Back" onPress={goBack} />}
       <Button title={currentIndex < steps.length - 1 ? 'Continue' : 'Finish'} onPress={goNext} />
     </View>

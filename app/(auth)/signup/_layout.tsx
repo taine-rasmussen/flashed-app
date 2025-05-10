@@ -2,12 +2,12 @@ import { Slot, usePathname } from 'expo-router';
 import { View, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-import SignupProgressBar from './SignupProgressBar';
-import SignupFooter from './SignupFooter';
+import SignupProgressBar from './components/SignupProgressBar';
+import SignupFooter from './components/SignupFooter';
 
 import { SignupProvider } from '@/contexts/SignupContext';
 
-const stepRoutes = ['/signup', '/signup/step1', '/signup/step2', '/signup/step3'];
+const stepRoutes = ['/signup', '/signup/StepTwo', '/signup/StepThree'];
 
 export default function SignupLayout() {
   const pathname = usePathname();
@@ -18,7 +18,7 @@ export default function SignupLayout() {
       <SafeAreaProvider>
         <SafeAreaView style={styles.container} edges={['top', 'bottom', 'left', 'right']}>
           <View style={styles.container}>
-            <SignupProgressBar totalSteps={4} currentStep={currentStep} />
+            <SignupProgressBar totalSteps={3} currentStep={currentStep} />
             <View style={styles.content}>
               <Slot />
             </View>

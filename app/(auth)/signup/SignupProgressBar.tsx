@@ -8,7 +8,7 @@ type Props = {
   currentStep: number;
 };
 
-export const SignupProgressBar = ({ totalSteps, currentStep }: Props) => {
+const SignupProgressBar = ({ totalSteps, currentStep }: Props) => {
   const theme = useAppTheme();
   return (
     <View style={styles.container}>
@@ -27,6 +27,8 @@ export const SignupProgressBar = ({ totalSteps, currentStep }: Props) => {
     </View>
   );
 };
+
+export default SignupProgressBar;
 
 const styles = StyleSheet.create({
   container: {

@@ -1,5 +1,6 @@
 import { useRouter, usePathname } from 'expo-router';
-import { View, Button } from 'react-native';
+import { View } from 'react-native';
+import { Button } from 'react-native-paper';
 
 const steps = ['/signup', '/signup/StepTwo', '/signup/StepThree'];
 
@@ -22,10 +23,24 @@ const SignupFooter = () => {
     }
   };
 
+  const buttonPosition = currentIndex < 1 ? 'flex-end' : 'space-between';
+
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 20 }}>
-      {currentIndex > 0 && <Button title="Back" onPress={goBack} />}
-      <Button title={currentIndex < steps.length - 1 ? 'Continue' : 'Finish'} onPress={goNext} />
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: buttonPosition,
+        padding: 20,
+      }}
+    >
+      {currentIndex > 0 && (
+        <Button onPress={goBack} mode="contained">
+          Back
+        </Button>
+      )}
+      <Button onPress={goNext} mode="contained">
+        {currentIndex < steps.length - 1 ? 'Continue' : 'Finish'}
+      </Button>
     </View>
   );
 };

@@ -17,7 +17,7 @@ const AppInput: React.FC<AppInputProps> = ({
       mode={mode}
       style={[styles.input, containerStyle, style]}
       {...props}
-      theme={{ roundness: 16 }}
+      theme={{ roundness: 8 }}
     />
   );
 };

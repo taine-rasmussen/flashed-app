@@ -1,13 +1,25 @@
 import { useRouter, usePathname } from 'expo-router';
-import { View } from 'react-native';
-import { Button } from 'react-native-paper';
+import { View, StyleSheet } from 'react-native';
+
+import AppButton from '@/components/AppButton';
 
 const steps = ['/signup', '/signup/StepTwo', '/signup/StepThree'];
+
+const getContainerStyles = (justifyContent: 'flex-end' | 'space-between') =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      justifyContent,
+      padding: 24,
+    },
+  });
 
 const SignupFooter = () => {
   const router = useRouter();
   const pathname = usePathname();
   const currentIndex = steps.indexOf(pathname);
+  const buttonPosition = currentIndex < 1 ? 'flex-end' : 'space-between';
+  const styles = getContainerStyles(buttonPosition);
 
   const goNext = () => {
     if (currentIndex < steps.length - 1) {
@@ -23,24 +35,16 @@ const SignupFooter = () => {
     }
   };
 
-  const buttonPosition = currentIndex < 1 ? 'flex-end' : 'space-between';
-
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: buttonPosition,
-        padding: 20,
-      }}
-    >
+    <View style={styles.container}>
       {currentIndex > 0 && (
-        <Button onPress={goBack} mode="contained">
+        <AppButton onPress={goBack} mode="contained">
           Back
-        </Button>
+        </AppButton>
       )}
-      <Button onPress={goNext} mode="contained">
+      <AppButton onPress={goNext} mode="contained">
         {currentIndex < steps.length - 1 ? 'Continue' : 'Finish'}
-      </Button>
+      </AppButton>
     </View>
   );
 };

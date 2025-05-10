@@ -6,7 +6,6 @@ const DEV_FORCE_FIRST_LAUNCH = __DEV__ && true;
 export const checkFirstLaunch = async (): Promise<boolean> => {
   try {
     if (DEV_FORCE_FIRST_LAUNCH) {
-      console.log('🔧 DEV MODE: Resetting first launch flag');
       await AsyncStorage.removeItem(HAS_LAUNCHED_KEY);
     }
 

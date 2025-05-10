@@ -17,7 +17,6 @@ export default function Index() {
   useEffect(() => {
     const decideInitialRoute = async () => {
       const isFirstLaunch = await checkFirstLaunch();
-      console.log('🧪 First Launch:', isFirstLaunch);
 
       if (isFirstLaunch) {
         setRoute('/(auth)/signup');

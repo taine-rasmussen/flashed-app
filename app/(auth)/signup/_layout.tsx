@@ -4,6 +4,8 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { SignupProgressBar } from './SignupProgressBar';
 
+import { SignupProvider } from '@/contexts/SignupContext';
+
 const stepRoutes = ['/signup', '/signup/step1', '/signup/step2', '/signup/step3'];
 
 export default function SignupLayout() {
@@ -11,16 +13,18 @@ export default function SignupLayout() {
   const currentStep = stepRoutes.indexOf(pathname) + 1;
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.container} edges={['top']}>
-        <View style={styles.container}>
-          <SignupProgressBar totalSteps={4} currentStep={currentStep} />
-          <View style={styles.content}>
-            <Slot />
+    <SignupProvider>
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.container} edges={['top']}>
+          <View style={styles.container}>
+            <SignupProgressBar totalSteps={4} currentStep={currentStep} />
+            <View style={styles.content}>
+              <Slot />
+            </View>
           </View>
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </SignupProvider>
   );
 }
 

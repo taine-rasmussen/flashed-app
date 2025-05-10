@@ -12,12 +12,20 @@ const AppInput: React.FC<AppInputProps> = ({
   mode = 'outlined',
   ...props
 }) => {
-  return <TextInput mode={mode} style={[styles.input, containerStyle, style]} {...props} />;
+  return (
+    <TextInput
+      mode={mode}
+      style={[styles.input, containerStyle, style]}
+      {...props}
+      theme={{ roundness: 16 }}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
   input: {
     marginBottom: 16,
+    borderRadius: 24,
   },
 });
 

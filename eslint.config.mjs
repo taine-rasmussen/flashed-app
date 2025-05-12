@@ -18,6 +18,8 @@ export default [
       globals: {
         console: 'readonly',
         __DEV__: 'readonly', 
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
       },
       parser: tsParser,
       parserOptions: {

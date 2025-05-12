@@ -1,29 +1,32 @@
 import { View } from 'react-native';
 
 import AppInput from '@/components/AppInput';
+import { useSignup } from '@/contexts/SignupContext';
 
 const UserDetailsForm = () => {
+  const { form, updateForm } = useSignup();
+
   return (
     <View>
       <AppInput
         label="First Name"
-        placeholder="you@example.com"
-        //  value={email}
-        //  onChangeText={setEmail}
+        placeholder="First name..."
+        value={form.firstName}
+        onChangeText={e => updateForm({ firstName: e })}
       />
       <AppInput
         label="Last Name"
-        placeholder="you@example.com"
-        //  value={email}
-        //  onChangeText={setEmail}
+        placeholder="Last name..."
+        value={form.lastName}
+        onChangeText={e => updateForm({ lastName: e })}
       />
       <AppInput
         label="Email"
         placeholder="you@example.com"
         keyboardType="email-address"
         autoCapitalize="none"
-        //  value={email}
-        //  onChangeText={setEmail}
+        value={form.email}
+        onChangeText={e => updateForm({ email: e })}
       />
     </View>
   );

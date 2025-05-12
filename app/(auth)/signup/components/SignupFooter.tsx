@@ -38,11 +38,11 @@ const SignupFooter = () => {
   return (
     <View style={styles.container}>
       {currentIndex > 0 && (
-        <AppButton onPress={goBack} mode="contained">
+        <AppButton onPress={goBack} mode="contained-tonal">
           Back
         </AppButton>
       )}
-      <AppButton onPress={goNext} mode="contained">
+      <AppButton onPress={goNext} mode="contained-tonal">
         {currentIndex < steps.length - 1 ? 'Continue' : 'Finish'}
       </AppButton>
     </View>

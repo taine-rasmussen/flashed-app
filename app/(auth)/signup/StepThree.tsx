@@ -1,7 +1,7 @@
-import UserPreferencesForm from './formPages/UserPreferencesForm';
+import PasswordForm from './formPages/PasswordForm';
 
 const SignupStepThree = () => {
-  return <UserPreferencesForm />;
+  return <PasswordForm />;
 };
 
 export default SignupStepThree;

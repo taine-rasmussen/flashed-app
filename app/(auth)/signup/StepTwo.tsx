@@ -1,7 +1,7 @@
-import PasswordForm from './formPages/PasswordForm';
+import UserPreferencesForm from './formPages/UserPreferencesForm';
 
 const SignupStepTwo = () => {
-  return <PasswordForm />;
+  return <UserPreferencesForm />;
 };
 
 export default SignupStepTwo;

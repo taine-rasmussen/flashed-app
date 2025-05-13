@@ -12,6 +12,9 @@ const getContainerStyles = (justifyContent: 'flex-end' | 'space-between') =>
       justifyContent,
       padding: 24,
     },
+    btn: {
+      width: '100%',
+    },
   });
 
 const SignupFooter = () => {
@@ -29,20 +32,9 @@ const SignupFooter = () => {
     }
   };
 
-  const goBack = () => {
-    if (currentIndex > 0) {
-      router.push(steps[currentIndex - 1]);
-    }
-  };
-
   return (
     <View style={styles.container}>
-      {currentIndex > 0 && (
-        <AppButton onPress={goBack} mode="contained">
-          Back
-        </AppButton>
-      )}
-      <AppButton onPress={goNext} mode="contained">
+      <AppButton onPress={goNext} mode="contained" style={styles.btn}>
         {currentIndex < steps.length - 1 ? 'Continue' : 'Finish'}
       </AppButton>
     </View>

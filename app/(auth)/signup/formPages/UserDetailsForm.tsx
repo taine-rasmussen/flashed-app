@@ -1,35 +1,50 @@
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Text } from 'react-native-paper';
 
 import AppInput from '@/components/AppInput';
 import { useSignup } from '@/contexts/SignupContext';
+import CardWrapper from '@/components/CardWrapper';
 
 const UserDetailsForm = () => {
   const { form, updateForm } = useSignup();
 
   return (
-    <View>
-      <AppInput
-        label="First Name"
-        placeholder="First name..."
-        value={form.firstName}
-        onChangeText={e => updateForm({ firstName: e })}
-      />
-      <AppInput
-        label="Last Name"
-        placeholder="Last name..."
-        value={form.lastName}
-        onChangeText={e => updateForm({ lastName: e })}
-      />
-      <AppInput
-        label="Email"
-        placeholder="you@example.com"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={form.email}
-        onChangeText={e => updateForm({ email: e })}
-      />
-    </View>
+    <>
+      <CardWrapper>
+        <Text style={styles.header} variant="displayLarge">
+          Welcome To Flashed
+        </Text>
+      </CardWrapper>
+      <View>
+        <AppInput
+          label="First Name"
+          placeholder="First name..."
+          value={form.firstName}
+          onChangeText={e => updateForm({ firstName: e })}
+        />
+        <AppInput
+          label="Last Name"
+          placeholder="Last name..."
+          value={form.lastName}
+          onChangeText={e => updateForm({ lastName: e })}
+        />
+        <AppInput
+          label="Email"
+          placeholder="you@example.com"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={form.email}
+          onChangeText={e => updateForm({ email: e })}
+        />
+      </View>
+    </>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    textAlign: 'center',
+  },
+});
 
 export default UserDetailsForm;

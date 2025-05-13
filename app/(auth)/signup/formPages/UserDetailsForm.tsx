@@ -9,13 +9,13 @@ const UserDetailsForm = () => {
   const { form, updateForm } = useSignup();
 
   return (
-    <>
-      <CardWrapper>
+    <View style={{ display: 'flex', gap: 16 }}>
+      <CardWrapper mode="elevated">
         <Text style={styles.header} variant="displayLarge">
           Welcome To Flashed
         </Text>
       </CardWrapper>
-      <View>
+      <CardWrapper>
         <AppInput
           label="First Name"
           placeholder="First name..."
@@ -36,8 +36,8 @@ const UserDetailsForm = () => {
           value={form.email}
           onChangeText={e => updateForm({ email: e })}
         />
-      </View>
-    </>
+      </CardWrapper>
+    </View>
   );
 };
 

@@ -44,7 +44,8 @@ export default function SignupLayout() {
       <SafeAreaProvider>
         <SafeAreaView style={styles.container} edges={['top', 'bottom', 'left', 'right']}>
           <View style={styles.container}>
-            <SignupProgressBar totalSteps={3} currentStep={currentStep} />
+            {/* todo: add logic to toggle completed steps [0, 1, 2]  */}
+            <SignupProgressBar totalSteps={3} currentStep={currentStep} completedSteps={[]} />
             <View style={styles.content}>
               <Slot />
             </View>

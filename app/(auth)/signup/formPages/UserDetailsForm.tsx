@@ -1,6 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Link } from 'expo-router';
 
 import AppInput from '@/components/AppInput';
 import { useSignup } from '@/contexts/SignupContext';
@@ -44,8 +45,13 @@ const UserDetailsForm = () => {
           leftIcon={<MaterialIcons name="email" size={20} color="#888" />}
         />
       </View>
-      <View>
-        <Text style={styles.footerText}>Already have an account? Login</Text>
+      <View style={styles.footer}>
+        <Text style={styles.redirectText}>
+          Already have an account?{' '}
+          <Link href="/login" style={styles.linkText}>
+            Login
+          </Link>
+        </Text>
       </View>
     </View>
   );
@@ -67,6 +73,19 @@ const getStyles = (theme: any) =>
     },
     footerText: {
       textAlign: 'center',
+    },
+    footer: {
+      alignItems: 'center',
+      marginTop: 20,
+    },
+    redirectText: {
+      fontSize: 14,
+      color: '#888',
+    },
+    linkText: {
+      color: theme.colors.primary,
+      textDecorationLine: 'underline',
+      fontWeight: 'bold',
     },
   });
 

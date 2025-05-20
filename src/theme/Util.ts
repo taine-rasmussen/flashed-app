@@ -28,3 +28,9 @@ export const typography = {
     color: '#6e6e6e',
   },
 };
+
+export const gradient = {
+  colours: ['#000000', '#121018', '#221b29'],
+  start: { x: 0, y: -0.3 },
+  end: { x: 0.9, y: 1.4 },
+};

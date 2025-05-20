@@ -1,13 +1,14 @@
 import { Platform } from 'react-native';
 import { MD3LightTheme as DefaultLightTheme } from 'react-native-paper';
 
-import { spacing, typography } from './Util';
+import { gradient, spacing, typography } from './Util';
 
 export const lightTheme = {
   ...DefaultLightTheme,
   custom: {
     spacing,
     typography,
+    gradient,
   },
   colors: {
     ...DefaultLightTheme.colors,

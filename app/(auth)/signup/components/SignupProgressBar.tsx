@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, TextStyle } from 'react-native';
+import { View, StyleSheet, Animated, TextStyle, Pressable } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 import { useAppTheme } from '@/theme';
 
@@ -14,6 +15,18 @@ const stepLabels = ['Basic Info', 'Climbing Info', 'Security'];
 
 const SignupProgressBar = ({ totalSteps, currentStep, completedSteps = [] }: Props) => {
   const theme = useAppTheme();
+  const router = useRouter();
+
+  const previousStepRoute = () => {
+    switch (currentStep) {
+      case 2:
+        return '/signup';
+      case 3:
+        return '/signup/StepTwo';
+      default:
+        return null;
+    }
+  };
 
   const animations = useRef(
     Array.from({ length: totalSteps }, () => new Animated.Value(0)),
@@ -32,6 +45,17 @@ const SignupProgressBar = ({ totalSteps, currentStep, completedSteps = [] }: Pro
 
   return (
     <View style={styles.wrapper}>
+      {currentStep > 1 && (
+        <Pressable
+          onPress={() => {
+            const prev = previousStepRoute();
+            if (prev) router.push(prev);
+          }}
+          style={styles.backButton}
+        >
+          <MaterialIcons name="arrow-back-ios" size={20} color={theme.colors.onBackground} />
+        </Pressable>
+      )}
       <View style={styles.container}>
         {animations.map((animValue, index) => {
           const isCompleted = completedSteps.includes(index);
@@ -118,6 +142,12 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingTop: 24,
     paddingHorizontal: 24,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    padding: 8,
   },
   container: {
     flexDirection: 'row',

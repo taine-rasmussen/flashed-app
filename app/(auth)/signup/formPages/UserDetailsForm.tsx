@@ -68,6 +68,7 @@ const getStyles = (theme: any) =>
       gap: theme.custom.spacing.md,
     },
     formContainer: {
+      paddingBlockStart: 30,
       display: 'flex',
       gap: theme.custom.spacing.lmd,
     },
@@ -76,7 +77,6 @@ const getStyles = (theme: any) =>
     },
     footer: {
       alignItems: 'center',
-      marginTop: 20,
     },
     redirectText: {
       fontSize: 14,

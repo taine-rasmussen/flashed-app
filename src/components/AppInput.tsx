@@ -6,6 +6,7 @@ type AppInputProps = TextInputProps & {
   containerStyle?: ViewStyle;
   labelAbove?: string;
   leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
 };
 
 const AppInput: React.FC<AppInputProps> = ({
@@ -24,6 +25,7 @@ const AppInput: React.FC<AppInputProps> = ({
         style={[styles.input, style]}
         theme={{ roundness: 8 }}
         left={leftIcon ? <TextInput.Icon icon={() => leftIcon} /> : undefined}
+        right={props.rightIcon ? <TextInput.Icon icon={() => props.rightIcon} /> : undefined}
         {...props}
       />
     </View>

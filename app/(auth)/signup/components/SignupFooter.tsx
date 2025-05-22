@@ -36,10 +36,19 @@ const SignupFooter = () => {
   };
 
   const isBtnDisabled = () => {
+    const { firstName, lastName, email, location, homeGym, gradeStyle } = form;
+
+    console.log('FORM:', form);
+
     if (currentIndex === 0) {
-      const { firstName, lastName, email } = form;
       const allFilled = firstName.trim().length > 0 && lastName.trim().length > 0;
       return !(allFilled && isValidEmail(email));
+    }
+
+    if (currentIndex === 1) {
+      const allFilled =
+        location.trim().length > 0 && homeGym.trim().length > 0 && gradeStyle.trim().length > 0;
+      return !allFilled;
     }
     return false;
   };

@@ -6,7 +6,7 @@ type SignupFormData = {
   email: string;
   password: string;
   location: string;
-  homeGym?: string;
+  homeGym: string;
   gradeStyle: string;
 };
 

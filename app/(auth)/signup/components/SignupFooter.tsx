@@ -2,6 +2,8 @@ import { useRouter, usePathname } from 'expo-router';
 import { View, StyleSheet } from 'react-native';
 
 import AppButton from '@/components/AppButton';
+import { useSignup } from '@/contexts/SignupContext';
+import { isValidEmail } from '@/utils/helpers';
 
 const steps = ['/signup', '/signup/StepTwo', '/signup/StepThree'];
 
@@ -19,6 +21,7 @@ const getContainerStyles = (justifyContent: 'flex-end' | 'space-between') =>
 
 const SignupFooter = () => {
   const router = useRouter();
+  const { form } = useSignup();
   const pathname = usePathname();
   const currentIndex = steps.indexOf(pathname);
   const buttonPosition = currentIndex < 1 ? 'flex-end' : 'space-between';
@@ -32,9 +35,18 @@ const SignupFooter = () => {
     }
   };
 
+  const isBtnDisabled = () => {
+    if (currentIndex === 0) {
+      const { firstName, lastName, email } = form;
+      const allFilled = firstName.trim().length > 0 && lastName.trim().length > 0;
+      return !(allFilled && isValidEmail(email));
+    }
+    return false;
+  };
+
   return (
     <View style={styles.container}>
-      <AppButton onPress={goNext} mode="contained" style={styles.btn}>
+      <AppButton onPress={goNext} mode="contained" style={styles.btn} disabled={isBtnDisabled()}>
         {currentIndex < steps.length - 1 ? 'Continue' : 'Finish'}
       </AppButton>
     </View>

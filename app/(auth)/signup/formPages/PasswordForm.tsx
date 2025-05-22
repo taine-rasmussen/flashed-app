@@ -17,13 +17,11 @@ const PasswordForm = () => {
   const [confirmPwd, setConfirmPwd] = useState<string>('');
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [confirmError, setConfirmError] = useState<string | null>(null);
-  const [showPasswordError, setShowPasswordError] = useState(false);
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmVisible, setConfirmVisible] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState<boolean>(false);
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+  const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
   const [passwordFeedback, setPasswordFeedback] = useState<string | null>(null);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  console.log(passwordError);
 
   const theme = useAppTheme();
   const styles = getStyles(theme);
@@ -50,7 +48,7 @@ const PasswordForm = () => {
         setPasswordFeedback(null);
       } else if (!PASSWORD_REGEX.test(form.password)) {
         setPasswordError(
-          'Password must be at least 8 characters and include uppercase, lowercase, and a number.',
+          `Password must be at least ${MIN_PASSWORD_LENGTH} characters and include uppercase, lowercase, and a number.`,
         );
         setPasswordFeedback(null);
       } else {
@@ -70,11 +68,16 @@ const PasswordForm = () => {
   }, [form.password]);
 
   useEffect(() => {
-    if (confirmPwd.length > 0 && confirmPwd !== form.password) {
+    const isPasswordValid = PASSWORD_REGEX.test(form.password);
+    const isConfirmMatching = confirmPwd.length > 0 && confirmPwd === form.password;
+
+    if (!isConfirmMatching) {
       setConfirmError('Passwords do not match');
     } else {
       setConfirmError(null);
     }
+
+    updateForm({ passwordValid: isPasswordValid && isConfirmMatching });
   }, [confirmPwd, form.password]);
 
   return (

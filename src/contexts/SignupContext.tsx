@@ -8,6 +8,7 @@ type SignupFormData = {
   location: string;
   homeGym: string;
   gradeStyle: string;
+  passwordValid: boolean;
 };
 
 type SignupContextType = {
@@ -27,6 +28,7 @@ const initialFormState: SignupFormData = {
   location: '',
   homeGym: '',
   gradeStyle: '',
+  passwordValid: false,
 };
 
 export const SignupProvider = ({ children }: { children: React.ReactNode }) => {

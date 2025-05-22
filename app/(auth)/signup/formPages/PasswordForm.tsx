@@ -9,7 +9,7 @@ import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
 
 const MIN_PASSWORD_LENGTH = 8;
-const PASSWORD_REGEX = new RegExp(`^[A-Za-z0-9!@£$%^&*()_+=-]{${MIN_PASSWORD_LENGTH},}$`);
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 const DEBOUNCE_MS = 400;
 
 const PasswordForm = () => {
@@ -22,6 +22,8 @@ const PasswordForm = () => {
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [passwordFeedback, setPasswordFeedback] = useState<string | null>(null);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  console.log(passwordError);
 
   const theme = useAppTheme();
   const styles = getStyles(theme);
@@ -48,7 +50,7 @@ const PasswordForm = () => {
         setPasswordFeedback(null);
       } else if (!PASSWORD_REGEX.test(form.password)) {
         setPasswordError(
-          `Password must be at least ${MIN_PASSWORD_LENGTH} characters long and can include letters, numbers, and special characters.`,
+          'Password must be at least 8 characters and include uppercase, lowercase, and a number.',
         );
         setPasswordFeedback(null);
       } else {
@@ -109,32 +111,26 @@ const PasswordForm = () => {
         color={
           passwordStrength < 0.4
             ? theme.colors.error
-            : passwordStrength < 0.7
-              ? (theme.colors.error ?? '#f4c542')
-              : theme.colors.primary
+            : passwordStrength < 1
+              ? theme.colors.primary
+              : '#2e8b57'
         }
         style={styles.progressBar}
       />
 
-      {showPasswordError && passwordError ? (
-        <HelperText type="error" visible>
-          Password must be at least {MIN_PASSWORD_LENGTH} characters long and can include letters, .
-        </HelperText>
-      ) : (
-        <HelperText
-          type={passwordError ? 'error' : 'info'}
-          visible={true}
-          style={{
-            color: passwordError
-              ? theme.colors.error
-              : passwordStrength === 1
-                ? (theme.colors.primary ?? 'green')
-                : theme.colors.onSurfaceVariant,
-          }}
-        >
-          {passwordError || passwordFeedback || ' '}
-        </HelperText>
-      )}
+      <HelperText
+        type={passwordError ? 'error' : 'info'}
+        visible={showPasswordError}
+        style={{
+          color: passwordError
+            ? theme.colors.error
+            : passwordStrength === 1
+              ? '#2e8b57'
+              : theme.colors.primary,
+        }}
+      >
+        {passwordError || passwordFeedback || ' '}
+      </HelperText>
 
       <AppInput
         label="Confirm Password"

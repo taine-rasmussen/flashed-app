@@ -121,19 +121,21 @@ const PasswordForm = () => {
         style={styles.progressBar}
       />
 
-      <HelperText
-        type={passwordError ? 'error' : 'info'}
-        visible={showPasswordError}
-        style={{
-          color: passwordError
-            ? theme.custom.events.error
-            : passwordStrength === 1
-              ? theme.custom.events.success
-              : theme.colors.primary,
-        }}
-      >
-        {passwordError || passwordFeedback || ' '}
-      </HelperText>
+      <View style={{ minHeight: 48 }}>
+        <HelperText
+          type={passwordError ? 'error' : 'info'}
+          visible={showPasswordError}
+          style={{
+            color: passwordError
+              ? theme.custom.events.error
+              : passwordStrength === 1
+                ? theme.custom.events.success
+                : theme.colors.primary,
+          }}
+        >
+          {passwordError || passwordFeedback || ' '}
+        </HelperText>
+      </View>
 
       <AppInput
         label="Confirm Password"
@@ -152,7 +154,7 @@ const PasswordForm = () => {
       />
       <HelperText
         type="error"
-        visible={!!confirmError}
+        visible={!!confirmError && confirmPwd.trim().length > 0}
         style={{ color: theme.custom.events.error }}
       >
         {confirmError}

@@ -34,3 +34,8 @@ export const gradient = {
   start: { x: 0, y: -0.3 },
   end: { x: 0.9, y: 1.4 },
 };
+
+export const events = {
+  success: '#2e8b57',
+  error: '#dc143c',
+};

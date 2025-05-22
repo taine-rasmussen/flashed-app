@@ -9,7 +9,7 @@ import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
 
 const MIN_PASSWORD_LENGTH = 8;
-const PASSWORD_REGEX = new RegExp(`^[A-Za-z0-9!@£$%^&*()_+=-]{${MIN_PASSWORD_LENGTH},}$`);
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 const DEBOUNCE_MS = 400;
 
 const PasswordForm = () => {
@@ -17,9 +17,9 @@ const PasswordForm = () => {
   const [confirmPwd, setConfirmPwd] = useState<string>('');
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [confirmError, setConfirmError] = useState<string | null>(null);
-  const [showPasswordError, setShowPasswordError] = useState(false);
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmVisible, setConfirmVisible] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState<boolean>(false);
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+  const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
   const [passwordFeedback, setPasswordFeedback] = useState<string | null>(null);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -48,7 +48,7 @@ const PasswordForm = () => {
         setPasswordFeedback(null);
       } else if (!PASSWORD_REGEX.test(form.password)) {
         setPasswordError(
-          `Password must be at least ${MIN_PASSWORD_LENGTH} characters long and can include letters, numbers, and special characters.`,
+          `Password must be at least ${MIN_PASSWORD_LENGTH} characters and include uppercase, lowercase, and a number.`,
         );
         setPasswordFeedback(null);
       } else {
@@ -68,11 +68,16 @@ const PasswordForm = () => {
   }, [form.password]);
 
   useEffect(() => {
-    if (confirmPwd.length > 0 && confirmPwd !== form.password) {
+    const isPasswordValid = PASSWORD_REGEX.test(form.password);
+    const isConfirmMatching = confirmPwd.length > 0 && confirmPwd === form.password;
+
+    if (!isConfirmMatching) {
       setConfirmError('Passwords do not match');
     } else {
       setConfirmError(null);
     }
+
+    updateForm({ passwordValid: isPasswordValid && isConfirmMatching });
   }, [confirmPwd, form.password]);
 
   return (
@@ -109,32 +114,28 @@ const PasswordForm = () => {
         color={
           passwordStrength < 0.4
             ? theme.colors.error
-            : passwordStrength < 0.7
-              ? (theme.colors.error ?? '#f4c542')
-              : theme.colors.primary
+            : passwordStrength < 1
+              ? theme.colors.primary
+              : theme.custom.events.success
         }
         style={styles.progressBar}
       />
 
-      {showPasswordError && passwordError ? (
-        <HelperText type="error" visible>
-          Password must be at least {MIN_PASSWORD_LENGTH} characters long and can include letters, .
-        </HelperText>
-      ) : (
+      <View style={{ minHeight: 48 }}>
         <HelperText
           type={passwordError ? 'error' : 'info'}
-          visible={true}
+          visible={showPasswordError}
           style={{
             color: passwordError
-              ? theme.colors.error
+              ? theme.custom.events.error
               : passwordStrength === 1
-                ? (theme.colors.primary ?? 'green')
-                : theme.colors.onSurfaceVariant,
+                ? theme.custom.events.success
+                : theme.colors.primary,
           }}
         >
           {passwordError || passwordFeedback || ' '}
         </HelperText>
-      )}
+      </View>
 
       <AppInput
         label="Confirm Password"
@@ -151,7 +152,11 @@ const PasswordForm = () => {
           />
         }
       />
-      <HelperText type="error" visible={!!confirmError}>
+      <HelperText
+        type="error"
+        visible={!!confirmError && confirmPwd.trim().length > 0}
+        style={{ color: theme.custom.events.error }}
+      >
         {confirmError}
       </HelperText>
     </View>

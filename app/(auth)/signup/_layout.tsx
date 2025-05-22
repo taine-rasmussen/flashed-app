@@ -50,7 +50,11 @@ export default function SignupLayout() {
         >
           <SafeAreaView style={styles.container} edges={['top', 'bottom', 'left', 'right']}>
             <View style={styles.container}>
-              <SignupProgressBar totalSteps={3} currentStep={currentStep} completedSteps={[0]} />
+              <SignupProgressBar
+                totalSteps={3}
+                currentStep={currentStep}
+                completedSteps={[0, 1, 2]}
+              />
               <View style={styles.content}>
                 <Slot />
               </View>

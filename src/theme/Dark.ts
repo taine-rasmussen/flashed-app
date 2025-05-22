@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import { MD3DarkTheme as DefaultDarkTheme } from 'react-native-paper';
 
-import { gradient, spacing, typography } from './Util';
+import { gradient, spacing, typography, events } from './Util';
 
 export const darkTheme = {
   ...DefaultDarkTheme,
@@ -9,6 +9,7 @@ export const darkTheme = {
     spacing,
     typography,
     gradient,
+    events,
   },
   colors: {
     ...DefaultDarkTheme.colors,

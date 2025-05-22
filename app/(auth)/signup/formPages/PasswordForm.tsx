@@ -113,7 +113,7 @@ const PasswordForm = () => {
             ? theme.colors.error
             : passwordStrength < 1
               ? theme.colors.primary
-              : '#2e8b57'
+              : theme.custom.events.success
         }
         style={styles.progressBar}
       />
@@ -123,9 +123,9 @@ const PasswordForm = () => {
         visible={showPasswordError}
         style={{
           color: passwordError
-            ? theme.colors.error
+            ? theme.custom.events.error
             : passwordStrength === 1
-              ? '#2e8b57'
+              ? theme.custom.events.success
               : theme.colors.primary,
         }}
       >
@@ -147,7 +147,11 @@ const PasswordForm = () => {
           />
         }
       />
-      <HelperText type="error" visible={!!confirmError}>
+      <HelperText
+        type="error"
+        visible={!!confirmError}
+        style={{ color: theme.custom.events.error }}
+      >
         {confirmError}
       </HelperText>
     </View>

@@ -27,11 +27,48 @@ const SignupFooter = () => {
   const buttonPosition = currentIndex < 1 ? 'flex-end' : 'space-between';
   const styles = getContainerStyles(buttonPosition);
 
+  const submitUser = async () => {
+    try {
+      const res = await fetch(`${process.env.EXPO_PUBLIC_BASE_URL}users/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          first_name: form.firstName,
+          last_name: form.lastName,
+          email: form.email,
+          password: form.password,
+          location: form.location,
+          home_gym: form.homeGym,
+          grade_style: form.gradeStyle,
+          onboarding_complete: true,
+          auth_provider: 'email',
+          notifications_enabled: true,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        console.error('Signup error:', err.detail);
+        alert(`Signup failed: ${err.detail}`);
+        return;
+      }
+
+      const user = await res.json();
+      console.log('User created:', user);
+      router.replace('/home');
+    } catch (error) {
+      console.error('Signup failed:', error);
+      alert('Something went wrong. Please try again.');
+    }
+  };
+
   const goNext = () => {
     if (currentIndex < steps.length - 1) {
       router.push(steps[currentIndex + 1]);
     } else {
-      console.log('Submit user data');
+      submitUser();
     }
   };
 

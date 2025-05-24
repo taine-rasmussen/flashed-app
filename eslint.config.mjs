@@ -17,7 +17,7 @@ export default [
     languageOptions: {
       globals: {
         console: 'readonly',
-        __DEV__: 'readonly', 
+        __DEV__: 'readonly',
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
         fetch: 'readonly',
@@ -42,7 +42,16 @@ export default [
     rules: {
       semi: ['error', 'always'],
       'comma-dangle': ['error', 'always-multiline'],
-      '@typescript-eslint/no-unused-vars': ['error'],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          vars: 'all',
+          args: 'after-used',
+          ignoreRestSiblings: true,
+         "argsIgnorePattern": "^_",
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
       'import/order': [
         'error',
         {

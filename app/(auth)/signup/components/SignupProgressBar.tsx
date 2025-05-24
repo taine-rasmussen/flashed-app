@@ -4,18 +4,26 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
 import { useAppTheme } from '@/theme';
+import { useSignup } from '@/contexts/SignupContext';
 
 type Props = {
   totalSteps: number;
   currentStep: number;
-  completedSteps?: number[];
 };
 
 const stepLabels = ['Basic Info', 'Climbing Info', 'Security'];
 
-const SignupProgressBar = ({ totalSteps, currentStep, completedSteps = [] }: Props) => {
+const SignupProgressBar = ({ totalSteps, currentStep }: Props) => {
   const theme = useAppTheme();
   const router = useRouter();
+  const { form } = useSignup();
+  console.log(form);
+
+  const completedSteps = [
+    form.firstName && form.lastName && form.email ? 0 : null,
+    form.location && form.homeGym && form.gradeStyle ? 1 : null,
+    form.password && form.passwordValid ? 2 : null,
+  ].filter((step): step is number => step !== null);
 
   const previousStepRoute = () => {
     switch (currentStep) {
@@ -41,7 +49,7 @@ const SignupProgressBar = ({ totalSteps, currentStep, completedSteps = [] }: Pro
         useNativeDriver: false,
       }).start();
     });
-  }, [currentStep, completedSteps]);
+  }, [currentStep]);
 
   return (
     <View style={styles.wrapper}>

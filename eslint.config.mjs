@@ -20,6 +20,9 @@ export default [
         __DEV__: 'readonly', 
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
+        fetch: 'readonly',
+        alert: 'readonly',
+        process: 'readonly',
       },
       parser: tsParser,
       parserOptions: {

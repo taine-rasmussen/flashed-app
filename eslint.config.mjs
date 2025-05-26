@@ -16,6 +16,7 @@ export default [
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       globals: {
+        require: 'readonly',
         console: 'readonly',
         __DEV__: 'readonly',
         setTimeout: 'readonly',

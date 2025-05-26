@@ -23,6 +23,7 @@ const LoginForm = ({ email, password, onEmailChange, onPasswordChange }: IForm) 
   const handleLogin = () => {
     console.log('Logging in with:', { email, password });
   };
+
   return (
     <Card style={styles.card}>
       <View style={styles.container}>
@@ -72,26 +73,18 @@ export default LoginForm;
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     card: {
-      height: '66%',
+      height: '55%',
       padding: theme.custom.spacing.md,
       backgroundColor: theme.colors.background,
-      borderWidth: 1,
-      borderColor: 'red',
     },
     container: {
       height: '100%',
     },
     inputs: {
-      flex: 1, // 👈 This is the missing piece: let inputs grow
-      justifyContent: 'center', // Optional: center inputs in their area
-      gap: theme.custom.spacing.md,
-      borderWidth: 1,
-      borderColor: 'green',
+      flex: 1,
     },
     btnContainer: {
       paddingTop: theme.custom.spacing.md,
-      gap: theme.custom.spacing.sm,
-      borderWidth: 1,
-      borderColor: 'blue',
+      gap: theme.custom.spacing.md,
     },
   });

@@ -6,6 +6,8 @@ import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { ThemeProvider, useThemeContext } from '@/theme';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { UserProvider } from '@/contexts/UserContext';
 
 export default function RootLayout() {
   const { theme } = useThemeContext();
@@ -26,9 +28,13 @@ export default function RootLayout() {
     <ThemeProvider>
       <SafeAreaProvider>
         <PaperProvider theme={theme}>
-          <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
-            <Slot />
-          </View>
+          <AuthProvider>
+            <UserProvider>
+              <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+                <Slot />
+              </View>
+            </UserProvider>
+          </AuthProvider>
         </PaperProvider>
       </SafeAreaProvider>
     </ThemeProvider>

@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
+import axios from 'axios';
 
 import AppInput from '@/components/AppInput';
 import { AppTheme } from '@/theme/types';
 import { useAppTheme } from '@/theme';
 import AppButton from '@/components/AppButton';
+import { saveToSecureStore } from '@/utils/secureStore';
 
 interface IForm {
   email: string;
@@ -15,13 +17,33 @@ interface IForm {
   onPasswordChange: (_text: string) => void;
 }
 
+const API_URL = process.env.EXPO_PUBLIC_BASE_URL;
+
 const LoginForm = ({ email, password, onEmailChange, onPasswordChange }: IForm) => {
   const theme = useAppTheme();
   const styles = getStyles(theme);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
 
-  const handleLogin = () => {
-    console.log('Logging in with:', { email, password });
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(`${API_URL}login/`, {
+        email,
+        password,
+      });
+
+      const { access_token, refresh_token } = response.data;
+
+      await saveToSecureStore('access_token', access_token);
+      await saveToSecureStore('refresh_token', refresh_token);
+
+      onEmailChange('');
+      onPasswordChange('');
+
+      console.log('Login successful!', access_token, refresh_token);
+    } catch (error: any) {
+      console.error('Login error:', error?.response?.data || error.message);
+      // TODO: Show error to user with Toast or Alert
+    }
   };
 
   return (

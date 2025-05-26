@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import LoginForm from './LoginForm';
 
-import AppButton from '@/components/AppButton';
 import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
 
@@ -17,10 +16,6 @@ export default function LoginScreen() {
   const theme = useAppTheme();
   const styles = getStyles(theme);
 
-  const handleLogin = () => {
-    console.log('Logging in with:', { email, password });
-  };
-
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom', 'left', 'right']}>
       <LoginForm
@@ -29,10 +24,6 @@ export default function LoginScreen() {
         password={password}
         onPasswordChange={handlePasswordChange}
       />
-
-      <AppButton onPress={handleLogin} mode="contained">
-        Login
-      </AppButton>
     </SafeAreaView>
   );
 }
@@ -40,7 +31,7 @@ export default function LoginScreen() {
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      padding: theme.custom.spacing.md,
       flex: 1,
+      padding: theme.custom.spacing.md,
     },
   });

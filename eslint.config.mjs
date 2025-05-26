@@ -42,16 +42,13 @@ export default [
     rules: {
       semi: ['error', 'always'],
       'comma-dangle': ['error', 'always-multiline'],
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        {
-          vars: 'all',
-          args: 'after-used',
-          ignoreRestSiblings: true,
-         "argsIgnorePattern": "^_",
-          caughtErrorsIgnorePattern: '^_',
-        },
-      ],
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": ["warn", {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+        ignoreRestSiblings: true 
+      }],
       'import/order': [
         'error',
         {

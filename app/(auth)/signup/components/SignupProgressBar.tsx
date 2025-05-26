@@ -17,7 +17,6 @@ const SignupProgressBar = ({ totalSteps, currentStep }: Props) => {
   const theme = useAppTheme();
   const router = useRouter();
   const { form } = useSignup();
-  console.log(form);
 
   const completedSteps = [
     form.firstName && form.lastName && form.email ? 0 : null,

@@ -108,7 +108,7 @@ const getStyles = (theme: any) =>
     },
     redirectText: {
       fontSize: 14,
-      color: '#888',
+      color: theme.colors.text,
     },
     linkText: {
       color: theme.colors.primary,

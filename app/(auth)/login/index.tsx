@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text, Divider } from 'react-native-paper';
 
 import LoginForm from './LoginForm';
+import LoginFooter from './LoginFooter';
 
 import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
@@ -18,12 +20,20 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom', 'left', 'right']}>
+      <View style={styles.header}>
+        <Image source={require('../../../assets/hand.png')} style={styles.image} />
+        <Text variant="displayLarge">Flashed</Text>
+      </View>
       <LoginForm
         email={email}
         onEmailChange={handleEmailChange}
         password={password}
         onPasswordChange={handlePasswordChange}
       />
+      <View>
+        <Divider bold horizontalInset />
+        <LoginFooter />
+      </View>
     </SafeAreaView>
   );
 }
@@ -33,5 +43,15 @@ const getStyles = (theme: AppTheme) =>
     container: {
       flex: 1,
       padding: theme.custom.spacing.md,
+      gap: theme.custom.spacing.lg,
+    },
+    image: {
+      height: 90,
+      width: 90,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   });

@@ -11,9 +11,7 @@ import AppButton from '@/components/AppButton';
 interface IForm {
   email: string;
   password: string;
-  // @ts-ignore
   onEmailChange: (_text: string) => void;
-  // @ts-ignore
   onPasswordChange: (_text: string) => void;
 }
 

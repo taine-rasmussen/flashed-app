@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, HelperText } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
 
 import AppInput from '@/components/AppInput';
 import { useSignup } from '@/contexts/SignupContext';
@@ -72,15 +71,6 @@ const UserDetailsForm = () => {
             : ' '}
         </HelperText>
       </View>
-
-      <View style={styles.footer}>
-        <Text style={styles.redirectText}>
-          Already have an account?{' '}
-          <Link href="/login" style={styles.linkText}>
-            Login
-          </Link>
-        </Text>
-      </View>
     </View>
   );
 };
@@ -102,18 +92,6 @@ const getStyles = (theme: any) =>
     },
     footerText: {
       textAlign: 'center',
-    },
-    footer: {
-      alignItems: 'center',
-    },
-    redirectText: {
-      fontSize: 14,
-      color: theme.colors.text,
-    },
-    linkText: {
-      color: theme.colors.primary,
-      textDecorationLine: 'underline',
-      fontWeight: 'bold',
     },
   });
 

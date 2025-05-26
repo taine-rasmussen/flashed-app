@@ -1,21 +1,37 @@
-import { useRouter, usePathname } from 'expo-router';
-import { View, StyleSheet } from 'react-native';
+import { useRouter, usePathname, Link } from 'expo-router';
+import { View, StyleSheet, Text } from 'react-native';
+import { Divider } from 'react-native-paper';
 
 import AppButton from '@/components/AppButton';
 import { useSignup } from '@/contexts/SignupContext';
 import { isValidEmail } from '@/utils/helpers';
+import { AppTheme } from '@/theme/types';
+import { useAppTheme } from '@/theme';
 
 const steps = ['/signup', '/signup/StepTwo', '/signup/StepThree'];
 
-const getContainerStyles = (justifyContent: 'flex-end' | 'space-between') =>
+const getContainerStyles = (justifyContent: 'flex-end' | 'space-between', theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      flexDirection: 'row',
+      flexDirection: 'column',
       justifyContent,
       padding: 24,
+      gap: theme.custom.spacing.md,
     },
     btn: {
       width: '100%',
+    },
+    footer: {
+      alignItems: 'center',
+    },
+    text: {
+      fontSize: 14,
+      color: theme.colors.text,
+    },
+    linkText: {
+      color: theme.colors.primary,
+      textDecorationLine: 'underline',
+      fontWeight: 'bold',
     },
   });
 
@@ -23,9 +39,10 @@ const SignupFooter = () => {
   const router = useRouter();
   const { form } = useSignup();
   const pathname = usePathname();
+  const theme = useAppTheme();
   const currentIndex = steps.indexOf(pathname);
   const buttonPosition = currentIndex < 1 ? 'flex-end' : 'space-between';
-  const styles = getContainerStyles(buttonPosition);
+  const styles = getContainerStyles(buttonPosition, theme);
 
   const submitUser = async () => {
     try {
@@ -97,6 +114,20 @@ const SignupFooter = () => {
       <AppButton onPress={goNext} mode="contained" style={styles.btn} disabled={isBtnDisabled()}>
         {currentIndex < steps.length - 1 ? 'Continue' : 'Finish'}
       </AppButton>
+
+      {currentIndex === 0 && (
+        <>
+          <Divider bold horizontalInset />
+          <View style={styles.footer}>
+            <Text style={styles.text}>
+              Already have an account?{' '}
+              <Link href="/login" style={styles.linkText}>
+                Login
+              </Link>
+            </Text>
+          </View>
+        </>
+      )}
     </View>
   );
 };

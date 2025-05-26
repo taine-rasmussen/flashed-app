@@ -3,12 +3,13 @@ import { View, StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
+import { useRouter } from 'expo-router';
 
 import AppInput from '@/components/AppInput';
 import { AppTheme } from '@/theme/types';
 import { useAppTheme } from '@/theme';
 import AppButton from '@/components/AppButton';
-import { saveToSecureStore } from '@/utils/secureStore';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface IForm {
   email: string;
@@ -20,6 +21,8 @@ interface IForm {
 const API_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 const LoginForm = ({ email, password, onEmailChange, onPasswordChange }: IForm) => {
+  const router = useRouter();
+  const { login } = useAuth();
   const theme = useAppTheme();
   const styles = getStyles(theme);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -32,13 +35,11 @@ const LoginForm = ({ email, password, onEmailChange, onPasswordChange }: IForm) 
       });
 
       const { access_token, refresh_token } = response.data;
-
-      await saveToSecureStore('access_token', access_token);
-      await saveToSecureStore('refresh_token', refresh_token);
+      await login(access_token, refresh_token);
 
       onEmailChange('');
       onPasswordChange('');
-
+      router.replace('/home');
       console.log('Login successful!', access_token, refresh_token);
     } catch (error: any) {
       console.error('Login error:', error?.response?.data || error.message);

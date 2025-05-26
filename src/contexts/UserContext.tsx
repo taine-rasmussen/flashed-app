@@ -26,7 +26,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     if (!decodedToken?.id || !accessToken) return;
 
     try {
-      const response = await axios.get(`${process.env.EXPO_PUBLIC_BASE_URL}/get_user/`, {
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_BASE_URL}get_user/`, {
         params: { id: decodedToken.id },
         headers: { Authorization: `Bearer ${accessToken}` },
       });

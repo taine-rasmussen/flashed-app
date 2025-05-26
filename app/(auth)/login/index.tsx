@@ -20,16 +20,18 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom', 'left', 'right']}>
-      <View style={styles.header}>
-        <Image source={require('../../../assets/hand.png')} style={styles.image} />
-        <Text variant="displayLarge">Flashed</Text>
+      <View style={styles.body}>
+        <View style={styles.header}>
+          <Image source={require('../../../assets/hand.png')} style={styles.image} />
+          <Text variant="displayLarge">Flashed</Text>
+        </View>
+        <LoginForm
+          email={email}
+          onEmailChange={handleEmailChange}
+          password={password}
+          onPasswordChange={handlePasswordChange}
+        />
       </View>
-      <LoginForm
-        email={email}
-        onEmailChange={handleEmailChange}
-        password={password}
-        onPasswordChange={handlePasswordChange}
-      />
       <View>
         <Divider bold horizontalInset />
         <LoginFooter />
@@ -42,8 +44,13 @@ const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      justifyContent: 'space-between',
       padding: theme.custom.spacing.md,
       gap: theme.custom.spacing.lg,
+    },
+    body: {
+      flex: 1,
+      justifyContent: 'center',
     },
     image: {
       height: 90,

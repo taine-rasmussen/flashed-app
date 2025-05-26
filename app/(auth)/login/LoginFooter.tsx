@@ -11,9 +11,9 @@ const LoginFooter = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
-        Already have an account?{' '}
-        <Link href="/login" style={styles.linkText}>
-          Login
+        New to flashed?{' '}
+        <Link href="/signup" style={styles.linkText}>
+          Create account
         </Link>
       </Text>
     </View>
@@ -25,7 +25,8 @@ export default LoginFooter;
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      height: '33%',
+      padding: theme.custom.spacing.md,
+      alignSelf: 'center',
     },
     text: {
       fontSize: 14,

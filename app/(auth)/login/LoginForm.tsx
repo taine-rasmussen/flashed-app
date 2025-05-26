@@ -73,7 +73,7 @@ export default LoginForm;
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     card: {
-      height: '50%',
+      height: '55%',
       padding: theme.custom.spacing.md,
       backgroundColor: theme.colors.background,
     },

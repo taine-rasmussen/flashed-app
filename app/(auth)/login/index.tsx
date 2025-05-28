@@ -53,8 +53,8 @@ const getStyles = (theme: AppTheme) =>
       justifyContent: 'center',
     },
     image: {
-      height: 90,
-      width: 90,
+      height: 100,
+      width: 100,
     },
     header: {
       flexDirection: 'row',

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HAS_LAUNCHED_KEY = 'hasLaunchedBefore';
-const DEV_FORCE_FIRST_LAUNCH = __DEV__ && true;
+const DEV_FORCE_FIRST_LAUNCH = __DEV__ && false;
 
 export const checkFirstLaunch = async (): Promise<boolean> => {
   try {

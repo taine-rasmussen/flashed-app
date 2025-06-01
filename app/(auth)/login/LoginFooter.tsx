@@ -1,6 +1,6 @@
-import { Link } from 'expo-router';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
+import { useRouter } from 'expo-router';
 
 import { AppTheme } from '@/theme/types';
 import { useAppTheme } from '@/theme';
@@ -8,13 +8,14 @@ import { useAppTheme } from '@/theme';
 const LoginFooter = () => {
   const theme = useAppTheme();
   const styles = getStyles(theme);
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
         New to flashed?{' '}
-        <Link href="/signup" style={styles.linkText}>
+        <Text style={styles.linkText} onPress={() => router.push('/signup')}>
           Create account
-        </Link>
+        </Text>
       </Text>
     </View>
   );

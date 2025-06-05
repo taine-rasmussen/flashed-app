@@ -14,6 +14,7 @@ function AppLayout() {
   const router = useRouter();
   const pathname = usePathname();
   const [redirecting, setRedirecting] = useState(false);
+  const publicRoutes = ['/login', '/signup'];
 
   const appReady = true;
 
@@ -25,7 +26,7 @@ function AppLayout() {
 
   useEffect(() => {
     const runRedirect = async () => {
-      if (!isAuthenticated && pathname !== '/login') {
+      if (!isAuthenticated && !publicRoutes.includes(pathname)) {
         setRedirecting(true);
         await InteractionManager.runAfterInteractions(() => {
           router.replace('/login');

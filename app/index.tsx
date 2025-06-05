@@ -25,7 +25,6 @@ export default function Index() {
         setRoute(isAuthenticated ? '/(home)' : '/(auth)/login');
       }
     };
-
     decideInitialRoute();
   }, []);
 

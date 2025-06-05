@@ -30,7 +30,6 @@ function AppLayout() {
         setRedirecting(true);
         await InteractionManager.runAfterInteractions(() => {
           router.replace('/login');
-          console.log('fired');
         });
       } else {
         setRedirecting(false);

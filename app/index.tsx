@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 export default function Index() {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
+  console.log('IS AUTH:', isAuthenticated);
 
   useEffect(() => {
     const decideInitialRoute = async () => {
@@ -15,7 +16,7 @@ export default function Index() {
       if (isFirstLaunch) {
         router.replace('/(auth)/signup');
       } else {
-        router.replace(isAuthenticated ? '/(home)' : '/(auth)/login');
+        router.replace(isAuthenticated ? '/(home)/dashboard' : '/(auth)/login');
       }
     };
 

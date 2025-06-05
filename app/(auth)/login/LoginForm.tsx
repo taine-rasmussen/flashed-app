@@ -47,6 +47,8 @@ const LoginForm = ({ email, password, onEmailChange, onPasswordChange }: IForm) 
     }
   };
 
+  const disableLogin = !email.trim().length || !password.trim().length;
+
   return (
     <Card style={styles.card}>
       <View style={styles.container}>
@@ -79,7 +81,7 @@ const LoginForm = ({ email, password, onEmailChange, onPasswordChange }: IForm) 
         </View>
 
         <View style={styles.btnContainer}>
-          <AppButton onPress={handleLogin} mode="contained">
+          <AppButton onPress={handleLogin} mode="contained" disabled={disableLogin}>
             Login
           </AppButton>
           <AppButton onPress={handleLogin} mode="outlined">

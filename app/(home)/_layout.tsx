@@ -1,32 +1,36 @@
-import { Tabs } from 'expo-router';
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Foundation from '@expo/vector-icons/Foundation';
 
-import { useAppTheme } from '@/theme';
+import Dashboard from './dashboard';
+import Activity from './activity';
+import Projects from './projects';
+
+const Tab = createBottomTabNavigator();
 
 export default function HomeLayout() {
-  const { colors } = useAppTheme();
-
   return (
-    <Tabs
-      screenOptions={{
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarStyle: {
-          backgroundColor: colors.border, // or whatever your theme’s “card” color is
-          borderTopColor: colors.border, // optional: border color
+        tabBarIcon: ({ color, size }) => {
+          if (route.name === 'Dashboard') {
+            return <MaterialIcons name="dashboard" size={size} color={color} />;
+          } else if (route.name === 'Activity') {
+            return <FontAwesome name="bar-chart" size={size} color={color} />;
+          } else if (route.name === 'Projects') {
+            return <Foundation name="projection-screen" size={size} color={color} />;
+          }
         },
-        tabBarActiveTintColor: colors.primary, // active icon/text color
-        tabBarInactiveTintColor: colors.text, // inactive icon/text color
-      }}
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
+      })}
     >
-      <Tabs.Screen
-        name="dashboard"
-        options={{
-          title: 'Dashboard',
-          // You can add an icon here if you like:
-          // tabBarIcon: ({ color, size }) => <SomeIcon name="home" color={color} size={size} />
-        }}
-      />
-      <Tabs.Screen name="activity" options={{ title: 'Activity' }} />
-      <Tabs.Screen name="projects" options={{ title: 'Projects' }} />
-    </Tabs>
+      <Tab.Screen name="Dashboard" component={Dashboard} options={{ title: 'Dashboard' }} />
+      <Tab.Screen name="Activity" component={Activity} options={{ title: 'Activity' }} />
+      <Tab.Screen name="Projects" component={Projects} options={{ title: 'Projects' }} />
+    </Tab.Navigator>
   );
 }

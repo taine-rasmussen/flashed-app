@@ -1,40 +1,26 @@
-import { useEffect, useState } from 'react';
-import { Redirect } from 'expo-router';
-import { View, Text, StyleSheet } from 'react-native';
+import { useEffect } from 'react';
+import { useRouter } from 'expo-router';
 
 import { checkFirstLaunch } from '@/utils/firstLaunch';
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Index() {
-  const [route, setRoute] = useState<string | null>(null);
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const decideInitialRoute = async () => {
       const isFirstLaunch = await checkFirstLaunch();
 
       if (isFirstLaunch) {
-        setRoute('/(auth)/signup');
+        router.replace('/(auth)/signup');
       } else {
-        const isAuthenticated = false;
-        setRoute(isAuthenticated ? '/(home)' : '/(auth)/login');
+        router.replace(isAuthenticated ? '/(home)' : '/(auth)/login');
       }
     };
+
     decideInitialRoute();
-  }, []);
+  }, [router, isAuthenticated]);
 
-  if (!route) {
-    return (
-      <View style={styles.container}>
-        <Text>Redirecting...</Text>
-      </View>
-    );
-  }
-
-  return <Redirect href={route} />;
+  return null;
 }

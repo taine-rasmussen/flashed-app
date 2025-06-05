@@ -14,7 +14,7 @@ function AppLayout() {
   const router = useRouter();
   const pathname = usePathname();
   const [redirecting, setRedirecting] = useState(false);
-  const publicRoutes = ['/login', '/signup'];
+  const publicRoutes = ['/login', '/signup', '/signup/StepTwo', '/signup/StepThree'];
 
   const appReady = true;
 
@@ -30,6 +30,7 @@ function AppLayout() {
         setRedirecting(true);
         await InteractionManager.runAfterInteractions(() => {
           router.replace('/login');
+          console.log('fired');
         });
       } else {
         setRedirecting(false);

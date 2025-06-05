@@ -39,7 +39,7 @@ const LoginForm = ({ email, password, onEmailChange, onPasswordChange }: IForm) 
 
       onEmailChange('');
       onPasswordChange('');
-      router.replace('/home');
+      router.replace('/(home)/dashboard');
       console.log('Login successful!', access_token, refresh_token);
     } catch (error: any) {
       console.error('Login error:', error?.response?.data || error.message);

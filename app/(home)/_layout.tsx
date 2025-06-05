@@ -17,11 +17,11 @@ export default function HomeLayout() {
         headerShown: false,
         tabBarIcon: ({ color, size }) => {
           if (route.name === 'Dashboard') {
-            return <MaterialIcons name="dashboard" size={24} color={color} />;
+            return <MaterialIcons name="dashboard" size={size} color={color} />;
           } else if (route.name === 'Activity') {
-            return <FontAwesome name="bar-chart" size={24} color={color} />;
+            return <FontAwesome name="bar-chart" size={size} color={color} />;
           } else if (route.name === 'Projects') {
-            return <Foundation name="projection-screen" size={24} color={color} />;
+            return <Foundation name="projection-screen" size={size} color={color} />;
           }
         },
         tabBarActiveTintColor: 'tomato',

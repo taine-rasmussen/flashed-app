@@ -10,14 +10,14 @@ import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { UserProvider } from '@/contexts/UserContext';
 
 function AppLayout() {
-  const { isAuthenticated } = useAuth();
+  const { isLoggedIn, loading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const [redirecting, setRedirecting] = useState(false);
+
   const publicRoutes = ['/login', '/signup', '/signup/StepTwo', '/signup/StepThree'];
 
   const appReady = true;
-
   const onLayoutRootView = useCallback(() => {
     if (appReady) {
       SplashScreen.hide();
@@ -25,21 +25,23 @@ function AppLayout() {
   }, [appReady]);
 
   useEffect(() => {
-    const runRedirect = async () => {
-      if (!isAuthenticated && !publicRoutes.includes(pathname)) {
-        setRedirecting(true);
-        await InteractionManager.runAfterInteractions(() => {
-          router.replace('/login');
-        });
-      } else {
-        setRedirecting(false);
-      }
-    };
+    if (loading) {
+      return;
+    }
 
-    runRedirect();
-  }, [isAuthenticated, pathname]);
+    if (!isLoggedIn && !publicRoutes.includes(pathname)) {
+      setRedirecting(true);
+      InteractionManager.runAfterInteractions(() => {
+        router.replace('/login');
+      });
+    } else {
+      setRedirecting(false);
+    }
+  }, [isLoggedIn, loading, pathname, router]);
 
-  if (!appReady || redirecting) return null;
+  if (!appReady || loading || redirecting) {
+    return null;
+  }
 
   return (
     <View onLayout={onLayoutRootView} style={{ flex: 1 }}>

@@ -1,3 +1,4 @@
+// app/index.tsx
 import { useEffect } from 'react';
 import { useRouter } from 'expo-router';
 
@@ -6,22 +7,25 @@ import { useAuth } from '@/contexts/AuthContext';
 
 export default function Index() {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
-  console.log('IS AUTH:', isAuthenticated);
+  const { isLoggedIn, loading } = useAuth();
 
   useEffect(() => {
-    const decideInitialRoute = async () => {
+    if (loading) {
+      console.log('Index: still loading auth state…');
+      return;
+    }
+
+    const decideRoute = async () => {
       const isFirstLaunch = await checkFirstLaunch();
 
       if (isFirstLaunch) {
-        router.replace('/(auth)/signup');
+        router.replace('/signup');
       } else {
-        router.replace(isAuthenticated ? '/(home)/dashboard' : '/(auth)/login');
+        router.replace(isLoggedIn ? '/dashboard' : '/login');
       }
     };
-
-    decideInitialRoute();
-  }, [router, isAuthenticated]);
+    decideRoute();
+  }, [loading, isLoggedIn, router]);
 
   return null;
 }

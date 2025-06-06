@@ -1,14 +1,15 @@
+// app/(auth)/login.tsx
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
-import { useRouter } from 'expo-router';
 
 import AppInput from '@/components/AppInput';
 import { AppTheme } from '@/theme/types';
 import { useAppTheme } from '@/theme';
 import AppButton from '@/components/AppButton';
+import { saveToSecureStore } from '@/utils/secureStore';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface IForm {
@@ -21,13 +22,17 @@ interface IForm {
 const API_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 const LoginForm = ({ email, password, onEmailChange, onPasswordChange }: IForm) => {
-  const router = useRouter();
-  const { login } = useAuth();
+  const { checkAuthStatus } = useAuth();
   const theme = useAppTheme();
   const styles = getStyles(theme);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleLogin = async () => {
+    if (!email.trim() || !password.trim()) return;
+
+    setLoading(true);
+
     try {
       const response = await axios.post(`${API_URL}login/`, {
         email,
@@ -35,19 +40,25 @@ const LoginForm = ({ email, password, onEmailChange, onPasswordChange }: IForm) 
       });
 
       const { access_token, refresh_token } = response.data;
-      await login(access_token, refresh_token);
+      // 1) Save tokens
+      await saveToSecureStore('access_token', access_token);
+      await saveToSecureStore('refresh_token', refresh_token);
 
+      // 2) Notify AuthProvider—once it sees isLoggedIn=true, it will navigate for us
+      await checkAuthStatus();
+
+      // Clear form
       onEmailChange('');
       onPasswordChange('');
-      router.replace('/(home)/dashboard');
       console.log('Login successful!', access_token, refresh_token);
     } catch (error: any) {
       console.error('Login error:', error?.response?.data || error.message);
-      // TODO: Show error to user with Toast or Alert
+    } finally {
+      setLoading(false);
     }
   };
 
-  const disableLogin = !email.trim().length || !password.trim().length;
+  const disableLogin = !email.trim().length || !password.trim().length || loading;
 
   return (
     <Card style={styles.card}>
@@ -84,9 +95,7 @@ const LoginForm = ({ email, password, onEmailChange, onPasswordChange }: IForm) 
           <AppButton onPress={handleLogin} mode="contained" disabled={disableLogin}>
             Login
           </AppButton>
-          <AppButton onPress={handleLogin} mode="outlined">
-            Forgot password?
-          </AppButton>
+          <AppButton mode="outlined">Forgot password?</AppButton>
         </View>
       </View>
     </Card>

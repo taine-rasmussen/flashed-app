@@ -1,7 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 import { useAuth } from './AuthContext';
+
+import { getFromSecureStore } from '@/utils/secureStore';
+import { DecodedToken } from '@/types';
 
 interface User {
   id: string;
@@ -18,21 +22,35 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const { decodedToken, accessToken } = useAuth();
+  const { isLoggedIn } = useAuth();
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchUser = async () => {
-    if (!decodedToken?.id || !accessToken) return;
+    setLoading(true);
 
     try {
+      const accessToken = await getFromSecureStore('access_token');
+      if (!accessToken) {
+        setUser(null);
+        return;
+      }
+
+      const decoded: DecodedToken = jwtDecode(accessToken);
+      if (!decoded?.id) {
+        setUser(null);
+        return;
+      }
+
       const response = await axios.get(`${process.env.EXPO_PUBLIC_BASE_URL}get_user/`, {
-        params: { id: decodedToken.id },
+        params: { id: decoded.id },
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      setUser(response.data);
+
+      setUser(response.data as User);
     } catch (error) {
-      console.error('Failed to fetch user:', error);
+      console.error('UserContext: Failed to fetch user:', error);
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -40,10 +58,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     fetchUser();
-  }, [decodedToken?.id, accessToken]);
+  }, [isLoggedIn]);
 
   return (
-    <UserContext.Provider value={{ user, loading, refreshUser: fetchUser }}>
+    <UserContext.Provider
+      value={{
+        user,
+        loading,
+        refreshUser: fetchUser,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

@@ -8,9 +8,12 @@ import Dashboard from './dashboard';
 import Activity from './activity';
 import Projects from './projects';
 
+import { useAppTheme } from '@/theme';
+
 const Tab = createBottomTabNavigator();
 
 export default function HomeLayout() {
+  const theme = useAppTheme();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -26,6 +29,10 @@ export default function HomeLayout() {
         },
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
+        tabBarStyle: {
+          backgroundColor: theme.colors.background,
+          borderTopColor: theme.colors.background,
+        },
       })}
     >
       <Tab.Screen name="Dashboard" component={Dashboard} options={{ title: 'Dashboard' }} />

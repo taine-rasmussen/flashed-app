@@ -5,16 +5,10 @@ import { jwtDecode } from 'jwt-decode';
 import { useAuth } from './AuthContext';
 
 import { getFromSecureStore } from '@/utils/secureStore';
-import { DecodedToken } from '@/types';
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
+import { DecodedToken, User } from '@/types';
 
 interface UserContextType {
-  user: User | null;
+  user: User;
   loading: boolean;
   refreshUser: () => Promise<void>;
 }
@@ -23,34 +17,29 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const { isLoggedIn } = useAuth();
-  const [user, setUser] = useState<User | null>(null);
+  const [rawUser, setRawUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchUser = async () => {
     setLoading(true);
-
     try {
       const accessToken = await getFromSecureStore('access_token');
       if (!accessToken) {
-        setUser(null);
+        setRawUser(null);
         return;
       }
-
       const decoded: DecodedToken = jwtDecode(accessToken);
       if (!decoded?.id) {
-        setUser(null);
+        setRawUser(null);
         return;
       }
-
       const response = await axios.get(`${process.env.EXPO_PUBLIC_BASE_URL}get_user/`, {
         params: { id: decoded.id },
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-
-      setUser(response.data as User);
-    } catch (error) {
-      console.error('UserContext: Failed to fetch user:', error);
-      setUser(null);
+      setRawUser(response.data as User);
+    } catch {
+      setRawUser(null);
     } finally {
       setLoading(false);
     }
@@ -60,11 +49,19 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     fetchUser();
   }, [isLoggedIn]);
 
+  if (loading) {
+    return null;
+  }
+
+  if (!rawUser) {
+    return <>{children}</>;
+  }
+
   return (
     <UserContext.Provider
       value={{
-        user,
-        loading,
+        user: rawUser,
+        loading: false,
         refreshUser: fetchUser,
       }}
     >
@@ -73,7 +70,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useUser = () => {
+export const useUser = (): UserContextType => {
   const context = useContext(UserContext);
   if (!context) {
     throw new Error('useUser must be used within a UserProvider');

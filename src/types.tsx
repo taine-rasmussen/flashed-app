@@ -3,3 +3,19 @@ export interface DecodedToken {
   iat?: number;
   [key: string]: any;
 }
+
+export interface User {
+  auth_provider: string;
+  created_at: string;
+  email: string;
+  first_name: string;
+  grade_style: string;
+  home_gym: string;
+  id: number;
+  last_name: string;
+  location: string;
+  notifications_enabled: boolean;
+  onboarding_complete: boolean;
+  profile_image_url: string | null;
+  username: string | null;
+}

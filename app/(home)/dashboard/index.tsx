@@ -1,21 +1,28 @@
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { Text, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import ProfileCard from './cards/ProfileCard';
 
 import { useAppTheme } from '@/theme';
+import { useUser } from '@/contexts/UserContext';
 
 export default function DashboardScreen() {
   const { colors } = useAppTheme();
+  const { user } = useUser();
+  console.log(user);
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <ProfileCard />
       <Text style={[styles.text, { color: colors.text }]}>Dashboard</Text>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   text: {

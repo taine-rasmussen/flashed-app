@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import axios from 'axios';
 
 import ActivityLogCard from './ActivityLogCard';
@@ -53,13 +53,13 @@ const ActivityLog = () => {
   if (loading) return <Text>Loading…</Text>;
 
   return (
-    <View>
+    <ScrollView>
       {climbData?.length ? (
         climbData.map(climb => <ActivityLogCard climb={climb} />)
       ) : (
         <Text>No climbs found.</Text>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

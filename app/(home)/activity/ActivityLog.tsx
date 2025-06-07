@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import axios from 'axios';
 
+import ActivityLogCard from './ActivityLogCard';
+
 import { useUser } from '@/contexts/UserContext';
 import { Climb } from '@/types';
 import { getFromSecureStore } from '@/utils/secureStore';
@@ -53,13 +55,7 @@ const ActivityLog = () => {
   return (
     <View>
       {climbData?.length ? (
-        climbData.map(c => (
-          <View key={c.id}>
-            <Text style={{ color: 'red' }}>
-              {c.grade} – Attempts: {c.attempts}
-            </Text>
-          </View>
-        ))
+        climbData.map(climb => <ActivityLogCard climb={climb} />)
       ) : (
         <Text>No climbs found.</Text>
       )}

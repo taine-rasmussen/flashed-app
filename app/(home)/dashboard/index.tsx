@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -21,7 +21,6 @@ export default function DashboardScreen() {
     >
       <SafeAreaView style={styles.container}>
         <ProfileCard />
-        <Text style={[styles.text, { color: theme.colors.text }]}>Dashboard</Text>
       </SafeAreaView>
     </LinearGradient>
   );

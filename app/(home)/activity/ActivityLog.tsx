@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
+import axios from 'axios';
 
 import { useUser } from '@/contexts/UserContext';
 import { Climb } from '@/types';
@@ -12,46 +13,56 @@ const ActivityLog = () => {
   const [climbData, setClimbData] = useState<Climb[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  console.log(climbData, loading);
-
   const getClimbData = async () => {
     setLoading(true);
     const accessToken = await getFromSecureStore('access_token');
+    if (!accessToken) {
+      setLoading(false);
+      return;
+    }
 
-    if (accessToken) {
-      try {
-        const response = await fetch(`${API_URL}get_climbs/`, {
-          method: 'POST',
+    try {
+      const url = `${API_URL}get_climbs/?user_id=${user.id}`;
+      const response = await axios.post<Climb[]>(
+        url,
+        {
+          // filters go here
+        },
+        {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${accessToken}`,
           },
-          body: JSON.stringify({
-            user_id: user.id,
-            filters: {
-              // adding filters here
-            },
-          }),
-        });
-        if (!response.ok) {
-          throw new Error(`Server error: ${response.status}`);
-        }
-        const data: Climb[] = await response.json();
-        setClimbData(data);
-      } catch (err: any) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
+        },
+      );
+
+      setClimbData(response.data);
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     getClimbData();
   }, []);
+
+  if (loading) return <Text>Loading…</Text>;
+
   return (
     <View>
-      <Text>Log</Text>
+      {climbData?.length ? (
+        climbData.map(c => (
+          <View key={c.id}>
+            <Text style={{ color: 'red' }}>
+              {c.grade} – Attempts: {c.attempts}
+            </Text>
+          </View>
+        ))
+      ) : (
+        <Text>No climbs found.</Text>
+      )}
     </View>
   );
 };

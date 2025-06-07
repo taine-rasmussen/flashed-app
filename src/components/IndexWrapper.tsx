@@ -32,10 +32,10 @@ const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      alignItems: 'center',
       width: '100%',
-      padding: theme.custom.spacing.sm,
       position: 'relative',
+      alignItems: 'center',
+      padding: theme.custom.spacing.sm,
     },
     safeArea: {
       flex: 1,

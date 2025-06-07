@@ -25,4 +25,5 @@ export interface Climb {
   user_id: number;
   attempts: number;
   created_at: Date;
+  grade: string;
 }

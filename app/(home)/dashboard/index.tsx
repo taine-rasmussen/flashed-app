@@ -1,32 +1,41 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import ProfileCard from './cards/ProfileCard';
 
 import { useAppTheme } from '@/theme';
-import { useUser } from '@/contexts/UserContext';
+import { AppTheme } from '@/theme/types';
 
 export default function DashboardScreen() {
-  const { colors } = useAppTheme();
-  const { user } = useUser();
-  console.log(user);
+  const theme = useAppTheme();
+  const styles = getStyles(theme);
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <ProfileCard />
-      <Text style={[styles.text, { color: colors.text }]}>Dashboard</Text>
-    </SafeAreaView>
+    <LinearGradient
+      colors={theme.custom.gradient.colours as [string, string, ...string[]]}
+      start={theme.custom.gradient.start}
+      end={theme.custom.gradient.end}
+      style={styles.container}
+    >
+      <SafeAreaView style={styles.container}>
+        <ProfileCard />
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 22,
-    fontWeight: '500',
-  },
-});
+const getStyles = (theme: AppTheme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      width: '100%',
+      padding: theme.custom.spacing.sm,
+    },
+    text: {
+      fontSize: 22,
+      fontWeight: '500',
+    },
+  });

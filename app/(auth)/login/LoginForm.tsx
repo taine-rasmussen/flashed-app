@@ -1,4 +1,3 @@
-// app/(auth)/login.tsx
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
@@ -40,14 +39,11 @@ const LoginForm = ({ email, password, onEmailChange, onPasswordChange }: IForm) 
       });
 
       const { access_token, refresh_token } = response.data;
-      // 1) Save tokens
       await saveToSecureStore('access_token', access_token);
       await saveToSecureStore('refresh_token', refresh_token);
 
-      // 2) Notify AuthProvider—once it sees isLoggedIn=true, it will navigate for us
       await checkAuthStatus();
 
-      // Clear form
       onEmailChange('');
       onPasswordChange('');
       console.log('Login successful!', access_token, refresh_token);
@@ -107,7 +103,7 @@ export default LoginForm;
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     card: {
-      height: '55%',
+      height: '66.666%',
       padding: theme.custom.spacing.md,
       backgroundColor: theme.colors.background,
     },

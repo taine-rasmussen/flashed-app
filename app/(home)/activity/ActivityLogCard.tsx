@@ -1,4 +1,4 @@
-import { Card, Text } from 'react-native-paper';
+import { Card, Text, Divider } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
@@ -6,6 +6,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Climb } from '@/types';
 import { AppTheme } from '@/theme/types';
 import { useAppTheme } from '@/theme';
+import { getGradeColor } from '@/utils/helpers';
 
 interface IActivityLogCard {
   climb: Climb;
@@ -21,25 +22,30 @@ const ActivityLogCard = (props: IActivityLogCard) => {
   const date = new Date(created_at).toLocaleDateString();
   const theme = useAppTheme();
   const styles = getStyles(theme);
+  const flagColor = getGradeColor(grade);
 
   return (
     <Card style={styles.card} elevation={5} key={index}>
       <View style={styles.content}>
-        <Text variant="headlineMedium" style={styles.grade}>
+        <Text variant="displaySmall" style={styles.grade}>
           {grade}
         </Text>
-        <View style={styles.row}>
-          <AntDesign name="reload1" size={24} color="black" />
-          <Text variant="bodyMedium" style={styles.attempts}>
-            {attempts}
-          </Text>
+        <Divider bold style={styles.divider} />
+        <View style={styles.contentCol}>
+          <View style={styles.row}>
+            <AntDesign name="reload1" size={24} color={theme.colors.text} />
+            <Text style={styles.text} variant="bodyLarge">
+              {attempts}
+            </Text>
+          </View>
+          <View style={styles.row}>
+            <FontAwesome6 name="calendar-days" size={24} color={theme.colors.text} />
+            <Text style={styles.text} variant="bodyLarge">
+              {date}
+            </Text>
+          </View>
         </View>
-        <View style={styles.row}>
-          <FontAwesome6 name="calendar-days" size={24} color="black" />
-          <Text variant="bodySmall" style={styles.date}>
-            {date}
-          </Text>
-        </View>
+        <View style={[styles.flag, { backgroundColor: flagColor }]} />
       </View>
     </Card>
   );
@@ -50,28 +56,44 @@ const getStyles = (theme: AppTheme) =>
     card: {
       margin: theme.custom.spacing.sm,
       borderRadius: 16,
+      backgroundColor: theme.colors.backdrop,
     },
     content: {
+      position: 'relative',
       padding: 16,
+      flexDirection: 'row',
+      gap: theme.custom.spacing.md,
+      alignItems: 'center',
+    },
+    contentCol: {
+      gap: theme.custom.spacing.md,
     },
     grade: {
-      fontSize: 20,
-      fontWeight: '600',
-      marginBottom: 8,
+      fontWeight: '800',
+      color: theme.colors.primary,
     },
     row: {
-      display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
       gap: theme.custom.spacing.sm,
     },
-    attempts: {
-      fontSize: 16,
-      marginBottom: 4,
+    divider: {
+      width: 5,
+      height: '100%',
+      borderRadius: 20,
     },
-    date: {
-      fontSize: 14,
-      color: '#6e6e6e',
+    text: {
+      color: theme.colors.text,
+    },
+    flag: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      right: 0,
+      width: 24,
+
+      borderTopRightRadius: 16,
+      borderBottomRightRadius: 16,
     },
   });
 

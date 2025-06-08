@@ -88,7 +88,7 @@ const getStyles = (theme: AppTheme) =>
       top: 0,
       bottom: 0,
       right: 0,
-      width: 16,
+      width: 24,
       backgroundColor: 'salmon',
       borderTopRightRadius: 16,
       borderBottomRightRadius: 16,

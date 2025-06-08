@@ -43,6 +43,7 @@ const ActivityLogCard = (props: IActivityLogCard) => {
             </Text>
           </View>
         </View>
+        <View style={styles.flag} />
       </View>
     </Card>
   );
@@ -56,8 +57,8 @@ const getStyles = (theme: AppTheme) =>
       backgroundColor: theme.colors.backdrop,
     },
     content: {
+      position: 'relative',
       padding: 16,
-      display: 'flex',
       flexDirection: 'row',
       gap: theme.custom.spacing.md,
       alignItems: 'center',
@@ -70,7 +71,6 @@ const getStyles = (theme: AppTheme) =>
       color: theme.colors.primary,
     },
     row: {
-      display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
       gap: theme.custom.spacing.sm,
@@ -82,6 +82,16 @@ const getStyles = (theme: AppTheme) =>
     },
     text: {
       color: theme.colors.text,
+    },
+    flag: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      right: 0,
+      width: 16,
+      backgroundColor: 'salmon',
+      borderTopRightRadius: 16,
+      borderBottomRightRadius: 16,
     },
   });
 

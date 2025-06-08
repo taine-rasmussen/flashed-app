@@ -55,7 +55,7 @@ const ActivityLog = () => {
   return (
     <ScrollView>
       {climbData?.length ? (
-        climbData.map(climb => <ActivityLogCard climb={climb} />)
+        climbData.map((climb, i) => <ActivityLogCard climb={climb} index={i} />)
       ) : (
         <Text>No climbs found.</Text>
       )}

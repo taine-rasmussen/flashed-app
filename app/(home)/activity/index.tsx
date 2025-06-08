@@ -1,25 +1,13 @@
-import { View, Text, StyleSheet } from 'react-native';
+import ActivityLog from './ActivityLog';
 
-import { useAppTheme } from '@/theme';
+import IndexWrapper from '@/components/IndexWrapper';
 
-export default function ActivityScreen() {
-  const { colors } = useAppTheme();
-
+const Activity = () => {
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.text, { color: colors.text }]}>Activity</Text>
-    </View>
+    <IndexWrapper>
+      <ActivityLog />
+    </IndexWrapper>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 22,
-    fontWeight: '500',
-  },
-});
+export default Activity;

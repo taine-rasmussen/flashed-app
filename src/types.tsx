@@ -19,3 +19,11 @@ export interface User {
   profile_image_url: string | null;
   username: string | null;
 }
+
+export interface Climb {
+  id: number;
+  user_id: number;
+  attempts: number;
+  created_at: Date;
+  grade: string;
+}

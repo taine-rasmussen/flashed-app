@@ -6,6 +6,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Climb } from '@/types';
 import { AppTheme } from '@/theme/types';
 import { useAppTheme } from '@/theme';
+import { getGradeColor } from '@/utils/helpers';
 
 interface IActivityLogCard {
   climb: Climb;
@@ -21,6 +22,7 @@ const ActivityLogCard = (props: IActivityLogCard) => {
   const date = new Date(created_at).toLocaleDateString();
   const theme = useAppTheme();
   const styles = getStyles(theme);
+  const flagColor = getGradeColor(grade);
 
   return (
     <Card style={styles.card} elevation={5} key={index}>
@@ -43,7 +45,7 @@ const ActivityLogCard = (props: IActivityLogCard) => {
             </Text>
           </View>
         </View>
-        <View style={styles.flag} />
+        <View style={[styles.flag, { backgroundColor: flagColor }]} />
       </View>
     </Card>
   );
@@ -89,7 +91,7 @@ const getStyles = (theme: AppTheme) =>
       bottom: 0,
       right: 0,
       width: 24,
-      backgroundColor: 'salmon',
+
       borderTopRightRadius: 16,
       borderBottomRightRadius: 16,
     },

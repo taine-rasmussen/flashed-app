@@ -33,8 +33,6 @@ const getStyles = (theme: AppTheme) =>
     container: {
       flex: 1,
       width: '100%',
-      position: 'relative',
-      alignItems: 'center',
       padding: theme.custom.spacing.sm,
     },
     safeArea: {

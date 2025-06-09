@@ -27,3 +27,5 @@ export interface Climb {
   created_at: Date;
   grade: string;
 }
+
+export type FilterOrder = 'asc' | 'desc';

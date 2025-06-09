@@ -43,7 +43,7 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
         </Pressable>
 
         <Pressable style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}>
-          <Ionicons name="add-circle-outline" size={36} color={theme.colors.secondary} />{' '}
+          <Ionicons name="add-circle-outline" size={36} color={theme.colors.secondary} />
         </Pressable>
       </View>
     </View>

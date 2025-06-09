@@ -2,18 +2,31 @@ import { ScrollView, Text } from 'react-native';
 
 import ActivityLogCard from './ActivityLogCard';
 
-import { Climb } from '@/types';
+import { Climb, FilterOrder } from '@/types';
 
 interface IActivityLog {
   climbData: Climb[];
+  filterOrder: FilterOrder;
 }
 
 const ActivityLog = (props: IActivityLog) => {
-  const { climbData } = props;
+  const { climbData, filterOrder } = props;
+
+  const sortedData = [...climbData].sort((a, b) => {
+    const dateA = new Date(a.created_at).getTime();
+    const dateB = new Date(b.created_at).getTime();
+
+    if (filterOrder === 'asc') {
+      return dateA - dateB;
+    } else {
+      return dateB - dateA;
+    }
+  });
+
   return (
     <ScrollView>
-      {climbData?.length ? (
-        climbData.map((climb, i) => <ActivityLogCard climb={climb} index={i} />)
+      {sortedData?.length ? (
+        sortedData.map((climb, i) => <ActivityLogCard climb={climb} index={i} />)
       ) : (
         <Text>No climbs found.</Text>
       )}

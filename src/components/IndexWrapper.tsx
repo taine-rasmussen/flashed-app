@@ -21,7 +21,9 @@ const IndexWrapper: React.FC<IndexWrapperProps> = ({ children }) => {
       end={theme.custom.gradient.end}
       style={styles.container}
     >
-      <SafeAreaView style={styles.safeArea}>{children}</SafeAreaView>
+      <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+        {children}
+      </SafeAreaView>
     </LinearGradient>
   );
 };

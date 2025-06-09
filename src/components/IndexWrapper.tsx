@@ -21,7 +21,9 @@ const IndexWrapper: React.FC<IndexWrapperProps> = ({ children }) => {
       end={theme.custom.gradient.end}
       style={styles.container}
     >
-      <SafeAreaView style={styles.safeArea}>{children}</SafeAreaView>
+      <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+        {children}
+      </SafeAreaView>
     </LinearGradient>
   );
 };
@@ -33,8 +35,6 @@ const getStyles = (theme: AppTheme) =>
     container: {
       flex: 1,
       width: '100%',
-      position: 'relative',
-      alignItems: 'center',
       padding: theme.custom.spacing.sm,
     },
     safeArea: {

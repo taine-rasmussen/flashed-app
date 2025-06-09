@@ -19,7 +19,11 @@ const ActivityLogCard = (props: IActivityLogCard) => {
     climb: { grade, attempts, created_at },
   } = props;
 
-  const date = new Date(created_at).toLocaleDateString();
+  const date = new Date(created_at).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
   const theme = useAppTheme();
   const styles = getStyles(theme);
   const flagColor = getGradeColor(grade);

@@ -21,7 +21,7 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.sortIcons}>
+      <View style={styles.iconGroup}>
         <Pressable
           style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}
           onPress={() => setFilterOrder('desc')}
@@ -37,9 +37,15 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
         </Pressable>
       </View>
 
-      <Pressable style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}>
-        <Ionicons name="filter-circle-outline" size={36} color={theme.colors.secondary} />
-      </Pressable>
+      <View style={styles.iconGroup}>
+        <Pressable style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}>
+          <Ionicons name="filter-circle-outline" size={36} color={theme.colors.secondary} />
+        </Pressable>
+
+        <Pressable style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}>
+          <Ionicons name="add-circle-outline" size={36} color={theme.colors.secondary} />{' '}
+        </Pressable>
+      </View>
     </View>
   );
 };
@@ -54,7 +60,7 @@ const getStyles = (theme: AppTheme) =>
       width: '100%',
       padding: theme.custom.spacing.sm,
     },
-    sortIcons: {
+    iconGroup: {
       flexDirection: 'row',
       gap: theme.custom.spacing.sm,
     },

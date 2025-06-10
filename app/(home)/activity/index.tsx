@@ -59,7 +59,7 @@ const Activity = () => {
   return (
     <IndexWrapper>
       <ActivityFilters filterOrder={filterOrder} setFilterOrder={setFilterOrder} />
-      <ActivityLog climbData={climbData} />
+      <ActivityLog climbData={climbData} filterOrder={filterOrder} />
     </IndexWrapper>
   );
 };

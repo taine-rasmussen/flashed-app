@@ -18,6 +18,12 @@ const Activity = () => {
   const { user } = useUser();
   const [climbData, setClimbData] = useState<Climb[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [openCalendar, setOpenCalendar] = useState<boolean>(false);
+  const [openGradeRange, setOpenGradeRange] = useState<boolean>(false);
+  const [calendarValue, setCalendarValue] = useState();
+  const [gradeRangeValue, setGradeRangeValue] = useState([]);
+
+  console.log(calendarValue, gradeRangeValue);
 
   const getClimbData = async () => {
     setLoading(true);
@@ -58,7 +64,16 @@ const Activity = () => {
 
   return (
     <IndexWrapper>
-      <ActivityFilters filterOrder={filterOrder} setFilterOrder={setFilterOrder} />
+      <ActivityFilters
+        filterOrder={filterOrder}
+        openCalendar={openCalendar}
+        openGradeRange={openGradeRange}
+        setFilterOrder={setFilterOrder}
+        setOpenCalendar={setOpenCalendar}
+        setCalendarValue={setCalendarValue}
+        setOpenGradeRange={setOpenGradeRange}
+        setGradeRangeValue={setGradeRangeValue}
+      />
       <ActivityLog climbData={climbData} filterOrder={filterOrder} />
     </IndexWrapper>
   );

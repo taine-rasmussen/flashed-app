@@ -12,10 +12,25 @@ import { FilterOrder } from '@/types';
 interface ActivityFiltersProps {
   filterOrder: FilterOrder;
   setFilterOrder: (order: FilterOrder) => void;
+  openCalendar: boolean;
+  openGradeRange: boolean;
+  setOpenGradeRange: (bol: boolean) => void;
+  setOpenCalendar: (bol: boolean) => void;
+  setCalendarValue: (val: any) => void; // update type
+  setGradeRangeValue: (val: any) => void; // update type
 }
 
 const ActivityFilters = (props: ActivityFiltersProps) => {
-  const { filterOrder, setFilterOrder } = props;
+  const {
+    filterOrder,
+    setFilterOrder,
+    openCalendar,
+    openGradeRange,
+    setOpenGradeRange,
+    setOpenCalendar,
+    setCalendarValue,
+    setGradeRangeValue,
+  } = props;
   const theme = useAppTheme();
   const styles = getStyles(theme);
   const [fabOpen, setFabOpen] = useState(false);
@@ -42,7 +57,16 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
       </View>
 
       <View style={styles.iconGroup}>
-        <ActivityFilterMenu open={fabOpen} setOpen={setFabOpen} fabSize={36} />
+        <ActivityFilterMenu
+          open={fabOpen}
+          setOpen={setFabOpen}
+          openCalendar={openCalendar}
+          openGradeRange={openGradeRange}
+          setOpenGradeRange={setOpenGradeRange}
+          setOpenCalendar={setOpenCalendar}
+          setCalendarValue={setCalendarValue}
+          setGradeRangeValue={setGradeRangeValue}
+        />
 
         {!fabOpen && (
           <Pressable style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}>

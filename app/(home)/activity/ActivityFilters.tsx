@@ -25,23 +25,21 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
 
   return (
     <View style={styles.container}>
-      {!fabOpen && (
-        <View style={styles.iconGroup}>
-          <Pressable
-            style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}
-            onPress={() => setFilterOrder('desc')}
-          >
-            <AntDesign name="down" size={36} color={getIconColor('desc')} />
-          </Pressable>
+      <View style={styles.iconGroup}>
+        <Pressable
+          style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}
+          onPress={() => setFilterOrder('desc')}
+        >
+          <AntDesign name="down" size={36} color={getIconColor('desc')} />
+        </Pressable>
 
-          <Pressable
-            style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}
-            onPress={() => setFilterOrder('asc')}
-          >
-            <AntDesign name="up" size={36} color={getIconColor('asc')} />
-          </Pressable>
-        </View>
-      )}
+        <Pressable
+          style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}
+          onPress={() => setFilterOrder('asc')}
+        >
+          <AntDesign name="up" size={36} color={getIconColor('asc')} />
+        </Pressable>
+      </View>
 
       <View style={styles.iconGroup}>
         <ActivityFilterMenu open={fabOpen} setOpen={setFabOpen} fabSize={36} />

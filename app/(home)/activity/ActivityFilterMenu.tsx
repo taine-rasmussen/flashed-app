@@ -21,21 +21,15 @@ const ActivityFilterMenu = ({ open, setOpen }: ActivityFilterMenuProps) => {
     <View style={styles.container}>
       <FAB
         small
-        icon={open ? 'calendar-today' : 'plus'}
+        icon={open ? 'close' : 'filter'}
         style={styles.fab}
         onPress={() => setOpen(!open)}
       />
 
       {open && (
         <View style={styles.expanded}>
-          <FAB icon="plus" style={styles.fab} onPress={() => console.log('Pressed add')} />
-          <FAB icon="star" style={styles.fab} onPress={() => console.log('Pressed star')} />
-          <FAB icon="email" style={styles.fab} onPress={() => console.log('Pressed email')} />
-          <FAB
-            icon="bell"
-            style={styles.fab}
-            onPress={() => console.log('Pressed notifications')}
-          />
+          <FAB icon="calendar" style={styles.fab} onPress={() => console.log('Pressed add')} />
+          <FAB icon="chart-box" style={styles.fab} onPress={() => console.log('Pressed star')} />
         </View>
       )}
     </View>
@@ -52,7 +46,7 @@ const createStyles = (theme: AppTheme) =>
     },
     fab: {
       borderRadius: 24,
-      margin: theme.custom.spacing.sm,
+      margin: 4,
       backgroundColor: theme.colors.backdrop,
     },
     expanded: {

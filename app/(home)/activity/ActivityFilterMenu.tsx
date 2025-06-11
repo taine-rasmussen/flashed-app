@@ -15,14 +15,14 @@ interface ActivityFilterMenuProps {
 
 const ActivityFilterMenu = ({ open, setOpen }: ActivityFilterMenuProps) => {
   const theme = useAppTheme();
-  const styles = useMemo(() => createStyles(theme), [theme]);
+  const styles = useMemo(() => createStyles(theme, open), [theme, open]);
 
   return (
     <View style={styles.container}>
       <FAB
         small
         icon={open ? 'close' : 'filter'}
-        style={styles.fab}
+        style={styles.displayFab}
         onPress={() => setOpen(!open)}
       />
 
@@ -38,18 +38,23 @@ const ActivityFilterMenu = ({ open, setOpen }: ActivityFilterMenuProps) => {
 
 export default ActivityFilterMenu;
 
-const createStyles = (theme: AppTheme) =>
+const createStyles = (theme: AppTheme, open: boolean) =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignItems: 'center',
     },
+    displayFab: {
+      marginRight: open ? 8 : 0,
+      borderRadius: 24,
+      backgroundColor: theme.colors.backdrop,
+    },
     fab: {
       borderRadius: 24,
-      margin: 4,
       backgroundColor: theme.colors.backdrop,
     },
     expanded: {
       flexDirection: 'row',
+      gap: 8,
     },
   });

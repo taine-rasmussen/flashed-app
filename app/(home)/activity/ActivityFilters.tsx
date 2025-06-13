@@ -7,7 +7,7 @@ import ActivityFilterMenu from './ActivityFilterMenu';
 
 import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
-import { FilterOrder } from '@/types';
+import { FilterOrder, IDateRange } from '@/types';
 
 interface ActivityFiltersProps {
   filterOrder: FilterOrder;
@@ -16,19 +16,19 @@ interface ActivityFiltersProps {
   openGradeRange: boolean;
   setOpenGradeRange: (bol: boolean) => void;
   setOpenCalendar: (bol: boolean) => void;
-  setCalendarValue: (val: any) => void; // update type
+  setDateRange: (val: IDateRange) => void;
   setGradeRangeValue: (val: any) => void; // update type
 }
 
 const ActivityFilters = (props: ActivityFiltersProps) => {
   const {
     filterOrder,
-    setFilterOrder,
     openCalendar,
     openGradeRange,
-    setOpenGradeRange,
+    setFilterOrder,
     setOpenCalendar,
-    setCalendarValue,
+    setDateRange,
+    setOpenGradeRange,
     setGradeRangeValue,
   } = props;
   const theme = useAppTheme();
@@ -64,7 +64,7 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
           openGradeRange={openGradeRange}
           setOpenGradeRange={setOpenGradeRange}
           setOpenCalendar={setOpenCalendar}
-          setCalendarValue={setCalendarValue}
+          setDateRange={setDateRange}
           setGradeRangeValue={setGradeRangeValue}
         />
 

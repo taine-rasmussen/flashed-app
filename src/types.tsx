@@ -1,3 +1,5 @@
+import { DateType } from 'react-native-ui-datepicker';
+
 export interface DecodedToken {
   exp: number;
   iat?: number;
@@ -29,3 +31,8 @@ export interface Climb {
 }
 
 export type FilterOrder = 'asc' | 'desc';
+
+export interface IDateRange {
+  startDate: DateType;
+  endDate: DateType;
+}

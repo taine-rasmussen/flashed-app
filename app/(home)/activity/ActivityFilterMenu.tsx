@@ -7,6 +7,7 @@ import CalendarDialog from './Dialogs/CalendarDialog';
 
 import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
+import { IDateRange } from '@/types';
 
 interface ActivityFilterMenuProps {
   open: boolean;
@@ -15,7 +16,7 @@ interface ActivityFilterMenuProps {
   openGradeRange: boolean;
   setOpenGradeRange: (bol: boolean) => void;
   setOpenCalendar: (bol: boolean) => void;
-  setCalendarValue: (val: any) => void; // update when known
+  setDateRange: (val: IDateRange) => void;
   setGradeRangeValue: (val: any) => void; // update when known
 }
 
@@ -27,7 +28,7 @@ const ActivityFilterMenu = (props: ActivityFilterMenuProps) => {
     openGradeRange,
     setOpenGradeRange,
     setOpenCalendar,
-    setCalendarValue,
+    setDateRange,
     setGradeRangeValue,
   } = props;
   const theme = useAppTheme();
@@ -40,7 +41,7 @@ const ActivityFilterMenu = (props: ActivityFilterMenuProps) => {
         onDismiss={setOpenGradeRange}
         setValue={setGradeRangeValue}
       />
-      <CalendarDialog open={openCalendar} onDismiss={setOpenCalendar} setValue={setCalendarValue} />
+      <CalendarDialog open={openCalendar} onDismiss={setOpenCalendar} setValue={setDateRange} />
       <View style={styles.container}>
         <FAB
           small

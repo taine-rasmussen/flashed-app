@@ -6,7 +6,7 @@ import ActivityFilters from './ActivityFilters';
 import ActivityLog from './ActivityLog';
 
 import IndexWrapper from '@/components/IndexWrapper';
-import { FilterOrder } from '@/types';
+import { FilterOrder, IDateRange } from '@/types';
 import { useUser } from '@/contexts/UserContext';
 import { Climb } from '@/types';
 import { getFromSecureStore } from '@/utils/secureStore';
@@ -20,11 +20,13 @@ const Activity = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [openCalendar, setOpenCalendar] = useState<boolean>(false);
   const [openGradeRange, setOpenGradeRange] = useState<boolean>(false);
-  const [calendarValue, setCalendarValue] = useState();
+  const [dateRange, setDateRange] = useState<IDateRange>({
+    startDate: null,
+    endDate: null,
+  });
   const [gradeRangeValue, setGradeRangeValue] = useState([]);
 
-  console.log(calendarValue, gradeRangeValue);
-
+  console.log(dateRange, gradeRangeValue);
   const getClimbData = async () => {
     setLoading(true);
     const accessToken = await getFromSecureStore('access_token');
@@ -67,10 +69,10 @@ const Activity = () => {
       <ActivityFilters
         filterOrder={filterOrder}
         openCalendar={openCalendar}
+        setDateRange={setDateRange}
         openGradeRange={openGradeRange}
         setFilterOrder={setFilterOrder}
         setOpenCalendar={setOpenCalendar}
-        setCalendarValue={setCalendarValue}
         setOpenGradeRange={setOpenGradeRange}
         setGradeRangeValue={setGradeRangeValue}
       />

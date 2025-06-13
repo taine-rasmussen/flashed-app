@@ -39,10 +39,11 @@ const CalendarDialog = (props: ICalendarDialog) => {
       <Dialog visible={open} onDismiss={handleDismiss} style={styles.container}>
         <DateTimePicker
           mode="range"
-          startDate={selected.startDate}
-          endDate={selected.endDate}
-          onChange={date => setSelected({ startDate: date.startDate, endDate: date.endDate })}
           styles={defaultStyles}
+          navigationPosition={'right'}
+          endDate={selected.endDate}
+          startDate={selected.startDate}
+          onChange={date => setSelected({ startDate: date.startDate, endDate: date.endDate })}
         />
         <Dialog.Actions>
           <Button style={styles.buttons} onPress={handleCancel} mode="contained-tonal">

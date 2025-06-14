@@ -67,5 +67,6 @@ const getStyles = (theme: AppTheme) =>
     },
     container: {
       padding: theme.custom.spacing.sm,
+background: theme.colors.backdrop
     },
   });

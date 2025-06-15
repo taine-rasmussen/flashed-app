@@ -56,7 +56,7 @@ const CalendarDialog = (props: ICalendarDialog) => {
         />
         <Dialog.Actions>
           <Button style={styles.buttons} onPress={handleCancel} mode="contained-tonal">
-            Cancel
+            Clear
           </Button>
           <Button style={styles.buttons} onPress={handleApply} mode="contained">
             Apply

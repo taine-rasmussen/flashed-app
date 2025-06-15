@@ -67,6 +67,7 @@ const Activity = () => {
   return (
     <IndexWrapper>
       <ActivityFilters
+        dateRange={dateRange}
         filterOrder={filterOrder}
         openCalendar={openCalendar}
         setDateRange={setDateRange}

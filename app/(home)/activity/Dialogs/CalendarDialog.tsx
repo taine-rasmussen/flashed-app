@@ -2,10 +2,10 @@ import { Portal, Dialog, Button } from 'react-native-paper';
 import DateTimePicker, { useDefaultStyles } from 'react-native-ui-datepicker';
 import { StyleSheet } from 'react-native';
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
-import { useAppTheme } from '@/theme';
-import { AppTheme } from '@/theme/types';
 import { IDateRange } from '@/types';
+import { useAppTheme } from '@/theme';
 
 interface ICalendarDialog {
   open: boolean;
@@ -21,7 +21,8 @@ const CalendarDialog = (props: ICalendarDialog) => {
   const handleDismiss = () => onDismiss(false);
   const defaultStyles = useDefaultStyles();
   const theme = useAppTheme();
-  const styles = getStyles(theme);
+  const styles = getStyles();
+  const tomorrow = dayjs();
 
   const handleApply = () => {
     setValue(selected);
@@ -36,17 +37,26 @@ const CalendarDialog = (props: ICalendarDialog) => {
 
   return (
     <Portal>
-      <Dialog visible={open} onDismiss={handleDismiss} style={styles.container}>
+      <Dialog visible={open} onDismiss={handleDismiss}>
         <DateTimePicker
           mode="range"
-          startDate={selected.startDate}
+          maxDate={tomorrow}
+          styles={{
+            ...defaultStyles,
+            today: {
+              borderColor: theme.colors.secondary,
+              borderWidth: 2,
+            },
+            selected: { backgroundColor: theme.colors.primary },
+          }}
           endDate={selected.endDate}
+          navigationPosition={'right'}
+          startDate={selected.startDate}
           onChange={date => setSelected({ startDate: date.startDate, endDate: date.endDate })}
-          styles={defaultStyles}
         />
         <Dialog.Actions>
           <Button style={styles.buttons} onPress={handleCancel} mode="contained-tonal">
-            Cancel
+            Clear
           </Button>
           <Button style={styles.buttons} onPress={handleApply} mode="contained">
             Apply
@@ -59,14 +69,10 @@ const CalendarDialog = (props: ICalendarDialog) => {
 
 export default CalendarDialog;
 
-const getStyles = (theme: AppTheme) =>
+const getStyles = () =>
   StyleSheet.create({
     buttons: {
       width: '33.33%',
       borderRadius: 16,
-    },
-    container: {
-      padding: theme.custom.spacing.sm,
-background: theme.colors.backdrop
     },
   });

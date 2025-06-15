@@ -11,28 +11,35 @@ import { IDateRange } from '@/types';
 
 interface ActivityFilterMenuProps {
   open: boolean;
-  setOpen: (open: boolean) => void;
+  dateRange: IDateRange;
   openCalendar: boolean;
   openGradeRange: boolean;
-  setOpenGradeRange: (bol: boolean) => void;
-  setOpenCalendar: (bol: boolean) => void;
-  setDateRange: (val: IDateRange) => void;
+  setOpen: (open: boolean) => void;
   setGradeRangeValue: (val: any) => void; // update when known
+  setDateRange: (val: IDateRange) => void;
+  setOpenCalendar: (bol: boolean) => void;
+  setOpenGradeRange: (bol: boolean) => void;
 }
 
 const ActivityFilterMenu = (props: ActivityFilterMenuProps) => {
   const {
     open,
     setOpen,
+    dateRange,
     openCalendar,
+    setDateRange,
     openGradeRange,
     setOpenGradeRange,
     setOpenCalendar,
-    setDateRange,
     setGradeRangeValue,
   } = props;
   const theme = useAppTheme();
   const styles = useMemo(() => createStyles(theme, open), [theme, open]);
+
+  const hasCalendarApplied = !!dateRange.startDate;
+  const hasGradeRangeApplied = false;
+  const fabIconColor =
+    !!dateRange.startDate && !open ? theme.colors.primary : theme.colors.secondary;
 
   return (
     <>
@@ -48,12 +55,23 @@ const ActivityFilterMenu = (props: ActivityFilterMenuProps) => {
           icon={open ? 'close' : 'filter'}
           style={styles.displayFab}
           onPress={() => setOpen(!open)}
+          color={fabIconColor}
         />
 
         {open && (
           <View style={styles.expanded}>
-            <FAB icon="calendar" style={styles.fab} onPress={() => setOpenCalendar(true)} />
-            <FAB icon="chart-box" style={styles.fab} onPress={() => setOpenGradeRange(true)} />
+            <FAB
+              icon="calendar"
+              color={hasCalendarApplied ? theme.colors.primary : theme.colors.secondary}
+              style={styles.fab}
+              onPress={() => setOpenCalendar(true)}
+            />
+            <FAB
+              icon="chart-box"
+              color={hasGradeRangeApplied ? theme.colors.primary : theme.colors.secondary}
+              style={styles.fab}
+              onPress={() => setOpenGradeRange(true)}
+            />
           </View>
         )}
       </View>

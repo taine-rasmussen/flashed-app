@@ -3,6 +3,9 @@ import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Chip, Checkbox, Divider } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 
+import { AppTheme } from '@/theme/types';
+import { useAppTheme } from '@/theme';
+
 const V_GRADES = Array.from({ length: 18 }, (_, i) => `v${i}`);
 
 type Props = {
@@ -11,8 +14,9 @@ type Props = {
 };
 
 const GradeRangeSelector = ({ selectedGrades, onChange }: Props) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const theme = useAppTheme();
+  const styles = getStyles(theme);
   const toggleGrade = (grade: string) => {
     onChange(
       selectedGrades.includes(grade)
@@ -66,38 +70,38 @@ const GradeRangeSelector = ({ selectedGrades, onChange }: Props) => {
 
 export default GradeRangeSelector;
 
-const styles = StyleSheet.create({
-  chipContainer: {
-    flexDirection: 'row',
-    marginBottom: 12,
-  },
-  chip: {
-    marginRight: 8,
-  },
-  placeholder: {
-    color: '#888',
-    fontStyle: 'italic',
-  },
-  dropdownToggle: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
-  dropdownToggleText: {
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  listContainer: {
-    maxHeight: 300,
-    marginTop: 4,
-  },
-  checkboxRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 6,
-  },
-  gradeLabel: {
-    fontSize: 16,
-  },
-});
+const getStyles = (theme: AppTheme) =>
+  StyleSheet.create({
+    chipContainer: {
+      flexDirection: 'row',
+      marginBottom: 12,
+    },
+    chip: {
+      marginRight: 8,
+    },
+    placeholder: {
+      color: '#888',
+      fontStyle: 'italic',
+    },
+    dropdownToggle: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: theme.custom.spacing.sm,
+    },
+    dropdownToggleText: {
+      fontSize: 16,
+      fontWeight: '500',
+    },
+    listContainer: {
+      maxHeight: 300,
+    },
+    checkboxRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 6,
+    },
+    gradeLabel: {
+      fontSize: 16,
+    },
+  });

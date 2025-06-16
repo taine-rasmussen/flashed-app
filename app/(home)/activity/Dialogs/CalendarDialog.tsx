@@ -9,6 +9,7 @@ import { useAppTheme } from '@/theme';
 
 interface ICalendarDialog {
   open: boolean;
+  dateRange: IDateRange;
   setValue: (val: IDateRange) => void;
   onDismiss: (bol: boolean) => void;
 }
@@ -16,7 +17,7 @@ interface ICalendarDialog {
 const INIT_STATE = { startDate: null, endDate: null };
 
 const CalendarDialog = (props: ICalendarDialog) => {
-  const { open, onDismiss, setValue } = props;
+  const { open, onDismiss, setValue, dateRange } = props;
   const [selected, setSelected] = useState<IDateRange>(INIT_STATE);
   const handleDismiss = () => onDismiss(false);
   const defaultStyles = useDefaultStyles();
@@ -35,12 +36,13 @@ const CalendarDialog = (props: ICalendarDialog) => {
     onDismiss(false);
   };
 
+  const startDate = dateRange.startDate != null ? dateRange.startDate : selected.startDate;
+  const endDate = dateRange.endDate != null ? dateRange.endDate : selected.endDate;
+
   return (
     <Portal>
       <Dialog visible={open} onDismiss={handleDismiss}>
         <DateTimePicker
-          mode="range"
-          maxDate={tomorrow}
           styles={{
             ...defaultStyles,
             today: {
@@ -49,9 +51,11 @@ const CalendarDialog = (props: ICalendarDialog) => {
             },
             selected: { backgroundColor: theme.colors.primary },
           }}
-          endDate={selected.endDate}
+          mode="range"
+          endDate={endDate}
+          maxDate={tomorrow}
+          startDate={startDate}
           navigationPosition={'right'}
-          startDate={selected.startDate}
           onChange={date => setSelected({ startDate: date.startDate, endDate: date.endDate })}
         />
         <Dialog.Actions>

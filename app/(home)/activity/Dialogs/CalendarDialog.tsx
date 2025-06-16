@@ -41,7 +41,7 @@ const CalendarDialog = (props: ICalendarDialog) => {
 
   return (
     <Portal>
-      <Dialog visible={open} onDismiss={handleDismiss}>
+      <Dialog visible={open} onDismiss={handleDismiss} style={styles.container}>
         <DateTimePicker
           styles={{
             ...defaultStyles,
@@ -75,6 +75,9 @@ export default CalendarDialog;
 
 const getStyles = () =>
   StyleSheet.create({
+    container: {
+      paddingHorizontal: 16,
+    },
     buttons: {
       width: '33.33%',
       borderRadius: 16,

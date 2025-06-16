@@ -1,6 +1,7 @@
-import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import { Text, Chip, Checkbox } from 'react-native-paper';
+import React, { useState } from 'react';
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, Chip, Checkbox, Divider } from 'react-native-paper';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const V_GRADES = Array.from({ length: 18 }, (_, i) => `v${i}`);
 
@@ -10,6 +11,8 @@ type Props = {
 };
 
 const GradeRangeSelector = ({ selectedGrades, onChange }: Props) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
   const toggleGrade = (grade: string) => {
     onChange(
       selectedGrades.includes(grade)
@@ -32,18 +35,31 @@ const GradeRangeSelector = ({ selectedGrades, onChange }: Props) => {
         )}
       </ScrollView>
 
-      {/* Checkbox List */}
-      <ScrollView style={styles.listContainer}>
-        {V_GRADES.map(grade => (
-          <View key={grade} style={styles.checkboxRow}>
-            <Checkbox
-              status={selectedGrades.includes(grade) ? 'checked' : 'unchecked'}
-              onPress={() => toggleGrade(grade)}
-            />
-            <Text style={styles.gradeLabel}>{grade.toUpperCase()}</Text>
-          </View>
-        ))}
-      </ScrollView>
+      {/* Dropdown Toggle */}
+      <TouchableOpacity
+        style={styles.dropdownToggle}
+        onPress={() => setDropdownOpen(prev => !prev)}
+      >
+        <Text style={styles.dropdownToggleText}>Select Grades</Text>
+        <MaterialIcons name={dropdownOpen ? 'expand-less' : 'expand-more'} size={24} />
+      </TouchableOpacity>
+      <Divider />
+
+      {dropdownOpen && (
+        <ScrollView style={styles.listContainer}>
+          {V_GRADES.map(grade => (
+            <View key={grade} style={styles.checkboxRow}>
+              <Checkbox
+                status={selectedGrades.includes(grade) ? 'checked' : 'unchecked'}
+                onPress={() => toggleGrade(grade)}
+                color="red"
+                uncheckedColor="blue"
+              />
+              <Text style={styles.gradeLabel}>{grade.toUpperCase()}</Text>
+            </View>
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -53,7 +69,7 @@ export default GradeRangeSelector;
 const styles = StyleSheet.create({
   chipContainer: {
     flexDirection: 'row',
-    marginBottom: 16,
+    marginBottom: 12,
   },
   chip: {
     marginRight: 8,
@@ -62,8 +78,19 @@ const styles = StyleSheet.create({
     color: '#888',
     fontStyle: 'italic',
   },
+  dropdownToggle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  dropdownToggleText: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
   listContainer: {
     maxHeight: 300,
+    marginTop: 4,
   },
   checkboxRow: {
     flexDirection: 'row',

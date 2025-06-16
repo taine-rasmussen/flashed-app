@@ -26,7 +26,6 @@ const Activity = () => {
   });
   const [gradeRangeValue, setGradeRangeValue] = useState([]);
 
-  console.log(dateRange, gradeRangeValue);
   const getClimbData = async () => {
     setLoading(true);
     const accessToken = await getFromSecureStore('access_token');
@@ -35,20 +34,20 @@ const Activity = () => {
       return;
     }
 
+    const filters = {
+      start_date: dateRange.startDate || null,
+      end_date: dateRange.endDate || null,
+      grade_range: gradeRangeValue.length > 0 ? gradeRangeValue : null,
+    };
+
     try {
       const url = `${API_URL}get_climbs/?user_id=${user.id}`;
-      const response = await axios.post<Climb[]>(
-        url,
-        {
-          // filters go here
+      const response = await axios.post<Climb[]>(url, JSON.stringify(filters), {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
+      });
 
       setClimbData(response.data);
     } catch (err: any) {
@@ -60,7 +59,7 @@ const Activity = () => {
 
   useEffect(() => {
     getClimbData();
-  }, []);
+  }, [dateRange, gradeRangeValue]);
 
   if (loading) return <Text>Loading…</Text>;
 

@@ -48,7 +48,12 @@ const ActivityFilterMenu = (props: ActivityFilterMenuProps) => {
         onDismiss={setOpenGradeRange}
         setValue={setGradeRangeValue}
       />
-      <CalendarDialog open={openCalendar} onDismiss={setOpenCalendar} setValue={setDateRange} />
+      <CalendarDialog
+        open={openCalendar}
+        dateRange={dateRange}
+        setValue={setDateRange}
+        onDismiss={setOpenCalendar}
+      />
       <View style={styles.container}>
         <FAB
           small

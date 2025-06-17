@@ -39,7 +39,7 @@ const ActivityFilterMenu = (props: ActivityFilterMenuProps) => {
   const styles = useMemo(() => createStyles(theme, open), [theme, open]);
 
   const hasCalendarApplied = !!dateRange.startDate;
-  const hasGradeRangeApplied = false;
+  const hasGradeRangeApplied = gradeRangeValue.length != 0;
   const fabIconColor =
     !!dateRange.startDate && !open ? theme.colors.primary : theme.colors.secondary;
 

@@ -40,6 +40,7 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
   const handleClear = () => {
     setSelectedGrades([]);
     setValue([]);
+    onDismiss(false);
   };
 
   const handleApply = () => {

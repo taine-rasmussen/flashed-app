@@ -67,11 +67,11 @@ const GradeRangeSelector = () => {
             <View key={grade}>
               <View style={styles.checkboxRow}>
                 <Text style={styles.gradeLabel}>{grade.toUpperCase()}</Text>
-                <Checkbox
+                <Checkbox.Android
                   color="red"
-                  uncheckedColor="blue"
                   onPress={() => toggleGrade(grade)}
                   status={selectedGrades.includes(grade) ? 'checked' : 'unchecked'}
+                  uncheckedColor={theme.colors.outline}
                 />
               </View>
               {index !== V_GRADES.length - 1 && <Divider />}
@@ -90,13 +90,11 @@ const getStyles = (theme: AppTheme) =>
     chipWrap: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      paddingVertical: 4,
-      justifyContent: 'flex-start',
+      gap: 8,
     },
     chip: {
-      flexBasis: '22%', // 4 per row with spacing
-      flexGrow: 1,
-      margin: 4,
+      width: '30%',
+      alignItems: 'center',
       justifyContent: 'center',
     },
     placeholder: {

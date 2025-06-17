@@ -24,6 +24,7 @@ export default [
         fetch: 'readonly',
         alert: 'readonly',
         process: 'readonly',
+        requestAnimationFrame: 'readonly'
       },
       parser: tsParser,
       parserOptions: {

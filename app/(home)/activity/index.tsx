@@ -61,7 +61,12 @@ const Activity = () => {
     getClimbData();
   }, [dateRange, gradeRangeValue]);
 
-  if (loading) return <Text>Loading…</Text>;
+  if (loading)
+    return (
+      <IndexWrapper>
+        <Text>Loading…</Text>
+      </IndexWrapper>
+    );
 
   return (
     <IndexWrapper>

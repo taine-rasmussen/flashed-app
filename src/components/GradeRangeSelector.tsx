@@ -7,6 +7,7 @@ import {
   LayoutAnimation,
   Platform,
   UIManager,
+  InteractionManager,
 } from 'react-native';
 import { Text, Chip, Checkbox, Divider, Button } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -40,12 +41,16 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
   const handleClear = () => {
     setSelectedGrades([]);
     setValue([]);
-    onDismiss(false);
+    InteractionManager.runAfterInteractions(() => {
+      requestAnimationFrame(() => onDismiss(false));
+    });
   };
 
   const handleApply = () => {
     setValue(selectedGrades);
-    onDismiss(false);
+    InteractionManager.runAfterInteractions(() => {
+      requestAnimationFrame(() => onDismiss(false));
+    });
   };
 
   if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {

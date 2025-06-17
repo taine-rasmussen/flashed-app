@@ -8,7 +8,7 @@ import {
   Platform,
   UIManager,
 } from 'react-native';
-import { Text, Chip, Checkbox, Divider } from 'react-native-paper';
+import { Text, Chip, Checkbox, Divider, Button } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { AppTheme } from '@/theme/types';
@@ -79,6 +79,14 @@ const GradeRangeSelector = () => {
           ))}
         </ScrollView>
       )}
+      <View style={styles.btnContainer}>
+        <Button style={styles.btn} mode="elevated">
+          Clear
+        </Button>
+        <Button style={styles.btn} mode="contained">
+          Apply
+        </Button>
+      </View>
     </View>
   );
 };
@@ -127,5 +135,17 @@ const getStyles = (theme: AppTheme) =>
     },
     gradeLabel: {
       fontSize: 16,
+    },
+    btnContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      width: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: theme.custom.spacing.md,
+      paddingTop: theme.custom.spacing.md,
+    },
+    btn: {
+      width: '45%',
     },
   });

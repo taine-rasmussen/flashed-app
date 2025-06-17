@@ -48,7 +48,6 @@ const Activity = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-
       setClimbData(response.data);
     } catch (err: any) {
       console.error(err);

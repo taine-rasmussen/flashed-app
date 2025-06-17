@@ -15,7 +15,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { AppTheme } from '@/theme/types';
 import { useAppTheme } from '@/theme';
 
-const V_GRADES = Array.from({ length: 18 }, (_, i) => `v${i}`);
+const V_GRADES = Array.from({ length: 18 }, (_, i) => `V${i}`);
 
 interface IGradeRangeSelector {
   value: string[];

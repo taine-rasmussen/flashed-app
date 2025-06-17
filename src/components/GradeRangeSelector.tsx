@@ -8,27 +8,26 @@ import { useAppTheme } from '@/theme';
 
 const V_GRADES = Array.from({ length: 18 }, (_, i) => `v${i}`);
 
-type Props = {
-  selectedGrades: string[];
-  onChange: (grades: string[]) => void;
-};
-
-const GradeRangeSelector = ({ selectedGrades, onChange }: Props) => {
+const GradeRangeSelector = () => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const theme = useAppTheme();
   const styles = getStyles(theme);
+  const [selectedGrades, setSelectedGrades] = useState<string[]>([]);
+
   const toggleGrade = (grade: string) => {
-    onChange(
+    setSelectedGrades(
       selectedGrades.includes(grade)
         ? selectedGrades.filter(g => g !== grade)
         : [...selectedGrades, grade],
     );
   };
 
+  console.log(selectedGrades);
+
   return (
     <View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipContainer}>
-        {selectedGrades.length > 0 ? (
+        {selectedGrades.length >= 0 ? (
           selectedGrades.map(grade => (
             <Chip key={grade} onClose={() => toggleGrade(grade)} style={styles.chip}>
               {grade.toUpperCase()}
@@ -39,7 +38,6 @@ const GradeRangeSelector = ({ selectedGrades, onChange }: Props) => {
         )}
       </ScrollView>
 
-      {/* Dropdown Toggle */}
       <TouchableOpacity
         style={styles.dropdownToggle}
         onPress={() => setDropdownOpen(prev => !prev)}

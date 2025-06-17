@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  LayoutAnimation,
+  Platform,
+  UIManager,
+} from 'react-native';
 import { Text, Chip, Checkbox, Divider } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -24,6 +32,10 @@ const GradeRangeSelector = () => {
 
   console.log(selectedGrades);
 
+  if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+
   return (
     <View>
       <View style={styles.chipWrap}>
@@ -40,7 +52,10 @@ const GradeRangeSelector = () => {
 
       <TouchableOpacity
         style={styles.dropdownToggle}
-        onPress={() => setDropdownOpen(prev => !prev)}
+        onPress={() => {
+          setDropdownOpen(prev => !prev);
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        }}
       >
         <Text style={styles.dropdownToggleText}>Select Grades</Text>
         <MaterialIcons name={dropdownOpen ? 'expand-less' : 'expand-more'} size={24} />
@@ -48,15 +63,18 @@ const GradeRangeSelector = () => {
       <Divider />
       {dropdownOpen && (
         <ScrollView style={styles.listContainer}>
-          {V_GRADES.map(grade => (
-            <View key={grade} style={styles.checkboxRow}>
-              <Checkbox
-                color="red"
-                uncheckedColor="blue"
-                onPress={() => toggleGrade(grade)}
-                status={selectedGrades.includes(grade) ? 'checked' : 'unchecked'}
-              />
-              <Text style={styles.gradeLabel}>{grade.toUpperCase()}</Text>
+          {V_GRADES.map((grade, index) => (
+            <View key={grade}>
+              <View style={styles.checkboxRow}>
+                <Text style={styles.gradeLabel}>{grade.toUpperCase()}</Text>
+                <Checkbox
+                  color="red"
+                  uncheckedColor="blue"
+                  onPress={() => toggleGrade(grade)}
+                  status={selectedGrades.includes(grade) ? 'checked' : 'unchecked'}
+                />
+              </View>
+              {index !== V_GRADES.length - 1 && <Divider />}
             </View>
           ))}
         </ScrollView>
@@ -73,9 +91,13 @@ const getStyles = (theme: AppTheme) =>
       flexDirection: 'row',
       flexWrap: 'wrap',
       paddingVertical: 4,
+      justifyContent: 'flex-start',
     },
     chip: {
+      flexBasis: '22%', // 4 per row with spacing
+      flexGrow: 1,
       margin: 4,
+      justifyContent: 'center',
     },
     placeholder: {
       color: '#888',
@@ -93,9 +115,15 @@ const getStyles = (theme: AppTheme) =>
     },
     listContainer: {
       maxHeight: 300,
+      borderRadius: theme.roundness,
+      marginTop: theme.custom.spacing.sm,
+      padding: theme.custom.spacing.sm,
+      borderColor: theme.colors.outlineVariant,
+      boxShadow: `2px 5px 12px ${theme.colors.surface}`,
     },
     checkboxRow: {
       flexDirection: 'row',
+      justifyContent: 'space-between',
       alignItems: 'center',
       paddingVertical: 6,
     },

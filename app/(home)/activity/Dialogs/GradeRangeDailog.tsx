@@ -12,8 +12,6 @@ const GradeRangeDialog = (props: IGradeRangeDialog) => {
   const { open, onDismiss, setValue, value } = props;
   const handleDismiss = () => onDismiss(false);
 
-  console.log(value);
-
   return (
     <Portal>
       {open && (

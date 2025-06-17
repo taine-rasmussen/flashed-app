@@ -37,7 +37,7 @@ const Activity = () => {
     const filters = {
       start_date: dateRange.startDate || null,
       end_date: dateRange.endDate || null,
-      grade_range: gradeRangeValue.length > 0 ? gradeRangeValue : null,
+      grade_range: gradeRangeValue.length != 0 ? gradeRangeValue : null,
     };
 
     try {

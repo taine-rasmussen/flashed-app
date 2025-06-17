@@ -8,14 +8,14 @@ interface IGradeRangeDialog {
 }
 
 const GradeRangeDialog = (props: IGradeRangeDialog) => {
-  const { open, onDismiss } = props;
+  const { open, onDismiss, setValue } = props;
   const handleDismiss = () => onDismiss(false);
 
   return (
     <Portal>
       <Dialog visible={open} onDismiss={handleDismiss}>
         <Dialog.Content>
-          <GradeRangeSelector />
+          <GradeRangeSelector setValue={setValue} onDismiss={onDismiss} />
         </Dialog.Content>
       </Dialog>
     </Portal>

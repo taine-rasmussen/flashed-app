@@ -16,7 +16,13 @@ import { useAppTheme } from '@/theme';
 
 const V_GRADES = Array.from({ length: 18 }, (_, i) => `v${i}`);
 
-const GradeRangeSelector = () => {
+interface IGradeRangeSelector {
+  setValue: any; // update when known
+  onDismiss: (bol: boolean) => void;
+}
+
+const GradeRangeSelector = (props: IGradeRangeSelector) => {
+  const { setValue, onDismiss } = props;
   const theme = useAppTheme();
   const styles = getStyles(theme);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
@@ -28,6 +34,16 @@ const GradeRangeSelector = () => {
         ? selectedGrades.filter(g => g !== grade)
         : [...selectedGrades, grade],
     );
+  };
+
+  const handleClear = () => {
+    setSelectedGrades([]);
+    setValue([]);
+  };
+
+  const handleApply = () => {
+    setValue(selectedGrades);
+    onDismiss(false);
   };
 
   console.log(selectedGrades);
@@ -68,10 +84,10 @@ const GradeRangeSelector = () => {
               <View style={styles.checkboxRow}>
                 <Text style={styles.gradeLabel}>{grade.toUpperCase()}</Text>
                 <Checkbox.Android
-                  color="red"
+                  color={theme.colors.primary}
                   onPress={() => toggleGrade(grade)}
                   status={selectedGrades.includes(grade) ? 'checked' : 'unchecked'}
-                  uncheckedColor={theme.colors.outline}
+                  uncheckedColor={theme.colors.secondary}
                 />
               </View>
               {index !== V_GRADES.length - 1 && <Divider />}
@@ -80,10 +96,10 @@ const GradeRangeSelector = () => {
         </ScrollView>
       )}
       <View style={styles.btnContainer}>
-        <Button style={styles.btn} mode="elevated">
+        <Button style={styles.btn} mode="elevated" onPress={handleClear}>
           Clear
         </Button>
-        <Button style={styles.btn} mode="contained">
+        <Button style={styles.btn} mode="contained" onPress={handleApply}>
           Apply
         </Button>
       </View>

@@ -9,9 +9,9 @@ import { useAppTheme } from '@/theme';
 const V_GRADES = Array.from({ length: 18 }, (_, i) => `v${i}`);
 
 const GradeRangeSelector = () => {
-  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const theme = useAppTheme();
   const styles = getStyles(theme);
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [selectedGrades, setSelectedGrades] = useState<string[]>([]);
 
   const toggleGrade = (grade: string) => {
@@ -26,8 +26,8 @@ const GradeRangeSelector = () => {
 
   return (
     <View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipContainer}>
-        {selectedGrades.length >= 0 ? (
+      <View style={styles.chipWrap}>
+        {selectedGrades.length > 0 ? (
           selectedGrades.map(grade => (
             <Chip key={grade} onClose={() => toggleGrade(grade)} style={styles.chip}>
               {grade.toUpperCase()}
@@ -36,7 +36,7 @@ const GradeRangeSelector = () => {
         ) : (
           <Text style={styles.placeholder}>No grades selected</Text>
         )}
-      </ScrollView>
+      </View>
 
       <TouchableOpacity
         style={styles.dropdownToggle}
@@ -46,16 +46,15 @@ const GradeRangeSelector = () => {
         <MaterialIcons name={dropdownOpen ? 'expand-less' : 'expand-more'} size={24} />
       </TouchableOpacity>
       <Divider />
-
       {dropdownOpen && (
         <ScrollView style={styles.listContainer}>
           {V_GRADES.map(grade => (
             <View key={grade} style={styles.checkboxRow}>
               <Checkbox
-                status={selectedGrades.includes(grade) ? 'checked' : 'unchecked'}
-                onPress={() => toggleGrade(grade)}
                 color="red"
                 uncheckedColor="blue"
+                onPress={() => toggleGrade(grade)}
+                status={selectedGrades.includes(grade) ? 'checked' : 'unchecked'}
               />
               <Text style={styles.gradeLabel}>{grade.toUpperCase()}</Text>
             </View>
@@ -70,12 +69,13 @@ export default GradeRangeSelector;
 
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
-    chipContainer: {
+    chipWrap: {
       flexDirection: 'row',
-      marginBottom: 12,
+      flexWrap: 'wrap',
+      paddingVertical: 4,
     },
     chip: {
-      marginRight: 8,
+      margin: 4,
     },
     placeholder: {
       color: '#888',

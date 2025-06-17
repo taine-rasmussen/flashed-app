@@ -14,7 +14,6 @@ const GradeRangeDialog = (props: IGradeRangeDialog) => {
   return (
     <Portal>
       <Dialog visible={open} onDismiss={handleDismiss}>
-        <Dialog.Title>GradeRange</Dialog.Title>
         <Dialog.Content>
           <GradeRangeSelector />
         </Dialog.Content>

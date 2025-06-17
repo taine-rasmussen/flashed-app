@@ -3,20 +3,22 @@ import { Portal, Dialog } from 'react-native-paper';
 import GradeRangeSelector from '@/components/GradeRangeSelector';
 interface IGradeRangeDialog {
   open: boolean;
-  setValue: any; // update when known
+  value: string[];
+  setValue: (val: string[]) => void;
   onDismiss: (bol: boolean) => void;
 }
 
 const GradeRangeDialog = (props: IGradeRangeDialog) => {
-  const { open, onDismiss } = props;
+  const { open, onDismiss, setValue, value } = props;
   const handleDismiss = () => onDismiss(false);
+
+  console.log(value);
 
   return (
     <Portal>
       <Dialog visible={open} onDismiss={handleDismiss}>
-        <Dialog.Title>GradeRange</Dialog.Title>
         <Dialog.Content>
-          <GradeRangeSelector />
+          <GradeRangeSelector setValue={setValue} onDismiss={onDismiss} value={value} />
         </Dialog.Content>
       </Dialog>
     </Portal>

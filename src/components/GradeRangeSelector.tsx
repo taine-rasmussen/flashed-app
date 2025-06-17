@@ -39,7 +39,6 @@ const GradeRangeSelector = ({ selectedGrades, onChange }: Props) => {
         )}
       </ScrollView>
 
-      {/* Dropdown Toggle */}
       <TouchableOpacity
         style={styles.dropdownToggle}
         onPress={() => setDropdownOpen(prev => !prev)}

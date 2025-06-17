@@ -14,11 +14,12 @@ interface ActivityFilterMenuProps {
   dateRange: IDateRange;
   openCalendar: boolean;
   openGradeRange: boolean;
+  gradeRangeValue: string[];
   setOpen: (open: boolean) => void;
-  setGradeRangeValue: (val: any) => void; // update when known
   setDateRange: (val: IDateRange) => void;
   setOpenCalendar: (bol: boolean) => void;
   setOpenGradeRange: (bol: boolean) => void;
+  setGradeRangeValue: (val: string[]) => void;
 }
 
 const ActivityFilterMenu = (props: ActivityFilterMenuProps) => {
@@ -29,8 +30,9 @@ const ActivityFilterMenu = (props: ActivityFilterMenuProps) => {
     openCalendar,
     setDateRange,
     openGradeRange,
-    setOpenGradeRange,
+    gradeRangeValue,
     setOpenCalendar,
+    setOpenGradeRange,
     setGradeRangeValue,
   } = props;
   const theme = useAppTheme();
@@ -45,6 +47,7 @@ const ActivityFilterMenu = (props: ActivityFilterMenuProps) => {
     <>
       <GradeRangeDialog
         open={openGradeRange}
+        value={gradeRangeValue}
         onDismiss={setOpenGradeRange}
         setValue={setGradeRangeValue}
       />

@@ -14,10 +14,11 @@ interface ActivityFiltersProps {
   openCalendar: boolean;
   openGradeRange: boolean;
   filterOrder: FilterOrder;
-  setGradeRangeValue: (val: any) => void; // update type
-  setOpenCalendar: (bol: boolean) => void;
+  gradeRangeValue: string[];
   setDateRange: (val: IDateRange) => void;
+  setOpenCalendar: (bol: boolean) => void;
   setOpenGradeRange: (bol: boolean) => void;
+  setGradeRangeValue: (val: string[]) => void;
   setFilterOrder: (order: FilterOrder) => void;
 }
 
@@ -26,10 +27,11 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
     dateRange,
     filterOrder,
     openCalendar,
+    setDateRange,
     openGradeRange,
     setFilterOrder,
+    gradeRangeValue,
     setOpenCalendar,
-    setDateRange,
     setOpenGradeRange,
     setGradeRangeValue,
   } = props;
@@ -67,6 +69,7 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
           openCalendar={openCalendar}
           openGradeRange={openGradeRange}
           setOpenCalendar={setOpenCalendar}
+          gradeRangeValue={gradeRangeValue}
           setOpenGradeRange={setOpenGradeRange}
           setGradeRangeValue={setGradeRangeValue}
         />

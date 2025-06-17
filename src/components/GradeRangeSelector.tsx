@@ -17,12 +17,13 @@ import { useAppTheme } from '@/theme';
 const V_GRADES = Array.from({ length: 18 }, (_, i) => `v${i}`);
 
 interface IGradeRangeSelector {
-  setValue: any; // update when known
+  value: string[];
+  setValue: (val: string[]) => void;
   onDismiss: (bol: boolean) => void;
 }
 
 const GradeRangeSelector = (props: IGradeRangeSelector) => {
-  const { setValue, onDismiss } = props;
+  const { setValue, onDismiss, value } = props;
   const theme = useAppTheme();
   const styles = getStyles(theme);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
@@ -46,17 +47,18 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
     onDismiss(false);
   };
 
-  console.log(selectedGrades);
-
   if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
+  const gradeData = value.length != 0 ? value : selectedGrades;
+  const isBtnsDisabled = value.length != 0 ? false : selectedGrades.length === 0;
+
   return (
     <View>
       <View style={styles.chipWrap}>
-        {selectedGrades.length > 0 ? (
-          selectedGrades.map(grade => (
+        {gradeData.length > 0 ? (
+          gradeData.map(grade => (
             <Chip key={grade} onClose={() => toggleGrade(grade)} style={styles.chip}>
               {grade.toUpperCase()}
             </Chip>
@@ -96,10 +98,10 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
         </ScrollView>
       )}
       <View style={styles.btnContainer}>
-        <Button style={styles.btn} mode="elevated" onPress={handleClear}>
+        <Button style={styles.btn} mode="elevated" onPress={handleClear} disabled={isBtnsDisabled}>
           Clear
         </Button>
-        <Button style={styles.btn} mode="contained" onPress={handleApply}>
+        <Button style={styles.btn} mode="contained" onPress={handleApply} disabled={isBtnsDisabled}>
           Apply
         </Button>
       </View>

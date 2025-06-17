@@ -20,11 +20,11 @@ const Activity = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [openCalendar, setOpenCalendar] = useState<boolean>(false);
   const [openGradeRange, setOpenGradeRange] = useState<boolean>(false);
+  const [gradeRangeValue, setGradeRangeValue] = useState<string[]>([]);
   const [dateRange, setDateRange] = useState<IDateRange>({
     startDate: null,
     endDate: null,
   });
-  const [gradeRangeValue, setGradeRangeValue] = useState([]);
 
   const getClimbData = async () => {
     setLoading(true);
@@ -72,6 +72,7 @@ const Activity = () => {
         setDateRange={setDateRange}
         openGradeRange={openGradeRange}
         setFilterOrder={setFilterOrder}
+        gradeRangeValue={gradeRangeValue}
         setOpenCalendar={setOpenCalendar}
         setOpenGradeRange={setOpenGradeRange}
         setGradeRangeValue={setGradeRangeValue}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   ScrollView,
@@ -7,6 +7,7 @@ import {
   LayoutAnimation,
   Platform,
   UIManager,
+  InteractionManager,
 } from 'react-native';
 import { Text, Chip, Checkbox, Divider, Button } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -14,7 +15,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { AppTheme } from '@/theme/types';
 import { useAppTheme } from '@/theme';
 
-const V_GRADES = Array.from({ length: 18 }, (_, i) => `v${i}`);
+const V_GRADES = Array.from({ length: 18 }, (_, i) => `V${i}`);
 
 interface IGradeRangeSelector {
   value: string[];
@@ -40,11 +41,16 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
   const handleClear = () => {
     setSelectedGrades([]);
     setValue([]);
+    InteractionManager.runAfterInteractions(() => {
+      requestAnimationFrame(() => onDismiss(false));
+    });
   };
 
   const handleApply = () => {
     setValue(selectedGrades);
-    onDismiss(false);
+    InteractionManager.runAfterInteractions(() => {
+      requestAnimationFrame(() => onDismiss(false));
+    });
   };
 
   if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -53,6 +59,12 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
 
   const gradeData = value.length != 0 ? value : selectedGrades;
   const isBtnsDisabled = value.length != 0 ? false : selectedGrades.length === 0;
+
+  useEffect(() => {
+    if (dropdownOpen) {
+      setSelectedGrades(value);
+    }
+  }, [dropdownOpen]);
 
   return (
     <View>

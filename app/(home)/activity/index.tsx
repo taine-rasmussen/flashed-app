@@ -37,7 +37,7 @@ const Activity = () => {
     const filters = {
       start_date: dateRange.startDate || null,
       end_date: dateRange.endDate || null,
-      grade_range: gradeRangeValue.length > 0 ? gradeRangeValue : null,
+      grade_range: gradeRangeValue.length != 0 ? gradeRangeValue : null,
     };
 
     try {
@@ -48,7 +48,6 @@ const Activity = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-
       setClimbData(response.data);
     } catch (err: any) {
       console.error(err);
@@ -61,7 +60,12 @@ const Activity = () => {
     getClimbData();
   }, [dateRange, gradeRangeValue]);
 
-  if (loading) return <Text>Loading…</Text>;
+  if (loading)
+    return (
+      <IndexWrapper>
+        <Text>Loading…</Text>
+      </IndexWrapper>
+    );
 
   return (
     <IndexWrapper>

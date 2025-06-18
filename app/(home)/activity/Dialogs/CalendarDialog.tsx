@@ -1,7 +1,7 @@
 import { Portal, Dialog, Button } from 'react-native-paper';
 import DateTimePicker, { useDefaultStyles } from 'react-native-ui-datepicker';
 import { StyleSheet } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 
 import { IDateRange } from '@/types';
@@ -32,12 +32,19 @@ const CalendarDialog = (props: ICalendarDialog) => {
 
   const handleCancel = () => {
     setSelected(INIT_STATE);
-    setValue(INIT_STATE);
-    onDismiss(false);
   };
 
-  const startDate = dateRange.startDate != null ? dateRange.startDate : selected.startDate;
-  const endDate = dateRange.endDate != null ? dateRange.endDate : selected.endDate;
+  const selectedIsEmpty = selected.startDate != null && selected.endDate != null;
+  const dateRangeIsEmpty = dateRange.startDate != null && dateRange.endDate != null;
+
+  const isClearDisabled = !selectedIsEmpty;
+  const isApplyDisabled = !selectedIsEmpty && !dateRangeIsEmpty;
+
+  useEffect(() => {
+    if (dateRangeIsEmpty) {
+      setSelected(dateRange);
+    }
+  }, []);
 
   return (
     <Portal>
@@ -52,17 +59,27 @@ const CalendarDialog = (props: ICalendarDialog) => {
             selected: { backgroundColor: theme.colors.primary },
           }}
           mode="range"
-          endDate={endDate}
           maxDate={tomorrow}
-          startDate={startDate}
+          endDate={selected.endDate}
           navigationPosition={'right'}
+          startDate={selected.startDate}
           onChange={date => setSelected({ startDate: date.startDate, endDate: date.endDate })}
         />
         <Dialog.Actions>
-          <Button style={styles.buttons} onPress={handleCancel} mode="contained-tonal">
+          <Button
+            style={styles.buttons}
+            onPress={handleCancel}
+            mode="contained-tonal"
+            disabled={isClearDisabled}
+          >
             Clear
           </Button>
-          <Button style={styles.buttons} onPress={handleApply} mode="contained">
+          <Button
+            mode="contained"
+            onPress={handleApply}
+            style={styles.buttons}
+            disabled={isApplyDisabled}
+          >
             Apply
           </Button>
         </Dialog.Actions>

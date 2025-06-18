@@ -28,7 +28,7 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
   const theme = useAppTheme();
   const styles = getStyles(theme);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  const [selectedGrades, setSelectedGrades] = useState<string[]>([]);
+  const [selectedGrades, setSelectedGrades] = useState<string[]>(value);
 
   const toggleGrade = (grade: string) => {
     setSelectedGrades(
@@ -40,10 +40,6 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
 
   const handleClear = () => {
     setSelectedGrades([]);
-    setValue([]);
-    InteractionManager.runAfterInteractions(() => {
-      requestAnimationFrame(() => onDismiss(false));
-    });
   };
 
   const handleApply = () => {
@@ -57,20 +53,20 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
-  const gradeData = value.length != 0 ? value : selectedGrades;
-  const isBtnsDisabled = value.length != 0 ? false : selectedGrades.length === 0;
+  const isClearDisabled = selectedGrades.length === 0;
+  const isApplyDisabled = selectedGrades.length === 0 && value.length === 0;
 
   useEffect(() => {
-    if (dropdownOpen) {
+    if (value.length != 0) {
       setSelectedGrades(value);
     }
-  }, [dropdownOpen]);
+  }, []);
 
   return (
     <View>
       <View style={styles.chipWrap}>
-        {gradeData.length > 0 ? (
-          gradeData.map(grade => (
+        {selectedGrades.length > 0 ? (
+          selectedGrades.map(grade => (
             <Chip key={grade} onClose={() => toggleGrade(grade)} style={styles.chip}>
               {grade.toUpperCase()}
             </Chip>
@@ -110,10 +106,15 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
         </ScrollView>
       )}
       <View style={styles.btnContainer}>
-        <Button style={styles.btn} mode="elevated" onPress={handleClear} disabled={isBtnsDisabled}>
+        <Button style={styles.btn} mode="elevated" onPress={handleClear} disabled={isClearDisabled}>
           Clear
         </Button>
-        <Button style={styles.btn} mode="contained" onPress={handleApply} disabled={isBtnsDisabled}>
+        <Button
+          style={styles.btn}
+          mode="contained"
+          onPress={handleApply}
+          disabled={isApplyDisabled}
+        >
           Apply
         </Button>
       </View>

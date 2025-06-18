@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   ScrollView,
@@ -59,6 +59,12 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
 
   const gradeData = value.length != 0 ? value : selectedGrades;
   const isBtnsDisabled = value.length != 0 ? false : selectedGrades.length === 0;
+
+  useEffect(() => {
+    if (dropdownOpen) {
+      setSelectedGrades(value);
+    }
+  }, [dropdownOpen]);
 
   return (
     <View>

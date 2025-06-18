@@ -26,7 +26,9 @@ const ActivityLog = (props: IActivityLog) => {
   return (
     <ScrollView>
       {sortedData?.length ? (
-        sortedData.map((climb, i) => <ActivityLogCard climb={climb} index={i} />)
+        sortedData.map((climb, i) => (
+          <ActivityLogCard key={`${climb.created_at}_${i}`} climb={climb} />
+        ))
       ) : (
         <Text>No climbs found.</Text>
       )}

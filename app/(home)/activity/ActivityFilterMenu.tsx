@@ -41,7 +41,9 @@ const ActivityFilterMenu = (props: ActivityFilterMenuProps) => {
   const hasCalendarApplied = !!dateRange.startDate;
   const hasGradeRangeApplied = gradeRangeValue.length != 0;
   const fabIconColor =
-    !!dateRange.startDate && !open ? theme.colors.primary : theme.colors.secondary;
+    (hasCalendarApplied || hasGradeRangeApplied) && !open
+      ? theme.colors.primary
+      : theme.colors.secondary;
 
   return (
     <>

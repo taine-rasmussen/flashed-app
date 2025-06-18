@@ -10,12 +10,10 @@ import { getGradeColor } from '@/utils/helpers';
 
 interface IActivityLogCard {
   climb: Climb;
-  index: number;
 }
 
 const ActivityLogCard = (props: IActivityLogCard) => {
   const {
-    index,
     climb: { grade, attempts, created_at },
   } = props;
 
@@ -29,7 +27,7 @@ const ActivityLogCard = (props: IActivityLogCard) => {
   const flagColor = getGradeColor(grade);
 
   return (
-    <Card style={styles.card} elevation={5} key={index}>
+    <Card style={styles.card} elevation={5}>
       <View style={styles.content}>
         <Text variant="displaySmall" style={styles.grade}>
           {grade}

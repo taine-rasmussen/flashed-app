@@ -4,6 +4,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useState } from 'react';
 
 import ActivityFilterMenu from './ActivityFilterMenu';
+import AddClimbDialog from './Dialogs/AddClimbDialog';
 
 import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
@@ -38,49 +39,56 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
   const theme = useAppTheme();
   const styles = getStyles(theme);
   const [fabOpen, setFabOpen] = useState(false);
+  const [openAddClimbDialog, setOpenAddClimbDialog] = useState<boolean>(false);
 
   const getIconColor = (dir: FilterOrder) =>
     filterOrder === dir ? theme.colors.primary : theme.colors.secondary;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.iconGroup}>
-        <Pressable
-          style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}
-          onPress={() => setFilterOrder('desc')}
-        >
-          <AntDesign name="down" size={36} color={getIconColor('desc')} />
-        </Pressable>
-
-        <Pressable
-          style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}
-          onPress={() => setFilterOrder('asc')}
-        >
-          <AntDesign name="up" size={36} color={getIconColor('asc')} />
-        </Pressable>
-      </View>
-
-      <View style={styles.iconGroup}>
-        <ActivityFilterMenu
-          open={fabOpen}
-          setOpen={setFabOpen}
-          dateRange={dateRange}
-          setDateRange={setDateRange}
-          openCalendar={openCalendar}
-          openGradeRange={openGradeRange}
-          setOpenCalendar={setOpenCalendar}
-          gradeRangeValue={gradeRangeValue}
-          setOpenGradeRange={setOpenGradeRange}
-          setGradeRangeValue={setGradeRangeValue}
-        />
-
-        {!fabOpen && (
-          <Pressable style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}>
-            <Ionicons name="add-circle-outline" size={36} color={theme.colors.secondary} />
+    <>
+      <AddClimbDialog open={openAddClimbDialog} onDismiss={setOpenAddClimbDialog} />
+      <View style={styles.container}>
+        <View style={styles.iconGroup}>
+          <Pressable
+            style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}
+            onPress={() => setFilterOrder('desc')}
+          >
+            <AntDesign name="down" size={36} color={getIconColor('desc')} />
           </Pressable>
-        )}
+
+          <Pressable
+            style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}
+            onPress={() => setFilterOrder('asc')}
+          >
+            <AntDesign name="up" size={36} color={getIconColor('asc')} />
+          </Pressable>
+        </View>
+
+        <View style={styles.iconGroup}>
+          <ActivityFilterMenu
+            open={fabOpen}
+            setOpen={setFabOpen}
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            openCalendar={openCalendar}
+            openGradeRange={openGradeRange}
+            setOpenCalendar={setOpenCalendar}
+            gradeRangeValue={gradeRangeValue}
+            setOpenGradeRange={setOpenGradeRange}
+            setGradeRangeValue={setGradeRangeValue}
+          />
+
+          {!fabOpen && (
+            <Pressable
+              onPress={() => setOpenAddClimbDialog(true)}
+              style={({ pressed }) => [styles.iconWrapper, pressed && styles.iconPressed]}
+            >
+              <Ionicons name="add-circle-outline" size={36} color={theme.colors.secondary} />
+            </Pressable>
+          )}
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 

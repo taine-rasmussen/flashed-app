@@ -96,7 +96,7 @@ const getStyles = () =>
       paddingHorizontal: 16,
     },
     buttons: {
-      width: '33.33%',
+      width: '50%',
       borderRadius: 16,
     },
   });

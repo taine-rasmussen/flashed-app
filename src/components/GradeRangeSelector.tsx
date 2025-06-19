@@ -28,11 +28,9 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
   const { setValue, onDismiss, value, gradeStyle } = props;
   const theme = useAppTheme();
   const styles = getStyles(theme);
+  const grades = getUsersGrades(gradeStyle);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [selectedGrades, setSelectedGrades] = useState<string[]>(value);
-
-  const grades = getUsersGrades(gradeStyle);
-  console.log(grades);
 
   const toggleGrade = (grade: string) => {
     setSelectedGrades(

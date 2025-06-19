@@ -6,10 +6,10 @@ import { getFromSecureStore, saveToSecureStore, deleteFromSecureStore } from '@/
 import { DecodedToken } from '@/types';
 
 interface AuthContextType {
-  isLoggedIn: boolean;
   loading: boolean;
-  checkAuthStatus: () => Promise<void>;
+  isLoggedIn: boolean;
   signOut: () => Promise<void>;
+  checkAuthStatus: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

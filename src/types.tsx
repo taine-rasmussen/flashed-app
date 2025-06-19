@@ -11,7 +11,7 @@ export interface User {
   created_at: string;
   email: string;
   first_name: string;
-  grade_style: string;
+  grade_style: GradeStyle;
   home_gym: string;
   id: number;
   last_name: string;
@@ -36,3 +36,5 @@ export interface IDateRange {
   startDate: DateType;
   endDate: DateType;
 }
+
+export type GradeStyle = 'VScale' | 'Font';

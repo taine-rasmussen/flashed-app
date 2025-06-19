@@ -1,3 +1,7 @@
+import { fontGrades, vScaleGrades } from './ClimbingGrades';
+
+import { GradeStyle } from '@/types';
+
 export const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 const gradeColors: Record<string, string> = {
@@ -25,3 +29,14 @@ export function getGradeColor(grade: string): string {
   const normalized = grade.toUpperCase().replace(/\+$/, '');
   return gradeColors[normalized] ?? '#CCCCCC';
 }
+
+export const getUsersGrades = (grade: GradeStyle) => {
+  switch (grade) {
+    case 'VScale':
+      return vScaleGrades;
+    case 'Font':
+      return fontGrades;
+    default:
+      vScaleGrades;
+  }
+};

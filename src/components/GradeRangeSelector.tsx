@@ -14,19 +14,21 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { AppTheme } from '@/theme/types';
 import { useAppTheme } from '@/theme';
-
-const V_GRADES = Array.from({ length: 18 }, (_, i) => `V${i}`);
+import { GradeStyle } from '@/types';
+import { getUsersGrades } from '@/utils/helpers';
 
 interface IGradeRangeSelector {
   value: string[];
+  gradeStyle: GradeStyle;
   setValue: (val: string[]) => void;
   onDismiss: (bol: boolean) => void;
 }
 
 const GradeRangeSelector = (props: IGradeRangeSelector) => {
-  const { setValue, onDismiss, value } = props;
+  const { setValue, onDismiss, value, gradeStyle } = props;
   const theme = useAppTheme();
   const styles = getStyles(theme);
+  const grades = getUsersGrades(gradeStyle);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [selectedGrades, setSelectedGrades] = useState<string[]>(value);
 
@@ -89,20 +91,21 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
       <Divider />
       {dropdownOpen && (
         <ScrollView style={styles.listContainer}>
-          {V_GRADES.map((grade, index) => (
-            <View key={grade}>
-              <View style={styles.checkboxRow}>
-                <Text style={styles.gradeLabel}>{grade.toUpperCase()}</Text>
-                <Checkbox.Android
-                  color={theme.colors.primary}
-                  onPress={() => toggleGrade(grade)}
-                  status={selectedGrades.includes(grade) ? 'checked' : 'unchecked'}
-                  uncheckedColor={theme.colors.secondary}
-                />
+          {grades &&
+            grades.map((grade, index) => (
+              <View key={grade}>
+                <View style={styles.checkboxRow}>
+                  <Text style={styles.gradeLabel}>{grade.toUpperCase()}</Text>
+                  <Checkbox.Android
+                    color={theme.colors.primary}
+                    onPress={() => toggleGrade(grade)}
+                    status={selectedGrades.includes(grade) ? 'checked' : 'unchecked'}
+                    uncheckedColor={theme.colors.secondary}
+                  />
+                </View>
+                {index !== grades.length - 1 && <Divider />}
               </View>
-              {index !== V_GRADES.length - 1 && <Divider />}
-            </View>
-          ))}
+            ))}
         </ScrollView>
       )}
       <View style={styles.btnContainer}>

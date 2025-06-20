@@ -21,8 +21,8 @@ interface IGradeRangeSelector {
   value: string[];
   gradeStyle: GradeStyle;
   setValue: (val: string[]) => void;
-  onDismiss?: (bol: boolean) => void;
   multiSelect?: boolean;
+  onDismiss?: (bol: boolean) => void;
 }
 
 const GradeRangeSelector = (props: IGradeRangeSelector) => {
@@ -32,6 +32,9 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
   const grades = getUsersGrades(gradeStyle);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [selectedGrades, setSelectedGrades] = useState<string[]>(value);
+
+  const isClearDisabled = selectedGrades.length === 0;
+  const isApplyDisabled = selectedGrades.length === 0 && value.length === 0;
 
   const dropdownText = multiSelect ? 'Select Grades' : 'Select Grade';
   const noGradeSelectedText = multiSelect ? 'No grades selected' : 'No grade selected';
@@ -44,7 +47,9 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
           : [...selectedGrades, grade],
       );
     } else {
-      setSelectedGrades([grade]);
+      return setSelectedGrades(
+        selectedGrades.includes(grade) ? selectedGrades.filter(g => g !== grade) : [grade],
+      );
     }
   };
 
@@ -61,18 +66,17 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
     }
   };
 
-  if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
-
-  const isClearDisabled = selectedGrades.length === 0;
-  const isApplyDisabled = selectedGrades.length === 0 && value.length === 0;
-
   useEffect(() => {
     if (value.length != 0) {
       setSelectedGrades(value);
     }
   }, []);
+
+  if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+
+  console.log(selectedGrades.length > 0, selectedGrades.length, selectedGrades);
 
   return (
     <View>
@@ -96,7 +100,11 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
         }}
       >
         <Text style={styles.dropdownToggleText}>{dropdownText}</Text>
-        <MaterialIcons name={dropdownOpen ? 'expand-less' : 'expand-more'} size={24} />
+        <MaterialIcons
+          size={24}
+          color={theme.colors.secondary}
+          name={dropdownOpen ? 'expand-less' : 'expand-more'}
+        />
       </TouchableOpacity>
       <Divider />
       {dropdownOpen && (

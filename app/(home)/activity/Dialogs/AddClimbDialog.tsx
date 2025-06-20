@@ -13,7 +13,10 @@ interface IAddClimbDialog {
 
 const AddClimbDialog = (props: IAddClimbDialog) => {
   const { open, onDismiss, gradeStyle } = props;
-  const [stagedClimb, setStagedClimb] = useState({ grade: [''], attempts: 0 });
+  const [stagedClimb, setStagedClimb] = useState<{ grade: string[]; attempts: number }>({
+    grade: [],
+    attempts: 0,
+  });
 
   const setGrade = (grade: string[]) => {
     setStagedClimb(prev => ({ ...prev, grade }));

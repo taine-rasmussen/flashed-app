@@ -21,16 +21,19 @@ interface IGradeRangeSelector {
   value: string[];
   gradeStyle: GradeStyle;
   setValue: (val: string[]) => void;
-  onDismiss: (bol: boolean) => void;
+  onDismiss?: (bol: boolean) => void;
+  multiSelect?: boolean;
 }
 
 const GradeRangeSelector = (props: IGradeRangeSelector) => {
-  const { setValue, onDismiss, value, gradeStyle } = props;
+  const { setValue, onDismiss, value, gradeStyle, multiSelect = true } = props;
   const theme = useAppTheme();
   const styles = getStyles(theme);
   const grades = getUsersGrades(gradeStyle);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [selectedGrades, setSelectedGrades] = useState<string[]>(value);
+
+  console.log(multiSelect);
 
   const toggleGrade = (grade: string) => {
     setSelectedGrades(
@@ -46,9 +49,11 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
 
   const handleApply = () => {
     setValue(selectedGrades);
-    InteractionManager.runAfterInteractions(() => {
-      requestAnimationFrame(() => onDismiss(false));
-    });
+    if (onDismiss) {
+      InteractionManager.runAfterInteractions(() => {
+        requestAnimationFrame(() => onDismiss(false));
+      });
+    }
   };
 
   if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {

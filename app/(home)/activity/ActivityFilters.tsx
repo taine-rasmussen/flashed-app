@@ -9,6 +9,7 @@ import AddClimbDialog from './Dialogs/AddClimbDialog';
 import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
 import { FilterOrder, IDateRange } from '@/types';
+import { useUser } from '@/contexts/UserContext';
 
 interface ActivityFiltersProps {
   dateRange: IDateRange;
@@ -39,6 +40,7 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
   const theme = useAppTheme();
   const styles = getStyles(theme);
   const [fabOpen, setFabOpen] = useState(false);
+  const { user } = useUser();
   const [openAddClimbDialog, setOpenAddClimbDialog] = useState<boolean>(false);
 
   const getIconColor = (dir: FilterOrder) =>
@@ -46,7 +48,11 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
 
   return (
     <>
-      <AddClimbDialog open={openAddClimbDialog} onDismiss={setOpenAddClimbDialog} />
+      <AddClimbDialog
+        open={openAddClimbDialog}
+        onDismiss={setOpenAddClimbDialog}
+        gradeStyle={user.grade_style}
+      />
       <View style={styles.container}>
         <View style={styles.iconGroup}>
           <Pressable

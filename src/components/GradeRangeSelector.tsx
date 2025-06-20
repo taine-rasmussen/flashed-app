@@ -21,8 +21,8 @@ interface IGradeRangeSelector {
   value: string[];
   gradeStyle: GradeStyle;
   setValue: (val: string[]) => void;
-  onDismiss?: (bol: boolean) => void;
   multiSelect?: boolean;
+  onDismiss?: (bol: boolean) => void;
 }
 
 const GradeRangeSelector = (props: IGradeRangeSelector) => {
@@ -33,14 +33,24 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [selectedGrades, setSelectedGrades] = useState<string[]>(value);
 
-  console.log(multiSelect);
+  const isClearDisabled = selectedGrades.length === 0;
+  const isApplyDisabled = selectedGrades.length === 0 && value.length === 0;
+
+  const dropdownText = multiSelect ? 'Select Grades' : 'Select Grade';
+  const noGradeSelectedText = multiSelect ? 'No grades selected' : 'No grade selected';
 
   const toggleGrade = (grade: string) => {
-    setSelectedGrades(
-      selectedGrades.includes(grade)
-        ? selectedGrades.filter(g => g !== grade)
-        : [...selectedGrades, grade],
-    );
+    if (multiSelect) {
+      return setSelectedGrades(
+        selectedGrades.includes(grade)
+          ? selectedGrades.filter(g => g !== grade)
+          : [...selectedGrades, grade],
+      );
+    } else {
+      return setSelectedGrades(
+        selectedGrades.includes(grade) ? selectedGrades.filter(g => g !== grade) : [grade],
+      );
+    }
   };
 
   const handleClear = () => {
@@ -56,18 +66,17 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
     }
   };
 
-  if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
-
-  const isClearDisabled = selectedGrades.length === 0;
-  const isApplyDisabled = selectedGrades.length === 0 && value.length === 0;
-
   useEffect(() => {
     if (value.length != 0) {
       setSelectedGrades(value);
     }
   }, []);
+
+  if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+
+  console.log(selectedGrades.length > 0, selectedGrades.length, selectedGrades);
 
   return (
     <View>
@@ -79,7 +88,7 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
             </Chip>
           ))
         ) : (
-          <Text style={styles.placeholder}>No grades selected</Text>
+          <Text style={styles.placeholder}>{noGradeSelectedText}</Text>
         )}
       </View>
 
@@ -90,8 +99,12 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
           LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         }}
       >
-        <Text style={styles.dropdownToggleText}>Select Grades</Text>
-        <MaterialIcons name={dropdownOpen ? 'expand-less' : 'expand-more'} size={24} />
+        <Text style={styles.dropdownToggleText}>{dropdownText}</Text>
+        <MaterialIcons
+          size={24}
+          color={theme.colors.secondary}
+          name={dropdownOpen ? 'expand-less' : 'expand-more'}
+        />
       </TouchableOpacity>
       <Divider />
       {dropdownOpen && (
@@ -113,19 +126,26 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
             ))}
         </ScrollView>
       )}
-      <View style={styles.btnContainer}>
-        <Button style={styles.btn} mode="elevated" onPress={handleClear} disabled={isClearDisabled}>
-          Clear
-        </Button>
-        <Button
-          style={styles.btn}
-          mode="contained"
-          onPress={handleApply}
-          disabled={isApplyDisabled}
-        >
-          Apply
-        </Button>
-      </View>
+      {multiSelect && (
+        <View style={styles.btnContainer}>
+          <Button
+            style={styles.btn}
+            mode="elevated"
+            onPress={handleClear}
+            disabled={isClearDisabled}
+          >
+            Clear
+          </Button>
+          <Button
+            style={styles.btn}
+            mode="contained"
+            onPress={handleApply}
+            disabled={isApplyDisabled}
+          >
+            Apply
+          </Button>
+        </View>
+      )}
     </View>
   );
 };

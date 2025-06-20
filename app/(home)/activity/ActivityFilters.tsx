@@ -50,8 +50,8 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
     <>
       <AddClimbDialog
         open={openAddClimbDialog}
-        onDismiss={setOpenAddClimbDialog}
         gradeStyle={user.grade_style}
+        onDismiss={setOpenAddClimbDialog}
       />
       <View style={styles.container}>
         <View style={styles.iconGroup}>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Dialog, Portal } from 'react-native-paper';
+import { Text } from 'react-native';
 
 import GradeRangeSelector from '@/components/GradeRangeSelector';
 import { GradeStyle } from '@/types';
@@ -29,6 +30,7 @@ const AddClimbDialog = (props: IAddClimbDialog) => {
               gradeStyle={gradeStyle}
               multiSelect={false}
             />
+            <Text>Attempts</Text>
           </Dialog.Content>
         </Dialog>
       )}

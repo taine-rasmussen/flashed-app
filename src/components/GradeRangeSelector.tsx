@@ -33,14 +33,19 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [selectedGrades, setSelectedGrades] = useState<string[]>(value);
 
-  console.log(multiSelect);
+  const dropdownText = multiSelect ? 'Select Grades' : 'Select Grade';
+  const noGradeSelectedText = multiSelect ? 'No grades selected' : 'No grade selected';
 
   const toggleGrade = (grade: string) => {
-    setSelectedGrades(
-      selectedGrades.includes(grade)
-        ? selectedGrades.filter(g => g !== grade)
-        : [...selectedGrades, grade],
-    );
+    if (multiSelect) {
+      return setSelectedGrades(
+        selectedGrades.includes(grade)
+          ? selectedGrades.filter(g => g !== grade)
+          : [...selectedGrades, grade],
+      );
+    } else {
+      setSelectedGrades([grade]);
+    }
   };
 
   const handleClear = () => {
@@ -79,7 +84,7 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
             </Chip>
           ))
         ) : (
-          <Text style={styles.placeholder}>No grades selected</Text>
+          <Text style={styles.placeholder}>{noGradeSelectedText}</Text>
         )}
       </View>
 
@@ -90,7 +95,7 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
           LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         }}
       >
-        <Text style={styles.dropdownToggleText}>Select Grades</Text>
+        <Text style={styles.dropdownToggleText}>{dropdownText}</Text>
         <MaterialIcons name={dropdownOpen ? 'expand-less' : 'expand-more'} size={24} />
       </TouchableOpacity>
       <Divider />
@@ -113,19 +118,26 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
             ))}
         </ScrollView>
       )}
-      <View style={styles.btnContainer}>
-        <Button style={styles.btn} mode="elevated" onPress={handleClear} disabled={isClearDisabled}>
-          Clear
-        </Button>
-        <Button
-          style={styles.btn}
-          mode="contained"
-          onPress={handleApply}
-          disabled={isApplyDisabled}
-        >
-          Apply
-        </Button>
-      </View>
+      {multiSelect && (
+        <View style={styles.btnContainer}>
+          <Button
+            style={styles.btn}
+            mode="elevated"
+            onPress={handleClear}
+            disabled={isClearDisabled}
+          >
+            Clear
+          </Button>
+          <Button
+            style={styles.btn}
+            mode="contained"
+            onPress={handleApply}
+            disabled={isApplyDisabled}
+          >
+            Apply
+          </Button>
+        </View>
+      )}
     </View>
   );
 };

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Dialog, Divider, Portal } from 'react-native-paper';
+import { Dialog, Divider, IconButton, Portal } from 'react-native-paper';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { View, StyleSheet } from 'react-native';
 
@@ -47,6 +47,12 @@ const AddClimbDialog = (props: IAddClimbDialog) => {
                 style={styles.attemptsInput}
                 leftIcon={<AntDesign name="reload1" size={24} color={theme.colors.secondary} />}
               />
+              <IconButton
+                icon="calendar"
+                iconColor={theme.colors.secondary}
+                size={32}
+                onPress={() => console.log('Pressed')}
+              />
             </View>
           </Dialog.Content>
         </Dialog>
@@ -64,9 +70,13 @@ const getStyles = (theme: AppTheme) =>
     },
     attemptsContainer: {
       flexDirection: 'row',
+      gap: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     attemptsInput: {
       width: '100%',
+      backgroundColor: theme.colors.backdrop,
     },
     divider: {
       height: 4,

@@ -90,8 +90,17 @@ const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
     modal: {
       justifyContent: 'flex-end',
+      margin: 0,
     },
     container: {
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.surface,
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
+      padding: theme.custom.spacing.md,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: -4 },
+      shadowOpacity: 0.25,
+      shadowRadius: 10,
+      elevation: 10,
     },
   });

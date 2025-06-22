@@ -15,7 +15,7 @@ import { DateType } from 'react-native-ui-datepicker';
 import Modal from 'react-native-modal';
 
 import GradeRangeSelector from '@/components/GradeRangeSelector';
-import { GradeStyle } from '@/types';
+import { GradeStyle, IStagedClimb } from '@/types';
 import AppInput from '@/components/AppInput';
 import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
@@ -25,30 +25,24 @@ interface IAddClimbDialog {
   open: boolean;
   gradeStyle: GradeStyle;
   onDismiss: (bol: boolean) => void;
-  homeGym: string;
-}
-
-interface IStagedClimb {
-  grade: string[];
-  attempts: string;
-  date: DateType;
-  homeGym: string;
+  stagedClimb: IStagedClimb;
+  setStagedClimb: (val: IStagedClimb | ((prev: IStagedClimb) => IStagedClimb)) => void;
 }
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialog) => {
+const AddClimbDialog = ({
+  open,
+  onDismiss,
+  gradeStyle,
+  stagedClimb,
+  setStagedClimb,
+}: IAddClimbDialog) => {
   const theme = useAppTheme();
   const styles = getStyles(theme);
-  const [calendarOpen, setCalendarOpen] = useState(false);
-  const [stagedClimb, setStagedClimb] = useState<IStagedClimb>({
-    grade: [],
-    attempts: '',
-    date: dayjs(),
-    homeGym: homeGym,
-  });
+  const [calendarOpen, setCalendarOpen] = useState<boolean>(false);
 
   const animation = useRef(new Animated.Value(0)).current;
 
@@ -75,15 +69,15 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
   });
 
   const setGrade = (grade: string[]) => {
-    setStagedClimb(prev => ({ ...prev, grade }));
+    setStagedClimb((prev: IStagedClimb) => ({ ...prev, grade }));
   };
 
   const setDate = (date: DateType) => {
-    setStagedClimb(prev => ({ ...prev, date }));
+    setStagedClimb((prev: IStagedClimb) => ({ ...prev, date }));
   };
 
   const setAttempts = (attempts: string) => {
-    setStagedClimb(prev => ({ ...prev, attempts }));
+    setStagedClimb((prev: IStagedClimb) => ({ ...prev, attempts }));
   };
 
   const formattedDate = dayjs(stagedClimb.date).format('DD/MM/YYYY');
@@ -141,7 +135,7 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
 
         <View style={styles.row}>
           <AntDesign name="home" size={24} color={theme.colors.secondary} />
-          <Text style={styles.rowText}>{homeGym}</Text>
+          <Text style={styles.rowText}>{stagedClimb.homeGym}</Text>
         </View>
 
         <Button

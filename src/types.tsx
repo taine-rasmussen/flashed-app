@@ -38,3 +38,10 @@ export interface IDateRange {
 }
 
 export type GradeStyle = 'VScale' | 'Font';
+
+export interface IStagedClimb {
+  grade: string[];
+  attempts: string;
+  date: DateType;
+  homeGym: string;
+}

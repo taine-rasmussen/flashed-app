@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconButton, Text } from 'react-native-paper';
+import { Text, Button, TouchableRipple } from 'react-native-paper';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { View, StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
@@ -20,24 +20,23 @@ interface IAddClimbDialog {
   homeGym: string;
 }
 
-const AddClimbDialog = (props: IAddClimbDialog) => {
-  const { open, onDismiss, gradeStyle, homeGym } = props;
+interface IStagedClimb {
+  grade: string[];
+  attempts: number;
+  date: DateType;
+  homeGym: string;
+}
+
+const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialog) => {
   const theme = useAppTheme();
   const styles = getStyles(theme);
-  const [openCalendar, setOpenCalendar] = useState<boolean>(false);
-  const [stagedClimb, setStagedClimb] = useState<{
-    grade: string[];
-    attempts: number;
-    date: any;
-    homeGym: string;
-  }>({
+  const [openCalendar, setOpenCalendar] = useState(false);
+  const [stagedClimb, setStagedClimb] = useState<IStagedClimb>({
     grade: [],
     attempts: 0,
-    date: dayjs().format('DD/MM/YYYY'),
+    date: dayjs(),
     homeGym: homeGym,
   });
-
-  const dateOfClimb = stagedClimb.date;
 
   const setGrade = (grade: string[]) => {
     setStagedClimb(prev => ({ ...prev, grade }));
@@ -47,7 +46,8 @@ const AddClimbDialog = (props: IAddClimbDialog) => {
     setStagedClimb(prev => ({ ...prev, date }));
   };
 
-  const handleOpenCalendar = () => setOpenCalendar(true);
+  const formattedDate = dayjs(stagedClimb.date).format('DD/MM/YYYY');
+  const isFormValid = stagedClimb.grade.length > 0 && stagedClimb.attempts > 0;
 
   return (
     <>
@@ -57,49 +57,69 @@ const AddClimbDialog = (props: IAddClimbDialog) => {
         mode="single"
         onDateChange={setDate}
       />
+
       <Modal
         isVisible={open}
         onBackdropPress={() => onDismiss(false)}
         style={styles.modal}
-        backdropTransitionOutTiming={5}
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        animationInTiming={750}
+        animationOutTiming={750}
+        useNativeDriver
       >
         <View style={styles.container}>
-          <GradeRangeSelector
-            value={stagedClimb.grade}
-            setValue={setGrade}
-            gradeStyle={gradeStyle}
-            multiSelect={false}
-            isDropDownOpen={true}
-          />
-          <View style={styles.attemptsContainer}>
+          <View style={styles.section}>
+            <GradeRangeSelector
+              value={stagedClimb.grade}
+              setValue={setGrade}
+              gradeStyle={gradeStyle}
+              multiSelect={false}
+              isDropDownOpen={true}
+            />
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.label}>Attempts</Text>
             <AppInput
               mode="outlined"
-              label="Attempts"
-              style={styles.attemptsInput}
               keyboardType="number-pad"
+              style={styles.input}
               value={String(stagedClimb.attempts)}
-              onChangeText={value =>
+              onChangeText={val =>
                 setStagedClimb(prev => ({
                   ...prev,
-                  attempts: parseInt(value),
+                  attempts: parseInt(val) || 0,
                 }))
               }
-              leftIcon={<AntDesign name="reload1" size={24} color={theme.colors.secondary} />}
+              leftIcon={<AntDesign name="reload1" size={20} color={theme.colors.secondary} />}
             />
-            <View style={styles.dateContainer}>
-              <IconButton
-                icon="calendar"
-                iconColor={theme.colors.secondary}
-                size={32}
-                onPress={handleOpenCalendar}
-              />
-              <Text variant="bodyLarge">{dateOfClimb}</Text>
-            </View>
-            <View style={styles.homeGym}>
-              <AntDesign name="home" size={32} color={theme.colors.secondary} />
-              <Text variant="bodyLarge">{homeGym}</Text>
-            </View>
           </View>
+
+          <TouchableRipple style={styles.row} onPress={() => setOpenCalendar(true)}>
+            <>
+              <AntDesign name="calendar" size={24} color={theme.colors.secondary} />
+              <Text style={styles.rowText}>{formattedDate}</Text>
+              <AntDesign name="right" size={16} color={theme.colors.onSurfaceVariant} />
+            </>
+          </TouchableRipple>
+
+          <View style={styles.row}>
+            <AntDesign name="home" size={24} color={theme.colors.secondary} />
+            <Text style={styles.rowText}>{homeGym}</Text>
+          </View>
+
+          <Button
+            mode="contained"
+            onPress={() => {
+              onDismiss(false);
+            }}
+            disabled={!isFormValid}
+            style={styles.submitButton}
+            contentStyle={{ paddingVertical: 6 }}
+          >
+            Add Climb
+          </Button>
         </View>
       </Modal>
     </>
@@ -116,37 +136,39 @@ const getStyles = (theme: AppTheme) =>
     },
     container: {
       backgroundColor: theme.colors.surface,
-      borderTopLeftRadius: 24,
-      borderTopRightRadius: 24,
-      padding: theme.custom.spacing.md,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: -4 },
-      shadowOpacity: 0.25,
-      shadowRadius: 10,
-      elevation: 10,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      padding: 20,
     },
-    attemptsContainer: {
-      flexDirection: 'column',
-      gap: 8,
-      justifyContent: 'center',
-      alignItems: 'center',
+    section: {
+      marginBottom: 16,
     },
-    dateContainer: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
+    label: {
+      fontSize: 14,
+      color: theme.colors.onSurface,
+      marginBottom: 4,
     },
-    attemptsInput: {
-      width: '100%',
+    input: {
       backgroundColor: theme.colors.backdrop,
+      borderRadius: 8,
     },
-    divider: {
-      height: 4,
-      borderRadius: 4,
-    },
-    homeGym: {
+    row: {
       flexDirection: 'row',
-      gap: theme.custom.spacing.md,
       alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: theme.colors.backdrop,
+      padding: 12,
+      borderRadius: 10,
+      marginBottom: 12,
+    },
+    rowText: {
+      flex: 1,
+      marginLeft: 12,
+      fontSize: 16,
+      color: theme.colors.onSurface,
+    },
+    submitButton: {
+      marginTop: 8,
+      borderRadius: 12,
     },
   });

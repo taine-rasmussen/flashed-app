@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Dialog, Divider, IconButton, Portal, Text } from 'react-native-paper';
+import { IconButton, Text } from 'react-native-paper';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { View, StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
 import { DateType } from 'react-native-ui-datepicker';
+import Modal from 'react-native-modal';
 
 import GradeRangeSelector from '@/components/GradeRangeSelector';
 import { GradeStyle } from '@/types';
@@ -56,39 +57,50 @@ const AddClimbDialog = (props: IAddClimbDialog) => {
         mode="single"
         onDateChange={setDate}
       />
-      <Portal>
-        {open && (
-          <Dialog visible={open} onDismiss={() => onDismiss(false)}>
-            <Dialog.Content style={styles.container}>
-              <GradeRangeSelector
-                value={stagedClimb.grade}
-                setValue={setGrade}
-                gradeStyle={gradeStyle}
-                multiSelect={false}
+      <Modal
+        isVisible={open}
+        onBackdropPress={() => onDismiss(false)}
+        style={styles.modal}
+        backdropTransitionOutTiming={5}
+      >
+        <View style={styles.container}>
+          <GradeRangeSelector
+            value={stagedClimb.grade}
+            setValue={setGrade}
+            gradeStyle={gradeStyle}
+            multiSelect={false}
+          />
+          <View style={styles.attemptsContainer}>
+            <AppInput
+              mode="outlined"
+              label="Attempts"
+              style={styles.attemptsInput}
+              keyboardType="number-pad"
+              value={String(stagedClimb.attempts)}
+              onChangeText={value =>
+                setStagedClimb(prev => ({
+                  ...prev,
+                  attempts: parseInt(value),
+                }))
+              }
+              leftIcon={<AntDesign name="reload1" size={24} color={theme.colors.secondary} />}
+            />
+            <View style={styles.dateContainer}>
+              <IconButton
+                icon="calendar"
+                iconColor={theme.colors.secondary}
+                size={32}
+                onPress={handleOpenCalendar}
               />
-              <Divider bold horizontalInset style={styles.divider} />
-              <View style={styles.attemptsContainer}>
-                <AppInput
-                  mode="outlined"
-                  label={'Attempts'}
-                  style={styles.attemptsInput}
-                  leftIcon={<AntDesign name="reload1" size={24} color={theme.colors.secondary} />}
-                />
-                <View style={styles.dateContainer}>
-                  <IconButton
-                    icon="calendar"
-                    iconColor={theme.colors.secondary}
-                    size={32}
-                    onPress={handleOpenCalendar}
-                  />
-                  <Text variant="bodyLarge">{dateOfClimb}</Text>
-                </View>
-                <Text variant="bodyLarge">{homeGym}</Text>
-              </View>
-            </Dialog.Content>
-          </Dialog>
-        )}
-      </Portal>
+              <Text variant="bodyLarge">{dateOfClimb}</Text>
+            </View>
+            <View style={styles.homeGym}>
+              <AntDesign name="home" size={32} color={theme.colors.secondary} />
+              <Text variant="bodyLarge">{homeGym}</Text>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </>
   );
 };
@@ -97,8 +109,20 @@ export default AddClimbDialog;
 
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
+    modal: {
+      justifyContent: 'flex-end',
+      margin: 0,
+    },
     container: {
-      //   gap: theme.custom.spacing.sm,
+      backgroundColor: theme.colors.surface,
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
+      padding: theme.custom.spacing.md,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: -4 },
+      shadowOpacity: 0.25,
+      shadowRadius: 10,
+      elevation: 10,
     },
     attemptsContainer: {
       flexDirection: 'column',
@@ -118,5 +142,10 @@ const getStyles = (theme: AppTheme) =>
     divider: {
       height: 4,
       borderRadius: 4,
+    },
+    homeGym: {
+      flexDirection: 'row',
+      gap: theme.custom.spacing.md,
+      alignItems: 'center',
     },
   });

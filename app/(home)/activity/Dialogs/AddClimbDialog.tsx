@@ -83,8 +83,6 @@ const AddClimbDialog = ({
   const formattedDate = dayjs(stagedClimb.date).format('DD/MM/YYYY');
   const isFormValid = stagedClimb.grade.length > 0 && parseInt(stagedClimb.attempts) > 0;
 
-  console.log(stagedClimb.attempts, stagedClimb.grade);
-
   return (
     <Modal
       isVisible={open}

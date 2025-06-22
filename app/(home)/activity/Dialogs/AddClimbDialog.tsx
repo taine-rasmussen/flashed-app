@@ -112,6 +112,7 @@ const AddClimbDialog = ({
       animationInTiming={750}
       animationOutTiming={750}
       useNativeDriver
+      avoidKeyboard
     >
       <View style={styles.container}>
         <GradeRangeSelector

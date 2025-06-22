@@ -7,6 +7,7 @@ import {
   Platform,
   UIManager,
   Easing,
+  Alert,
 } from 'react-native';
 import { Text, Button, TouchableRipple } from 'react-native-paper';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -20,12 +21,14 @@ import AppInput from '@/components/AppInput';
 import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
 import DatePicker from '@/components/DatePicker';
+import { addClimb } from '@/services/addClimb';
 
 interface IAddClimbDialog {
   open: boolean;
   gradeStyle: GradeStyle;
   onDismiss: (bol: boolean) => void;
   stagedClimb: IStagedClimb;
+  userId: number;
   setStagedClimb: (val: IStagedClimb | ((prev: IStagedClimb) => IStagedClimb)) => void;
 }
 
@@ -35,6 +38,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 const AddClimbDialog = ({
   open,
+  userId,
   onDismiss,
   gradeStyle,
   stagedClimb,
@@ -78,6 +82,18 @@ const AddClimbDialog = ({
 
   const setAttempts = (attempts: string) => {
     setStagedClimb((prev: IStagedClimb) => ({ ...prev, attempts }));
+  };
+
+  const handleAddClimb = async () => {
+    try {
+      await addClimb(stagedClimb, userId);
+      Alert.alert('Success', 'Climb added successfully');
+    } catch (err) {
+      console.error('Failed to add climb', err);
+      Alert.alert('Error', 'Failed to add climb');
+    } finally {
+      onDismiss(false);
+    }
   };
 
   const formattedDate = dayjs(stagedClimb.date).format('DD/MM/YYYY');
@@ -138,7 +154,7 @@ const AddClimbDialog = ({
 
         <Button
           mode="contained"
-          onPress={() => onDismiss(false)}
+          onPress={() => handleAddClimb()}
           disabled={!isFormValid}
           style={styles.submitButton}
           contentStyle={{ paddingVertical: 6 }}

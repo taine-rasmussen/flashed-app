@@ -62,7 +62,6 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
       useNativeDriver
     >
       <View style={styles.container}>
-        {/* Grade Selector */}
         <View style={styles.section}>
           <GradeRangeSelector
             value={stagedClimb.grade}
@@ -73,7 +72,6 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
           />
         </View>
 
-        {/* Attempts */}
         <View style={styles.section}>
           <Text style={styles.label}>Attempts</Text>
           <AppInput
@@ -119,18 +117,16 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
             navigationPosition="right"
             onChange={({ date }) => {
               setDate(date);
-              setCalendarOpen(false); // optional: close on select
+              setCalendarOpen(false);
             }}
           />
         )}
 
-        {/* Home Gym Display */}
         <View style={styles.row}>
           <AntDesign name="home" size={24} color={theme.colors.secondary} />
           <Text style={styles.rowText}>{homeGym}</Text>
         </View>
 
-        {/* Submit */}
         <Button
           mode="contained"
           onPress={() => onDismiss(false)}

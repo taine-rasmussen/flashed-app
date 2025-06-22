@@ -10,7 +10,7 @@ import { GradeStyle } from '@/types';
 import AppInput from '@/components/AppInput';
 import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
-import CalendarDialog from '@/components/CalendarDialog';
+import CalendarBottomSheet from '@/components/CalendarBottomSheet';
 
 interface IAddClimbDialog {
   open: boolean;
@@ -50,7 +50,7 @@ const AddClimbDialog = (props: IAddClimbDialog) => {
 
   return (
     <>
-      <CalendarDialog
+      <CalendarBottomSheet
         open={openCalendar}
         onDismiss={setOpenCalendar}
         mode="single"

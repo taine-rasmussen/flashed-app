@@ -3,7 +3,7 @@ import { Text, Button, TouchableRipple } from 'react-native-paper';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { View, StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
-import { DateType } from 'react-native-ui-datepicker';
+import DateTimePicker, { useDefaultStyles, DateType } from 'react-native-ui-datepicker';
 import Modal from 'react-native-modal';
 
 import GradeRangeSelector from '@/components/GradeRangeSelector';
@@ -11,7 +11,6 @@ import { GradeStyle } from '@/types';
 import AppInput from '@/components/AppInput';
 import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
-import CalendarBottomSheet from '@/components/CalendarBottomSheet';
 
 interface IAddClimbDialog {
   open: boolean;
@@ -30,7 +29,8 @@ interface IStagedClimb {
 const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialog) => {
   const theme = useAppTheme();
   const styles = getStyles(theme);
-  const [openCalendar, setOpenCalendar] = useState(false);
+  const defaultStyles = useDefaultStyles();
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const [stagedClimb, setStagedClimb] = useState<IStagedClimb>({
     grade: [],
     attempts: 0,
@@ -48,81 +48,100 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
 
   const formattedDate = dayjs(stagedClimb.date).format('DD/MM/YYYY');
   const isFormValid = stagedClimb.grade.length > 0 && stagedClimb.attempts > 0;
+  const tomorrow = dayjs();
 
   return (
-    <>
-      <CalendarBottomSheet
-        open={openCalendar}
-        onDismiss={setOpenCalendar}
-        mode="single"
-        onDateChange={setDate}
-      />
-
-      <Modal
-        isVisible={open}
-        onBackdropPress={() => onDismiss(false)}
-        style={styles.modal}
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
-        animationInTiming={750}
-        animationOutTiming={750}
-        useNativeDriver
-      >
-        <View style={styles.container}>
-          <View style={styles.section}>
-            <GradeRangeSelector
-              value={stagedClimb.grade}
-              setValue={setGrade}
-              gradeStyle={gradeStyle}
-              multiSelect={false}
-              isDropDownOpen={true}
-            />
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.label}>Attempts</Text>
-            <AppInput
-              mode="outlined"
-              keyboardType="number-pad"
-              style={styles.input}
-              value={String(stagedClimb.attempts)}
-              onChangeText={val =>
-                setStagedClimb(prev => ({
-                  ...prev,
-                  attempts: parseInt(val) || 0,
-                }))
-              }
-              leftIcon={<AntDesign name="reload1" size={20} color={theme.colors.secondary} />}
-            />
-          </View>
-
-          <TouchableRipple style={styles.row} onPress={() => setOpenCalendar(true)}>
-            <>
-              <AntDesign name="calendar" size={24} color={theme.colors.secondary} />
-              <Text style={styles.rowText}>{formattedDate}</Text>
-              <AntDesign name="right" size={16} color={theme.colors.onSurfaceVariant} />
-            </>
-          </TouchableRipple>
-
-          <View style={styles.row}>
-            <AntDesign name="home" size={24} color={theme.colors.secondary} />
-            <Text style={styles.rowText}>{homeGym}</Text>
-          </View>
-
-          <Button
-            mode="contained"
-            onPress={() => {
-              onDismiss(false);
-            }}
-            disabled={!isFormValid}
-            style={styles.submitButton}
-            contentStyle={{ paddingVertical: 6 }}
-          >
-            Add Climb
-          </Button>
+    <Modal
+      isVisible={open}
+      onBackdropPress={() => onDismiss(false)}
+      style={styles.modal}
+      animationIn="slideInUp"
+      animationOut="slideOutDown"
+      animationInTiming={750}
+      animationOutTiming={750}
+      useNativeDriver
+    >
+      <View style={styles.container}>
+        {/* Grade Selector */}
+        <View style={styles.section}>
+          <GradeRangeSelector
+            value={stagedClimb.grade}
+            setValue={setGrade}
+            gradeStyle={gradeStyle}
+            multiSelect={false}
+            isDropDownOpen={true}
+          />
         </View>
-      </Modal>
-    </>
+
+        {/* Attempts */}
+        <View style={styles.section}>
+          <Text style={styles.label}>Attempts</Text>
+          <AppInput
+            mode="outlined"
+            keyboardType="number-pad"
+            style={styles.input}
+            value={String(stagedClimb.attempts)}
+            onChangeText={val =>
+              setStagedClimb(prev => ({
+                ...prev,
+                attempts: parseInt(val) || 0,
+              }))
+            }
+            leftIcon={<AntDesign name="reload1" size={20} color={theme.colors.secondary} />}
+          />
+        </View>
+
+        <TouchableRipple style={styles.row} onPress={() => setCalendarOpen(prev => !prev)}>
+          <View style={styles.rowContent}>
+            <AntDesign name="calendar" size={24} color={theme.colors.secondary} />
+            <Text style={styles.rowText}>{formattedDate}</Text>
+            <AntDesign
+              name={calendarOpen ? 'up' : 'down'}
+              size={16}
+              color={theme.colors.onSurfaceVariant}
+            />
+          </View>
+        </TouchableRipple>
+
+        {calendarOpen && (
+          <DateTimePicker
+            styles={{
+              ...defaultStyles,
+              today: {
+                borderColor: theme.colors.secondary,
+                borderWidth: 2,
+              },
+              selected: { backgroundColor: theme.colors.primary },
+            }}
+            mode="single"
+            maxDate={tomorrow}
+            date={stagedClimb.date}
+            navigationPosition="right"
+            onChange={({ date }) => {
+              setDate(date);
+              setCalendarOpen(false); // optional: close on select
+            }}
+          />
+        )}
+
+        {/* Home Gym Display */}
+        <View style={styles.row}>
+          <AntDesign name="home" size={24} color={theme.colors.secondary} />
+          <Text style={styles.rowText}>{homeGym}</Text>
+        </View>
+
+        {/* Submit */}
+        <Button
+          mode="contained"
+          onPress={() => onDismiss(false)}
+          disabled={!isFormValid}
+          style={styles.submitButton}
+          contentStyle={{ paddingVertical: 6 }}
+        >
+          Add Climb
+        </Button>
+      </View>
+    </Modal>
   );
 };
 
@@ -152,6 +171,11 @@ const getStyles = (theme: AppTheme) =>
       backgroundColor: theme.colors.backdrop,
       borderRadius: 8,
     },
+    rowContent: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
     row: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -166,6 +190,11 @@ const getStyles = (theme: AppTheme) =>
       marginLeft: 12,
       fontSize: 16,
       color: theme.colors.onSurface,
+    },
+    accordion: {
+      backgroundColor: theme.colors.backdrop,
+      borderRadius: 10,
+      marginBottom: 12,
     },
     submitButton: {
       marginTop: 8,

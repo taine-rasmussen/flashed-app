@@ -26,6 +26,7 @@ import { addClimb } from '@/services/addClimb';
 interface IAddClimbDialog {
   open: boolean;
   userId: number;
+  homeGym: string;
   gradeStyle: GradeStyle;
   refetchClimbs: () => void;
   stagedClimb: IStagedClimb;
@@ -40,6 +41,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 const AddClimbDialog = ({
   open,
   userId,
+  homeGym,
   onDismiss,
   gradeStyle,
   stagedClimb,
@@ -86,6 +88,16 @@ const AddClimbDialog = ({
     setStagedClimb((prev: IStagedClimb) => ({ ...prev, attempts }));
   };
 
+  const handleDismiss = () => {
+    onDismiss(false);
+    setStagedClimb({
+      grade: [],
+      attempts: '',
+      date: dayjs(),
+      homeGym: homeGym,
+    });
+  };
+
   const handleAddClimb = async () => {
     try {
       await addClimb(stagedClimb, userId);
@@ -94,7 +106,7 @@ const AddClimbDialog = ({
       console.error('Failed to add climb', err);
       Alert.alert('Error', 'Failed to add climb');
     } finally {
-      onDismiss(false);
+      handleDismiss();
       refetchClimbs();
     }
   };
@@ -105,13 +117,14 @@ const AddClimbDialog = ({
   return (
     <Modal
       isVisible={open}
-      onBackdropPress={() => onDismiss(false)}
+      onBackdropPress={() => handleDismiss()}
       style={styles.modal}
       animationIn="slideInUp"
       animationOut="slideOutDown"
       animationInTiming={750}
       animationOutTiming={750}
       useNativeDriver
+      avoidKeyboard
     >
       <View style={styles.container}>
         <GradeRangeSelector

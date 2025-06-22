@@ -65,27 +65,22 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
       useNativeDriver
     >
       <View style={styles.container}>
-        <View style={styles.section}>
-          <GradeRangeSelector
-            value={stagedClimb.grade}
-            setValue={setGrade}
-            gradeStyle={gradeStyle}
-            multiSelect={false}
-            isDropDownOpen={true}
-          />
-        </View>
+        <GradeRangeSelector
+          value={stagedClimb.grade}
+          setValue={setGrade}
+          gradeStyle={gradeStyle}
+          multiSelect={false}
+          isDropDownOpen={true}
+        />
 
-        <View style={styles.section}>
-          <Text style={styles.label}>Attempts</Text>
-          <AppInput
-            mode="outlined"
-            keyboardType="number-pad"
-            style={styles.input}
-            value={String(stagedClimb.attempts)}
-            onChangeText={setAttempts}
-            leftIcon={<AntDesign name="reload1" size={20} color={theme.colors.secondary} />}
-          />
-        </View>
+        <AppInput
+          mode="outlined"
+          keyboardType="number-pad"
+          style={styles.input}
+          value={String(stagedClimb.attempts)}
+          onChangeText={setAttempts}
+          leftIcon={<AntDesign name="reload1" size={20} color={theme.colors.secondary} />}
+        />
 
         <TouchableRipple style={styles.row} onPress={() => setCalendarOpen(prev => !prev)}>
           <View style={styles.rowContent}>
@@ -130,12 +125,10 @@ const getStyles = (theme: AppTheme) =>
     },
     container: {
       backgroundColor: theme.colors.surface,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      padding: 20,
-    },
-    section: {
-      marginBottom: 16,
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
+      padding: 24,
+      gap: 16,
     },
     label: {
       fontSize: 14,
@@ -158,7 +151,6 @@ const getStyles = (theme: AppTheme) =>
       backgroundColor: theme.colors.backdrop,
       padding: 12,
       borderRadius: 10,
-      marginBottom: 12,
     },
     rowText: {
       flex: 1,

@@ -72,16 +72,12 @@ export default DatePicker;
 
 const getStyles = (theme: AppTheme) =>
   StyleSheet.create({
-    modal: {
-      justifyContent: 'flex-end',
-      margin: 0,
-    },
     container: {
-      backgroundColor: theme.colors.surface,
-      borderTopLeftRadius: 24,
-      borderTopRightRadius: 24,
+      margin: 4,
+      backgroundColor: theme.colors.backdrop,
+      borderRadius: 25,
       padding: theme.custom.spacing.md,
-      shadowColor: '#000',
+      shadowColor: '#221b29',
       shadowOffset: { width: 0, height: -4 },
       shadowOpacity: 0.25,
       shadowRadius: 10,

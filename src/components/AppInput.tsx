@@ -34,7 +34,6 @@ const AppInput: React.FC<AppInputProps> = ({
 
 const styles = StyleSheet.create({
   input: {
-    marginBottom: 16,
     borderRadius: 24,
   },
   label: {

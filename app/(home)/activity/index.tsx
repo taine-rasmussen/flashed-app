@@ -54,6 +54,7 @@ const Activity = () => {
         filterOrder={filterOrder}
         openCalendar={openCalendar}
         setDateRange={setDateRange}
+        refetchClimbs={getClimbData}
         openGradeRange={openGradeRange}
         setFilterOrder={setFilterOrder}
         gradeRangeValue={gradeRangeValue}

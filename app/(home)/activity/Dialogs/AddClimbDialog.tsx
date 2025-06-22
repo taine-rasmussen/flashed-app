@@ -69,6 +69,7 @@ const AddClimbDialog = (props: IAddClimbDialog) => {
             setValue={setGrade}
             gradeStyle={gradeStyle}
             multiSelect={false}
+            isDropDownOpen={true}
           />
           <View style={styles.attemptsContainer}>
             <AppInput

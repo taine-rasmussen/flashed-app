@@ -59,6 +59,7 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
     <>
       <AddClimbDialog
         userId={user.id}
+        homeGym={user.home_gym}
         open={openAddClimbDialog}
         stagedClimb={stagedClimb}
         gradeStyle={user.grade_style}

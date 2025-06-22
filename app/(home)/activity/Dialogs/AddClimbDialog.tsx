@@ -25,10 +25,11 @@ import { addClimb } from '@/services/addClimb';
 
 interface IAddClimbDialog {
   open: boolean;
-  gradeStyle: GradeStyle;
-  onDismiss: (bol: boolean) => void;
-  stagedClimb: IStagedClimb;
   userId: number;
+  gradeStyle: GradeStyle;
+  refetchClimbs: () => void;
+  stagedClimb: IStagedClimb;
+  onDismiss: (bol: boolean) => void;
   setStagedClimb: (val: IStagedClimb | ((prev: IStagedClimb) => IStagedClimb)) => void;
 }
 
@@ -42,6 +43,7 @@ const AddClimbDialog = ({
   onDismiss,
   gradeStyle,
   stagedClimb,
+  refetchClimbs,
   setStagedClimb,
 }: IAddClimbDialog) => {
   const theme = useAppTheme();
@@ -93,6 +95,7 @@ const AddClimbDialog = ({
       Alert.alert('Error', 'Failed to add climb');
     } finally {
       onDismiss(false);
+      refetchClimbs();
     }
   };
 

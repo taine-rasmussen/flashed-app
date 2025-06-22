@@ -18,6 +18,7 @@ interface ActivityFiltersProps {
   openGradeRange: boolean;
   filterOrder: FilterOrder;
   gradeRangeValue: string[];
+  refetchClimbs: () => void;
   setDateRange: (val: IDateRange) => void;
   setOpenCalendar: (bol: boolean) => void;
   setOpenGradeRange: (bol: boolean) => void;
@@ -31,6 +32,7 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
     filterOrder,
     openCalendar,
     setDateRange,
+    refetchClimbs,
     openGradeRange,
     setFilterOrder,
     gradeRangeValue,
@@ -58,10 +60,11 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
       <AddClimbDialog
         userId={user.id}
         open={openAddClimbDialog}
-        gradeStyle={user.grade_style}
-        onDismiss={setOpenAddClimbDialog}
         stagedClimb={stagedClimb}
+        gradeStyle={user.grade_style}
+        refetchClimbs={refetchClimbs}
         setStagedClimb={setStagedClimb}
+        onDismiss={setOpenAddClimbDialog}
       />
       <View style={styles.container}>
         <View style={styles.iconGroup}>

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Text } from 'react-native';
 
 import ActivityFilters from './ActivityFilters';
@@ -9,9 +8,7 @@ import IndexWrapper from '@/components/IndexWrapper';
 import { FilterOrder, IDateRange } from '@/types';
 import { useUser } from '@/contexts/UserContext';
 import { Climb } from '@/types';
-import { getFromSecureStore } from '@/utils/secureStore';
-
-const API_URL = process.env.EXPO_PUBLIC_BASE_URL;
+import { getClimbs } from '@/services/getClimbs';
 
 const Activity = () => {
   const [filterOrder, setFilterOrder] = useState<FilterOrder>('desc');
@@ -28,29 +25,12 @@ const Activity = () => {
 
   const getClimbData = async () => {
     setLoading(true);
-    const accessToken = await getFromSecureStore('access_token');
-    if (!accessToken) {
-      setLoading(false);
-      return;
-    }
-
-    const filters = {
-      start_date: dateRange.startDate || null,
-      end_date: dateRange.endDate || null,
-      grade_range: gradeRangeValue.length != 0 ? gradeRangeValue : null,
-    };
 
     try {
-      const url = `${API_URL}get_climbs/?user_id=${user.id}`;
-      const response = await axios.post<Climb[]>(url, JSON.stringify(filters), {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      setClimbData(response.data);
-    } catch (err: any) {
-      console.error(err);
+      const climbs = await getClimbs(user.id, dateRange, gradeRangeValue);
+      setClimbData(climbs);
+    } catch (err) {
+      console.error('Failed to fetch climbs', err);
     } finally {
       setLoading(false);
     }
@@ -74,6 +54,7 @@ const Activity = () => {
         filterOrder={filterOrder}
         openCalendar={openCalendar}
         setDateRange={setDateRange}
+        refetchClimbs={getClimbData}
         openGradeRange={openGradeRange}
         setFilterOrder={setFilterOrder}
         gradeRangeValue={gradeRangeValue}

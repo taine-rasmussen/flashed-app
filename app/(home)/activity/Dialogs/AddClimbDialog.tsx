@@ -1,54 +1,87 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import {
+  View,
+  StyleSheet,
+  Animated,
+  LayoutAnimation,
+  Platform,
+  UIManager,
+  Easing,
+} from 'react-native';
 import { Text, Button, TouchableRipple } from 'react-native-paper';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { View, StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
-import DateTimePicker, { useDefaultStyles, DateType } from 'react-native-ui-datepicker';
+import { DateType } from 'react-native-ui-datepicker';
 import Modal from 'react-native-modal';
 
 import GradeRangeSelector from '@/components/GradeRangeSelector';
-import { GradeStyle } from '@/types';
+import { GradeStyle, IStagedClimb } from '@/types';
 import AppInput from '@/components/AppInput';
 import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
+import DatePicker from '@/components/DatePicker';
 
 interface IAddClimbDialog {
   open: boolean;
   gradeStyle: GradeStyle;
   onDismiss: (bol: boolean) => void;
-  homeGym: string;
+  stagedClimb: IStagedClimb;
+  setStagedClimb: (val: IStagedClimb | ((prev: IStagedClimb) => IStagedClimb)) => void;
 }
 
-interface IStagedClimb {
-  grade: string[];
-  attempts: number;
-  date: DateType;
-  homeGym: string;
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialog) => {
+const AddClimbDialog = ({
+  open,
+  onDismiss,
+  gradeStyle,
+  stagedClimb,
+  setStagedClimb,
+}: IAddClimbDialog) => {
   const theme = useAppTheme();
   const styles = getStyles(theme);
-  const defaultStyles = useDefaultStyles();
-  const [calendarOpen, setCalendarOpen] = useState(false);
-  const [stagedClimb, setStagedClimb] = useState<IStagedClimb>({
-    grade: [],
-    attempts: 0,
-    date: dayjs(),
-    homeGym: homeGym,
+  const [calendarOpen, setCalendarOpen] = useState<boolean>(false);
+
+  const animation = useRef(new Animated.Value(0)).current;
+
+  const toggleCalendar = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setCalendarOpen(prev => {
+      animateCalendar(!prev);
+      return !prev;
+    });
+  };
+
+  const animateCalendar = (open: boolean) => {
+    Animated.timing(animation, {
+      toValue: open ? 1 : 0,
+      duration: 325,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const calendarHeight = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 380],
   });
 
   const setGrade = (grade: string[]) => {
-    setStagedClimb(prev => ({ ...prev, grade }));
+    setStagedClimb((prev: IStagedClimb) => ({ ...prev, grade }));
   };
 
   const setDate = (date: DateType) => {
-    setStagedClimb(prev => ({ ...prev, date }));
+    setStagedClimb((prev: IStagedClimb) => ({ ...prev, date }));
+  };
+
+  const setAttempts = (attempts: string) => {
+    setStagedClimb((prev: IStagedClimb) => ({ ...prev, attempts }));
   };
 
   const formattedDate = dayjs(stagedClimb.date).format('DD/MM/YYYY');
-  const isFormValid = stagedClimb.grade.length > 0 && stagedClimb.attempts > 0;
-  const tomorrow = dayjs();
+  const isFormValid = stagedClimb.grade.length > 0 && parseInt(stagedClimb.attempts) > 0;
 
   return (
     <Modal
@@ -62,34 +95,25 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
       useNativeDriver
     >
       <View style={styles.container}>
-        <View style={styles.section}>
-          <GradeRangeSelector
-            value={stagedClimb.grade}
-            setValue={setGrade}
-            gradeStyle={gradeStyle}
-            multiSelect={false}
-            isDropDownOpen={true}
-          />
-        </View>
+        <GradeRangeSelector
+          value={stagedClimb.grade}
+          setValue={setGrade}
+          gradeStyle={gradeStyle}
+          multiSelect={false}
+          isDropDownOpen={true}
+        />
 
-        <View style={styles.section}>
-          <Text style={styles.label}>Attempts</Text>
-          <AppInput
-            mode="outlined"
-            keyboardType="number-pad"
-            style={styles.input}
-            value={String(stagedClimb.attempts)}
-            onChangeText={val =>
-              setStagedClimb(prev => ({
-                ...prev,
-                attempts: parseInt(val) || 0,
-              }))
-            }
-            leftIcon={<AntDesign name="reload1" size={20} color={theme.colors.secondary} />}
-          />
-        </View>
+        <AppInput
+          mode="outlined"
+          keyboardType="number-pad"
+          inputMode="numeric"
+          style={styles.input}
+          value={String(stagedClimb.attempts)}
+          onChangeText={setAttempts}
+          leftIcon={<AntDesign name="reload1" size={20} color={theme.colors.secondary} />}
+        />
 
-        <TouchableRipple style={styles.row} onPress={() => setCalendarOpen(prev => !prev)}>
+        <TouchableRipple style={styles.row} onPress={toggleCalendar}>
           <View style={styles.rowContent}>
             <AntDesign name="calendar" size={24} color={theme.colors.secondary} />
             <Text style={styles.rowText}>{formattedDate}</Text>
@@ -102,29 +126,14 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
         </TouchableRipple>
 
         {calendarOpen && (
-          <DateTimePicker
-            styles={{
-              ...defaultStyles,
-              today: {
-                borderColor: theme.colors.secondary,
-                borderWidth: 2,
-              },
-              selected: { backgroundColor: theme.colors.primary },
-            }}
-            mode="single"
-            maxDate={tomorrow}
-            date={stagedClimb.date}
-            navigationPosition="right"
-            onChange={({ date }) => {
-              setDate(date);
-              setCalendarOpen(false);
-            }}
-          />
+          <Animated.View style={{ overflow: 'hidden', height: calendarHeight }}>
+            <DatePicker mode="single" onDateChange={setDate} />
+          </Animated.View>
         )}
 
         <View style={styles.row}>
           <AntDesign name="home" size={24} color={theme.colors.secondary} />
-          <Text style={styles.rowText}>{homeGym}</Text>
+          <Text style={styles.rowText}>{stagedClimb.homeGym}</Text>
         </View>
 
         <Button
@@ -151,12 +160,10 @@ const getStyles = (theme: AppTheme) =>
     },
     container: {
       backgroundColor: theme.colors.surface,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      padding: 20,
-    },
-    section: {
-      marginBottom: 16,
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
+      padding: 24,
+      gap: 16,
     },
     label: {
       fontSize: 14,
@@ -179,7 +186,6 @@ const getStyles = (theme: AppTheme) =>
       backgroundColor: theme.colors.backdrop,
       padding: 12,
       borderRadius: 10,
-      marginBottom: 12,
     },
     rowText: {
       flex: 1,

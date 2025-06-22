@@ -2,13 +2,14 @@ import { View, StyleSheet, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
 import ActivityFilterMenu from './ActivityFilterMenu';
 import AddClimbDialog from './Dialogs/AddClimbDialog';
 
 import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
-import { FilterOrder, IDateRange } from '@/types';
+import { FilterOrder, IDateRange, IStagedClimb } from '@/types';
 import { useUser } from '@/contexts/UserContext';
 
 interface ActivityFiltersProps {
@@ -42,6 +43,12 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
   const [fabOpen, setFabOpen] = useState(false);
   const { user } = useUser();
   const [openAddClimbDialog, setOpenAddClimbDialog] = useState<boolean>(false);
+  const [stagedClimb, setStagedClimb] = useState<IStagedClimb>({
+    grade: [],
+    attempts: '',
+    date: dayjs(),
+    homeGym: user.home_gym,
+  });
 
   const getIconColor = (dir: FilterOrder) =>
     filterOrder === dir ? theme.colors.primary : theme.colors.secondary;
@@ -52,7 +59,8 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
         open={openAddClimbDialog}
         gradeStyle={user.grade_style}
         onDismiss={setOpenAddClimbDialog}
-        homeGym={user.home_gym}
+        stagedClimb={stagedClimb}
+        setStagedClimb={setStagedClimb}
       />
       <View style={styles.container}>
         <View style={styles.iconGroup}>

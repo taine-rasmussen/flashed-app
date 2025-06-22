@@ -23,10 +23,18 @@ interface IGradeRangeSelector {
   setValue: (val: string[]) => void;
   multiSelect?: boolean;
   onDismiss?: (bol: boolean) => void;
+  isDropDownOpen?: boolean;
 }
 
 const GradeRangeSelector = (props: IGradeRangeSelector) => {
-  const { setValue, onDismiss, value, gradeStyle, multiSelect = true } = props;
+  const {
+    setValue,
+    onDismiss,
+    value,
+    gradeStyle,
+    multiSelect = true,
+    isDropDownOpen = false,
+  } = props;
   const theme = useAppTheme();
   const styles = getStyles(theme);
   const grades = getUsersGrades(gradeStyle);
@@ -47,8 +55,11 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
           : [...selectedGrades, grade],
       );
     } else {
-      return setSelectedGrades(
-        selectedGrades.includes(grade) ? selectedGrades.filter(g => g !== grade) : [grade],
+      return (
+        setSelectedGrades(
+          selectedGrades.includes(grade) ? selectedGrades.filter(g => g !== grade) : [grade],
+        ),
+        setDropdownOpen(false)
       );
     }
   };
@@ -69,6 +80,10 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
   useEffect(() => {
     if (value.length != 0) {
       setSelectedGrades(value);
+    }
+
+    if (isDropDownOpen) {
+      setDropdownOpen(true);
     }
   }, []);
 

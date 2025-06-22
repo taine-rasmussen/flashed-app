@@ -59,6 +59,7 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
         setSelectedGrades(
           selectedGrades.includes(grade) ? selectedGrades.filter(g => g !== grade) : [grade],
         ),
+        setValue([grade]),
         setDropdownOpen(false)
       );
     }

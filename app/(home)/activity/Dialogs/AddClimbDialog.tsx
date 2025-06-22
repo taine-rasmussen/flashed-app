@@ -45,7 +45,7 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [stagedClimb, setStagedClimb] = useState<IStagedClimb>({
     grade: [],
-    attempts: '0',
+    attempts: '',
     date: dayjs(),
     homeGym: homeGym,
   });
@@ -89,6 +89,8 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
   const formattedDate = dayjs(stagedClimb.date).format('DD/MM/YYYY');
   const isFormValid = stagedClimb.grade.length > 0 && parseInt(stagedClimb.attempts) > 0;
 
+  console.log(stagedClimb.attempts, stagedClimb.grade);
+
   return (
     <Modal
       isVisible={open}
@@ -112,6 +114,7 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
         <AppInput
           mode="outlined"
           keyboardType="number-pad"
+          inputMode="numeric"
           style={styles.input}
           value={String(stagedClimb.attempts)}
           onChangeText={setAttempts}

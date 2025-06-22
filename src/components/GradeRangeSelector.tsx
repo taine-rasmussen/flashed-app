@@ -76,8 +76,6 @@ const GradeRangeSelector = (props: IGradeRangeSelector) => {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
-  console.log(selectedGrades.length > 0, selectedGrades.length, selectedGrades);
-
   return (
     <View>
       <View style={styles.chipWrap}>

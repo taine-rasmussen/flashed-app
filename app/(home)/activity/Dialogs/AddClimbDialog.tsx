@@ -1,7 +1,15 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import {
+  View,
+  StyleSheet,
+  Animated,
+  LayoutAnimation,
+  Platform,
+  UIManager,
+  Easing,
+} from 'react-native';
 import { Text, Button, TouchableRipple } from 'react-native-paper';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { View, StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
 import { DateType } from 'react-native-ui-datepicker';
 import Modal from 'react-native-modal';
@@ -27,6 +35,10 @@ interface IStagedClimb {
   homeGym: string;
 }
 
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
 const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialog) => {
   const theme = useAppTheme();
   const styles = getStyles(theme);
@@ -36,6 +48,30 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
     attempts: '0',
     date: dayjs(),
     homeGym: homeGym,
+  });
+
+  const animation = useRef(new Animated.Value(0)).current;
+
+  const toggleCalendar = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setCalendarOpen(prev => {
+      animateCalendar(!prev);
+      return !prev;
+    });
+  };
+
+  const animateCalendar = (open: boolean) => {
+    Animated.timing(animation, {
+      toValue: open ? 1 : 0,
+      duration: 325,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const calendarHeight = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 380],
   });
 
   const setGrade = (grade: string[]) => {
@@ -51,7 +87,7 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
   };
 
   const formattedDate = dayjs(stagedClimb.date).format('DD/MM/YYYY');
-  const isFormValid = stagedClimb.grade.length;
+  const isFormValid = stagedClimb.grade.length > 0 && parseInt(stagedClimb.attempts) > 0;
 
   return (
     <Modal
@@ -82,7 +118,7 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
           leftIcon={<AntDesign name="reload1" size={20} color={theme.colors.secondary} />}
         />
 
-        <TouchableRipple style={styles.row} onPress={() => setCalendarOpen(prev => !prev)}>
+        <TouchableRipple style={styles.row} onPress={toggleCalendar}>
           <View style={styles.rowContent}>
             <AntDesign name="calendar" size={24} color={theme.colors.secondary} />
             <Text style={styles.rowText}>{formattedDate}</Text>
@@ -94,7 +130,11 @@ const AddClimbDialog = ({ open, onDismiss, gradeStyle, homeGym }: IAddClimbDialo
           </View>
         </TouchableRipple>
 
-        {calendarOpen && <DatePicker mode="single" onDateChange={setDate} />}
+        {calendarOpen && (
+          <Animated.View style={{ overflow: 'hidden', height: calendarHeight }}>
+            <DatePicker mode="single" onDateChange={setDate} />
+          </Animated.View>
+        )}
 
         <View style={styles.row}>
           <AntDesign name="home" size={24} color={theme.colors.secondary} />

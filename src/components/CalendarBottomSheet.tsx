@@ -1,31 +1,44 @@
+import { View, StyleSheet } from 'react-native';
+import Modal from 'react-native-modal';
+import DateTimePicker, { DateType, useDefaultStyles } from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { Dialog, Portal } from 'react-native-paper';
-import DateTimePicker, { DateType, useDefaultStyles } from 'react-native-ui-datepicker';
 
-import { IDateRange } from '@/types';
 import { useAppTheme } from '@/theme';
+import { IDateRange } from '@/types';
+import { AppTheme } from '@/theme/types';
 
 type Mode = 'range' | 'single';
 
-interface ICalendarDialog {
+interface ICalendarBottomSheetProps {
   open: boolean;
   onDismiss: (bol: boolean) => void;
   mode: Mode;
   onDateChange: (date: string) => void;
 }
 
-const CalendarDialog = ({ open, onDismiss, mode, onDateChange }: ICalendarDialog) => {
+const CalendarBottomSheet = ({
+  open,
+  onDismiss,
+  mode,
+  onDateChange,
+}: ICalendarBottomSheetProps) => {
   const theme = useAppTheme();
   const defaultStyles = useDefaultStyles();
   const tomorrow = dayjs();
+  const styles = getStyles(theme);
 
   const [rangeDate, setRangeDate] = useState<IDateRange>({ startDate: null, endDate: null });
   const [singleDate, setSingleDate] = useState<DateType>(new Date());
 
   return (
-    <Portal>
-      <Dialog visible={open} onDismiss={() => onDismiss(false)}>
+    <Modal
+      isVisible={open}
+      onBackdropPress={() => onDismiss(false)}
+      style={styles.modal}
+      backdropTransitionOutTiming={0}
+    >
+      <View style={styles.container}>
         {mode === 'range' ? (
           <DateTimePicker
             styles={{
@@ -66,9 +79,19 @@ const CalendarDialog = ({ open, onDismiss, mode, onDateChange }: ICalendarDialog
             }}
           />
         )}
-      </Dialog>
-    </Portal>
+      </View>
+    </Modal>
   );
 };
 
-export default CalendarDialog;
+export default CalendarBottomSheet;
+
+const getStyles = (theme: AppTheme) =>
+  StyleSheet.create({
+    modal: {
+      justifyContent: 'flex-end',
+    },
+    container: {
+      backgroundColor: theme.colors.background,
+    },
+  });

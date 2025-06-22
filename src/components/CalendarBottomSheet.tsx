@@ -36,7 +36,7 @@ const CalendarBottomSheet = ({
       isVisible={open}
       onBackdropPress={() => onDismiss(false)}
       style={styles.modal}
-      backdropTransitionOutTiming={0}
+      backdropTransitionOutTiming={5}
     >
       <View style={styles.container}>
         {mode === 'range' ? (

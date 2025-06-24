@@ -60,7 +60,7 @@ const DatePicker = ({ mode, onDateChange }: IDatePickerProps) => {
           navigationPosition="right"
           onChange={({ date }) => {
             setSingleDate(date);
-            onDateChange(dayjs(date).format('DD/MM/YYYY'));
+            onDateChange(date as string);
           }}
         />
       )}

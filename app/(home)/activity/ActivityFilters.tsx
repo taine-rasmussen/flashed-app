@@ -1,7 +1,7 @@
-import { View, StyleSheet, Pressable, Alert } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import dayjs from 'dayjs';
 
 import ActivityFilterMenu from './ActivityFilterMenu';
@@ -11,7 +11,6 @@ import { useAppTheme } from '@/theme';
 import { AppTheme } from '@/theme/types';
 import { FilterOrder, IDateRange, IStagedClimb } from '@/types';
 import { useUser } from '@/contexts/UserContext';
-import { getGyms } from '@/services/getGyms';
 
 interface ActivityFiltersProps {
   dateRange: IDateRange;
@@ -46,7 +45,6 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
   const [fabOpen, setFabOpen] = useState(false);
   const { user } = useUser();
   const [openAddClimbDialog, setOpenAddClimbDialog] = useState<boolean>(false);
-  // const [savedGyms, setSavedGyms] = useState<string[]>([]);
   const [stagedClimb, setStagedClimb] = useState<IStagedClimb>({
     grade: [],
     attempts: '',

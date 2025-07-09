@@ -46,7 +46,7 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
   const [fabOpen, setFabOpen] = useState(false);
   const { user } = useUser();
   const [openAddClimbDialog, setOpenAddClimbDialog] = useState<boolean>(false);
-  const [savedGyms, setSavedGyms] = useState<string[]>([]);
+  // const [savedGyms, setSavedGyms] = useState<string[]>([]);
   const [stagedClimb, setStagedClimb] = useState<IStagedClimb>({
     grade: [],
     attempts: '',
@@ -56,22 +56,6 @@ const ActivityFilters = (props: ActivityFiltersProps) => {
 
   const getIconColor = (dir: FilterOrder) =>
     filterOrder === dir ? theme.colors.primary : theme.colors.secondary;
-
-  useEffect(() => {
-    const fetchGyms = async () => {
-      try {
-        const gymNames = await getGyms();
-        setSavedGyms(gymNames);
-      } catch (err) {
-        console.error('Error fetching gyms:', err);
-        Alert.alert('Error', 'Could not load saved gyms.');
-      }
-    };
-
-    fetchGyms();
-  }, []);
-
-  console.log(savedGyms);
 
   return (
     <>

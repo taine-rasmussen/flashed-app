@@ -100,7 +100,7 @@ const AddClimbDialog = ({
 
   const handleAddClimb = async () => {
     try {
-      await addClimb(stagedClimb, userId, gradeStyle);
+      await addClimb(stagedClimb, userId, gradeStyle, 7);
       Alert.alert('Success', 'Climb added successfully');
     } catch (err) {
       console.error('Failed to add climb', err);

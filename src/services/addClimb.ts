@@ -10,6 +10,7 @@ export const addClimb = async (
   stagedClimb: IStagedClimb,
   userId: number,
   gradeStyle: GradeStyle,
+  gymId: number,
 ) => {
   const accessToken = await getFromSecureStore('access_token');
   if (!accessToken) throw new Error('No access token found');
@@ -22,6 +23,7 @@ export const addClimb = async (
     attempts: parseInt(stagedClimb.attempts),
     date: dayjs(stagedClimb.date).toISOString(),
     home_gym: stagedClimb.homeGym,
+    gym_id: gymId,
   };
 
   const response = await axios.post(endpoint, payload, {

@@ -100,7 +100,7 @@ const AddClimbDialog = ({
 
   const handleAddClimb = async () => {
     try {
-      await addClimb(stagedClimb, userId);
+      await addClimb(stagedClimb, userId, gradeStyle, 7);
       Alert.alert('Success', 'Climb added successfully');
     } catch (err) {
       console.error('Failed to add climb', err);
@@ -235,3 +235,30 @@ const getStyles = (theme: AppTheme) =>
       borderRadius: 12,
     },
   });
+
+// TODO: Fetch gyms for user on app init or profile page
+//       (already done via GET /get_gyms)
+
+// TODO: Store each gym with its full object:
+// gyms = [
+//   { id: 7, name: "Boulders Vanløse", is_default: true, grade_ranges: [...] },
+//   ...
+// ]
+
+// TODO: In the add climb screen:
+// - Present dropdown of gyms by name (or auto-select home gym).
+
+// TODO: When user selects or confirms gym:
+// - Capture gym.id (integer) and gym.scale/ranges if needed.
+
+// TODO: When user submits a climb:
+// - Include `gym_id: selectedGym.id` in the payload
+// - Example payload:
+//   {
+//     gym_id: 7,
+//     grade: "V3-V5",
+//     scale: "Gym",
+//     attempts: 2
+//   }
+
+// TODO: Ensure scale is "Gym" if using custom ranges, or "VScale"/"Font" otherwise.

@@ -112,6 +112,7 @@ const getStyles = (theme: AppTheme) =>
     },
     inputs: {
       flex: 1,
+      gap: theme.custom.spacing.sm,
     },
     btnContainer: {
       paddingTop: theme.custom.spacing.md,

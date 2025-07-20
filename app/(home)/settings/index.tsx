@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 import { Ionicons } from '@expo/vector-icons';
+import { useState, useEffect } from 'react';
 
 import { AppTheme } from '@/theme/types';
 import { useAppTheme } from '@/theme';
@@ -14,6 +15,23 @@ const Settings = (props: ISettings) => {
   const { open, handleDismiss } = props;
   const theme = useAppTheme();
   const styles = getStyles(theme);
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      setIsVisible(true);
+    }
+  }, [open]);
+
+  const handleModalHide = () => {
+    setIsVisible(false);
+    handleDismiss();
+  };
+
+  const handleClose = () => {
+    setIsVisible(false);
+  };
 
   const handleEditProfile = () => {
     console.log('Edit Profile pressed');
@@ -56,8 +74,9 @@ const Settings = (props: ISettings) => {
 
   return (
     <Modal
-      isVisible={open}
-      onBackdropPress={() => handleDismiss()}
+      isVisible={isVisible}
+      onBackdropPress={handleClose}
+      onModalHide={handleModalHide}
       style={styles.modal}
       animationIn="slideInUp"
       animationOut="slideOutDown"
@@ -67,17 +86,17 @@ const Settings = (props: ISettings) => {
       avoidKeyboard
     >
       <View style={styles.container}>
-        {/* Header with close button */}
         <View style={styles.header}>
           <Text style={styles.title}>Settings</Text>
           <TouchableOpacity
-            onPress={handleDismiss}
+            onPress={handleClose}
             style={styles.closeButton}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
             <Ionicons name="close" size={24} color={theme.colors.onSurface} />
           </TouchableOpacity>
         </View>
+
         <View style={styles.menuContainer}>
           {menuItems.slice(0, 3).map((item, index) => (
             <TouchableOpacity
@@ -99,6 +118,7 @@ const Settings = (props: ISettings) => {
             </TouchableOpacity>
           ))}
         </View>
+
         <TouchableOpacity
           style={styles.logoutRow}
           onPress={menuItems[3].onPress}

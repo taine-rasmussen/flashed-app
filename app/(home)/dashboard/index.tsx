@@ -12,9 +12,13 @@ const Dashboard = () => {
     setSettingsOpen(prev => !prev);
   };
 
+  const closeSettings = () => {
+    setSettingsOpen(false);
+  };
+
   return (
     <>
-      {settingsOpen && <Settings />}
+      {settingsOpen && <Settings open={settingsOpen} handleDismiss={closeSettings} />}
       <IndexWrapper>
         <ProfileCard handleSettingsToggle={toggleSettings} />
       </IndexWrapper>

@@ -7,7 +7,12 @@ import { useUser } from '@/contexts/UserContext';
 import { AppTheme } from '@/theme/types';
 import { useAppTheme } from '@/theme';
 
-const ProfileCard = () => {
+interface IProfileCard {
+  handleSettingsToggle: () => void;
+}
+
+const ProfileCard = (props: IProfileCard) => {
+  const { handleSettingsToggle } = props;
   const { user } = useUser();
   const theme = useAppTheme();
   const styles = getStyles(theme);
@@ -19,10 +24,11 @@ const ProfileCard = () => {
     <Card elevation={5} style={styles.container}>
       <View style={styles.iconWrapper}>
         <Ionicons
-          name="person-circle"
+          name="settings"
           size={32}
           color={theme.colors.secondary}
           style={styles.icon}
+          onPress={handleSettingsToggle}
         />
       </View>
       <Card.Content style={styles.contentWrapper}>

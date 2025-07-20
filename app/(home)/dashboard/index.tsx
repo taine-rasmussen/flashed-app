@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Text } from 'react-native';
 
 import ProfileCard from './cards/ProfileCard';
+import Settings from '../settings';
 
 import IndexWrapper from '@/components/IndexWrapper';
 
@@ -14,7 +14,7 @@ const Dashboard = () => {
 
   return (
     <>
-      {settingsOpen && <Text>settings open</Text>}
+      {settingsOpen && <Settings />}
       <IndexWrapper>
         <ProfileCard handleSettingsToggle={toggleSettings} />
       </IndexWrapper>

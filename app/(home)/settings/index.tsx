@@ -1,7 +1,9 @@
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
-import { Ionicons } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
+
+import SettingsHeader from './components/SettingsHeader';
+import SettingsMenuList, { MenuItemConfig } from './components/SettingsMenuList';
 
 import { AppTheme } from '@/theme/types';
 import { useAppTheme } from '@/theme';
@@ -9,10 +11,16 @@ import { useAppTheme } from '@/theme';
 interface ISettings {
   open: boolean;
   handleDismiss: () => void;
+  onEditProfile?: () => void;
+  onChangePassword?: () => void;
+  onChangeGradeStyle?: () => void;
+  onLogout?: () => void;
 }
 
 const Settings = (props: ISettings) => {
-  const { open, handleDismiss } = props;
+  const { open, handleDismiss, onEditProfile, onChangePassword, onChangeGradeStyle, onLogout } =
+    props;
+
   const theme = useAppTheme();
   const styles = getStyles(theme);
 
@@ -33,42 +41,51 @@ const Settings = (props: ISettings) => {
     setIsVisible(false);
   };
 
+  // Default handlers with console logs if no handler is provided
   const handleEditProfile = () => {
-    console.log('Edit Profile pressed');
+    onEditProfile ? onEditProfile() : console.log('Edit Profile pressed');
   };
 
   const handleChangePassword = () => {
-    console.log('Change Password pressed');
+    onChangePassword ? onChangePassword() : console.log('Change Password pressed');
   };
 
   const handleChangeGradeStyle = () => {
-    console.log('Change Grade Style pressed');
+    onChangeGradeStyle ? onChangeGradeStyle() : console.log('Change Grade Style pressed');
   };
 
   const handleLogout = () => {
-    console.log('Logout pressed');
+    onLogout ? onLogout() : console.log('Logout pressed');
   };
 
-  const menuItems = [
+  const menuItems: MenuItemConfig[] = [
     {
+      id: 'editProfile',
       icon: 'person-outline',
       label: 'Edit Profile',
       onPress: handleEditProfile,
+      section: 'account',
     },
     {
+      id: 'changePassword',
       icon: 'lock-closed-outline',
       label: 'Change Password',
       onPress: handleChangePassword,
+      section: 'account',
     },
     {
+      id: 'changeGradeStyle',
       icon: 'settings-outline',
       label: 'Change Grade Style',
       onPress: handleChangeGradeStyle,
+      section: 'preferences',
     },
     {
+      id: 'logout',
       icon: 'log-out-outline',
       label: 'Logout',
       onPress: handleLogout,
+      variant: 'destructive',
     },
   ];
 
@@ -86,50 +103,9 @@ const Settings = (props: ISettings) => {
       avoidKeyboard
     >
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Settings</Text>
-          <TouchableOpacity
-            onPress={handleClose}
-            style={styles.closeButton}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
-            <Ionicons name="close" size={24} color={theme.colors.onSurface} />
-          </TouchableOpacity>
-        </View>
+        <SettingsHeader title="Settings" onClose={handleClose} />
 
-        <View style={styles.menuContainer}>
-          {menuItems.slice(0, 3).map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.row}
-              onPress={item.onPress}
-              activeOpacity={0.7}
-            >
-              <View style={styles.rowContent}>
-                <Ionicons name={item.icon as any} size={20} color={theme.colors.onSurface} />
-                <Text style={styles.rowText}>{item.label}</Text>
-                <Ionicons
-                  name="chevron-forward"
-                  size={16}
-                  color={theme.colors.onSurface}
-                  style={styles.chevron}
-                />
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        <TouchableOpacity
-          style={styles.logoutRow}
-          onPress={menuItems[3].onPress}
-          activeOpacity={0.7}
-        >
-          <View style={styles.rowContent}>
-            <Ionicons name={menuItems[3].icon as any} size={20} color="#FF3B30" />
-            <Text style={styles.logoutText}>{menuItems[3].label}</Text>
-            <Ionicons name="chevron-forward" size={16} color="#FF3B30" style={styles.chevron} />
-          </View>
-        </TouchableOpacity>
+        <SettingsMenuList items={menuItems} separateDestructive={true} />
       </View>
     </Modal>
   );
@@ -149,62 +125,5 @@ const getStyles = (theme: AppTheme) =>
       borderTopRightRadius: 24,
       padding: 24,
       paddingBottom: 32,
-    },
-    header: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginBottom: 24,
-    },
-    title: {
-      fontSize: 20,
-      fontWeight: '600',
-      color: theme.colors.onSurface,
-    },
-    closeButton: {
-      padding: 4,
-    },
-    menuContainer: {
-      gap: 12,
-      marginBottom: 24,
-    },
-    row: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      backgroundColor: theme.colors.backdrop,
-      padding: 16,
-      borderRadius: 10,
-    },
-    rowContent: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      flex: 1,
-    },
-    rowText: {
-      flex: 1,
-      marginLeft: 12,
-      fontSize: 16,
-      color: theme.colors.onSurface,
-    },
-    chevron: {
-      opacity: 0.6,
-    },
-    logoutRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      backgroundColor: theme.colors.backdrop,
-      padding: 16,
-      borderRadius: 10,
-      borderWidth: 1,
-      borderColor: '#FF3B30',
-    },
-    logoutText: {
-      flex: 1,
-      marginLeft: 12,
-      fontSize: 16,
-      color: '#FF3B30',
-      fontWeight: '500',
     },
   });

@@ -120,6 +120,7 @@ const getStyles = (theme: AppTheme) =>
       margin: 0,
     },
     container: {
+      minHeight: 400,
       backgroundColor: theme.colors.surface,
       borderTopLeftRadius: 24,
       borderTopRightRadius: 24,

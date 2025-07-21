@@ -29,20 +29,8 @@ const SettingsMenuList: React.FC<SettingsMenuListProps> = ({
   const regularItems = items.filter(item => item.variant !== 'destructive');
   const destructiveItems = items.filter(item => item.variant === 'destructive');
 
-  const groupedItems = regularItems.reduce(
-    (groups, item) => {
-      const section = item.section || 'main';
-      if (!groups[section]) {
-        groups[section] = [];
-      }
-      groups[section].push(item);
-      return groups;
-    },
-    {} as Record<string, MenuItemConfig[]>,
-  );
-
   const renderSection = (sectionItems: MenuItemConfig[], isLast = false) => (
-    <View style={[!isLast && styles.sectionWithMargin]}>
+    <View style={!isLast ? styles.sectionWithMargin : undefined}>
       {sectionItems.map((item, index) => (
         <View key={item.id} style={index > 0 ? styles.itemSpacing : undefined}>
           <SettingsMenuItem
@@ -50,8 +38,8 @@ const SettingsMenuList: React.FC<SettingsMenuListProps> = ({
             label={item.label}
             onPress={item.onPress}
             variant={item.variant}
-            showChevron={item.showChevron}
             disabled={item.disabled}
+            showChevron={item.showChevron}
           />
         </View>
       ))}
@@ -60,19 +48,7 @@ const SettingsMenuList: React.FC<SettingsMenuListProps> = ({
 
   return (
     <View style={styles.container}>
-      {Object.keys(groupedItems).length > 1
-        ? // Multiple sections
-          Object.entries(groupedItems).map(([sectionKey, sectionItems], index) => (
-            <View key={sectionKey}>
-              {renderSection(
-                sectionItems,
-                index === Object.keys(groupedItems).length - 1 && destructiveItems.length === 0,
-              )}
-            </View>
-          ))
-        : // Single section (all regular items)
-          renderSection(regularItems, destructiveItems.length === 0)}
-
+      {renderSection(regularItems)}
       {separateDestructive && destructiveItems.length > 0 && renderSection(destructiveItems, true)}
     </View>
   );

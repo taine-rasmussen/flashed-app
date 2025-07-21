@@ -45,3 +45,5 @@ export interface IStagedClimb {
   date: DateType;
   homeGym: string;
 }
+
+export type SettingsScreen = 'main' | 'editProfile' | 'changePassword' | 'gradeStyle';

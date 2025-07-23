@@ -1,28 +1,29 @@
-import { useState } from 'react';
-
 import ProfileCard from './cards/ProfileCard';
 import Settings from '../settings';
+import { useSettings } from '../settings/hooks/useSettings';
 
 import IndexWrapper from '@/components/IndexWrapper';
 
 const Dashboard = () => {
-  const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
-
-  const toggleSettings = () => {
-    setSettingsOpen(prev => !prev);
-  };
-
-  const closeSettings = () => {
-    setSettingsOpen(false);
-  };
+  const settings = useSettings();
 
   return (
     <>
-      {settingsOpen && <Settings open={settingsOpen} handleDismiss={closeSettings} />}
+      {settings.isOpen && (
+        <Settings
+          open={settings.isOpen}
+          handleDismiss={settings.closeSettings}
+          currentScreen={settings.currentScreen}
+          onNavigateToScreen={settings.navigateToScreen}
+          onGoBack={settings.goBack}
+          onLogout={settings.handleLogout}
+        />
+      )}
       <IndexWrapper>
-        <ProfileCard handleSettingsToggle={toggleSettings} />
+        <ProfileCard handleSettingsToggle={settings.openSettings} />
       </IndexWrapper>
     </>
   );
 };
+
 export default Dashboard;

@@ -16,7 +16,7 @@ interface UseSettingsReturn {
 }
 
 export const useSettings = (): UseSettingsReturn => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentScreen, setCurrentScreen] = useState<SettingsScreen>('main');
 
   const openSettings = useCallback(() => {
@@ -69,3 +69,4 @@ export const useSettings = (): UseSettingsReturn => {
     handleLogout,
   };
 };
+export { SettingsScreen };

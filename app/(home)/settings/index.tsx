@@ -57,7 +57,6 @@ const Settings = (props: ISettings) => {
     setIsVisible(false);
   };
 
-  // Default handlers with console logs if no handler is provided
   const handleEditProfile = () => {
     if (onEditProfile) {
       onEditProfile();
@@ -100,7 +99,6 @@ const Settings = (props: ISettings) => {
     }
   };
 
-  // Get screen-specific configuration
   const getScreenConfig = () => {
     switch (currentScreen) {
       case 'editProfile':
@@ -134,7 +132,6 @@ const Settings = (props: ISettings) => {
     }
   };
 
-  // Menu configuration
   const menuItems: MenuItemConfig[] = [
     {
       id: 'editProfile',

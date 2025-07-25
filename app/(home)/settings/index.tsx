@@ -202,7 +202,7 @@ const getStyles = (theme: AppTheme) =>
       margin: 0,
     },
     container: {
-      minHeight: 400, // Add minimum height so modal is visible
+      minHeight: 500,
       backgroundColor: theme.colors.surface,
       borderTopLeftRadius: 24,
       borderTopRightRadius: 24,

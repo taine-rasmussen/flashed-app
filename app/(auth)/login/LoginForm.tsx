@@ -33,20 +33,35 @@ const LoginForm = ({ email, password, onEmailChange, onPasswordChange }: IForm) 
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}login/`, {
+      //  Call login endpoint
+      const loginResponse = await axios.post(`${API_URL}/auth/login`, {
         email,
         password,
       });
 
-      const { access_token, refresh_token } = response.data;
-      await saveToSecureStore('access_token', access_token);
-      await saveToSecureStore('refresh_token', refresh_token);
+      const { accessToken, refreshToken } = loginResponse.data;
 
+      // Store tokens securely
+      await saveToSecureStore('access_token', accessToken);
+      await saveToSecureStore('refresh_token', refreshToken);
+
+      // Fetch current user using the access token
+      // const profileResponse = await axios.get(`${API_URL}/users/me`, {
+      //   headers: {
+      //     Authorization: `Bearer ${accessToken}`,
+      //   },
+      // });
+
+      // const currentUser = profileResponse.data;
+
+      // Update Auth context
       await checkAuthStatus();
 
+      // Reset form
       onEmailChange('');
       onPasswordChange('');
-      console.log('Login successful!', access_token, refresh_token);
+
+      // console.log('Login successful!', currentUser);
     } catch (error: any) {
       console.error('Login error:', error?.response?.data || error.message);
     } finally {

@@ -29,14 +29,22 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
       const decoded: DecodedToken = jwtDecode(accessToken);
-      if (!decoded?.id) {
+      if (!decoded?.email) {
         setRawUser(null);
         return;
       }
-      const response = await axios.get(`${process.env.EXPO_PUBLIC_BASE_URL}get_user/`, {
-        params: { id: decoded.id },
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+
+      console.log('PASSED EMAIL CHECK');
+
+      const response = await axios.get(
+        `${process.env.EXPO_PUBLIC_BASE_URL}user/by-email?email=${decoded.email}`,
+        {
+          params: { id: decoded.id },
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      );
+
+      console.log('RESPONSE', response);
       setRawUser(response.data as User);
     } catch {
       setRawUser(null);

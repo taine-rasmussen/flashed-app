@@ -1,9 +1,9 @@
-import { Card, Divider, Text } from 'react-native-paper';
+import { Card, Divider } from 'react-native-paper';
 import { StyleSheet, View, Image } from 'react-native';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { useUser } from '@/contexts/UserContext';
+// import { useUser } from '@/contexts/UserContext';
 import { AppTheme } from '@/theme/types';
 import { useAppTheme } from '@/theme';
 
@@ -13,12 +13,12 @@ interface IProfileCard {
 
 const ProfileCard = (props: IProfileCard) => {
   const { handleSettingsToggle } = props;
-  const { user } = useUser();
+  // const { user } = useUser();
   const theme = useAppTheme();
   const styles = getStyles(theme);
 
-  const fullName = `${user.first_name} ${user.last_name}`;
-  const location = `${user.home_gym}, ${user.location}`;
+  // const fullName = `${user.first_name} ${user.last_name}`;
+  // const location = `${user.home_gym}, ${user.location}`;
 
   return (
     <Card elevation={5} style={styles.container}>
@@ -34,12 +34,12 @@ const ProfileCard = (props: IProfileCard) => {
       <Card.Content style={styles.contentWrapper}>
         <View style={styles.userWrapper}>
           <Image style={styles.profileImage} source={require('assets/ProfileImage.png')} />
-          <Text variant="headlineMedium">{fullName}</Text>
+          {/* <Text variant="headlineMedium">{fullName}</Text> */}
         </View>
         <Divider bold />
         <View style={styles.location}>
           <EvilIcons name="location" size={32} color={theme.colors.secondary} />
-          <Text variant="headlineSmall">{location}</Text>
+          {/* <Text variant="headlineSmall">{location}</Text> */}
         </View>
       </Card.Content>
     </Card>

@@ -39,7 +39,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       const response = await axios.get(
         `${process.env.EXPO_PUBLIC_BASE_URL}user/by-email?email=${decoded.email}`,
         {
-          params: { id: decoded.id },
           headers: { Authorization: `Bearer ${accessToken}` },
         },
       );
